@@ -1,6 +1,7 @@
 {
-  "name": "create-t3-turbo",
-  "private": true,
+  "name": "revealed",
+  "private": false,
+  "license": "GPL-3.0-only",
   "engines": {
     "node": ">=v18.16.0"
   },

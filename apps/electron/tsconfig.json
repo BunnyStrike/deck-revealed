@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2017",
+    "lib": ["esnext", "dom", "dom.iterable", "WebWorker"],
+    "sourceMap": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "importHelpers": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "allowJs": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./",
+    "types": ["vite-plugin-svgr/client", "@types/jest"],
+    "typeRoots": ["./node-modules/@types", "src/common/typedefs"]
+  },
+  "include": ["src", "*.ts", "**/*.js", "index.tsx"],
+  "exclude": [
+    "vite.config.ts",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "node_modules"
+  ]
+}
