@@ -30,13 +30,13 @@ const PostCard: React.FC<{
 const CreatePostForm: React.FC = () => {
   const utils = api.useContext();
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const { mutate, error } = api.post.create.useMutation({
     async onSuccess() {
-      setTitle("");
-      setContent("");
+      setName("");
+      setDescription("");
       await utils.post.all.invalidate();
     },
   });
@@ -45,19 +45,19 @@ const CreatePostForm: React.FC = () => {
     <div className="flex w-full max-w-2xl flex-col p-4">
       <input
         className="mb-2 rounded bg-white/10 p-2 text-white"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
         placeholder="Title"
       />
-      {error?.data?.zodError?.fieldErrors.title && (
+      {error?.data?.zodError?.fieldErrors.name && (
         <span className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.title}
+          {error.data.zodError.fieldErrors.name}
         </span>
       )}
       <input
         className="mb-2 rounded bg-white/10 p-2 text-white"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         placeholder="Content"
       />
       {error?.data?.zodError?.fieldErrors.content && (
@@ -69,8 +69,8 @@ const CreatePostForm: React.FC = () => {
         className="rounded bg-pink-400 p-2 font-bold"
         onClick={() => {
           mutate({
-            title,
-            content,
+            name,
+            description,
           });
         }}
       >

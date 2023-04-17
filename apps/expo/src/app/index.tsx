@@ -17,9 +17,9 @@ const PostCard: React.FC<{
       <View className="flex-grow">
         <TouchableOpacity onPress={() => router.push(`/post/${post.id}`)}>
           <Text className="text-xl font-semibold text-pink-400">
-            {post.title}
+            {post.name}
           </Text>
-          <Text className="mt-2 text-white">{post.content}</Text>
+          <Text className="mt-2 text-white">{post.description}</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={onDelete}>
@@ -32,13 +32,13 @@ const PostCard: React.FC<{
 const CreatePost: React.FC = () => {
   const utils = api.useContext();
 
-  const [title, setTitle] = React.useState("");
-  const [content, setContent] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [description, setDescription] = React.useState("");
 
   const { mutate, error } = api.post.create.useMutation({
     async onSuccess() {
-      setTitle("");
-      setContent("");
+      setName("");
+      setDescription("");
       await utils.post.all.invalidate();
     },
   });
@@ -48,33 +48,33 @@ const CreatePost: React.FC = () => {
       <TextInput
         className="mb-2 rounded bg-white/10 p-2 text-white"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
-        value={title}
-        onChangeText={setTitle}
+        value={name}
+        onChangeText={setName}
         placeholder="Title"
       />
-      {error?.data?.zodError?.fieldErrors.title && (
+      {error?.data?.zodError?.fieldErrors.name && (
         <Text className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.title}
+          {error.data.zodError.fieldErrors.name}
         </Text>
       )}
       <TextInput
         className="mb-2 rounded bg-white/10 p-2 text-white"
         placeholderTextColor="rgba(255, 255, 255, 0.5)"
-        value={content}
-        onChangeText={setContent}
+        value={description}
+        onChangeText={setDescription}
         placeholder="Content"
       />
-      {error?.data?.zodError?.fieldErrors.content && (
+      {error?.data?.zodError?.fieldErrors.description && (
         <Text className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.content}
+          {error.data.zodError.fieldErrors.description}
         </Text>
       )}
       <TouchableOpacity
         className="rounded bg-pink-400 p-2"
         onPress={() => {
           mutate({
-            title,
-            content,
+            name,
+            description,
           });
         }}
       >

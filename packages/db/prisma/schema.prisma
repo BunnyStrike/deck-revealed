@@ -120,8 +120,14 @@ model UserLauncherCredential {
     userId  String
     launcher Launcher @relation(fields: [launcherId], references: [id], onDelete: Cascade)
     launcherId String
-    username String
-    password String
+    expires_in Int?
+    access_token String?
+    refresh_token String?
+    user_id String?
+    loginTime Int?
+    error String?
+    username String?
+    password String?
 }
 
 enum AppStore {
@@ -226,7 +232,7 @@ model AppMedia {
 model App {
     id      String @id @default(cuid())
     name    String
-    url     String
+    url     String?
     description String?
     iconUrl    String?
     coverUrl    String?
@@ -236,11 +242,12 @@ model App {
     publisherUrl String?
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
-    owner    User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-    ownerId  String
+    owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId  String?
     type    AppStatus @default(DRAFT)
     typeAt DateTime @default(now())
-    categories String @default("Entertainment")
+    category String @default("Entertainment")
+    subCategory String @default("Other")
     // platforms Platform[] @default([])
     appMedia AppMedia[]
     userActions   UserActionApp[]
