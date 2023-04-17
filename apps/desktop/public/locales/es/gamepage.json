@@ -1,0 +1,216 @@
+{
+    "box": {
+        "change": {
+            "message": "Esto cambiará la ubicación de la instalación del juego, ¿estás seguro?",
+            "path": "Seleccione una nueva carpeta para la instalación",
+            "title": "Modificar la ubicación de instalación para los juegos"
+        },
+        "choose": "Seleccionar",
+        "importpath": "Seleccione la carpeta del juego a importar",
+        "move": {
+            "message": "Esto puede tardar mucho tiempo, ¿estás seguro?",
+            "path": "Elige la ubicación del destino",
+            "title": "Mover carpeta del juego"
+        },
+        "no": "NO",
+        "repair": {
+            "message": "¿Quieres intentar reparar este juego? Esto puede llevar mucho tiempo.",
+            "title": "Verificar y reparar"
+        },
+        "runexe": {
+            "title": "Seleccionar EXE a ejecutar"
+        },
+        "select": {
+            "button": "Seleccionar"
+        },
+        "sideload": {
+            "exe": "Seleccionar ejecutable"
+        },
+        "stopInstall": {
+            "keepInstalling": "Seguir instalando",
+            "message": "¿Deseas MANTENER los archivos descargados?",
+            "title": "Detener la instalación"
+        },
+        "uninstall": {
+            "checkbox": "Eliminar prefijo: {{prefix}}{{newLine}}Nota: Esta acción no se puede revertir y eliminará también los archivos de guardado sin copia de seguridad.",
+            "message": "¿Quieres desinstalar este juego?",
+            "settingcheckbox": "Borrar ajustes y eliminar registros{{newLine}}Nota: Este cambio no se puede deshacer. Todos los ajustes serán olvidados y el registro serán borrado.",
+            "title": "Desinstalar",
+            "prefix_warning": "El prefijo Wine para este juego es el prefijo predeterminado. Si realmente desea eliminarlo, debe hacerlo manualmente."
+        },
+        "update": {
+            "message": "Este juego tiene una actualización. ¿Quieres aplicarla ahora?",
+            "title": "El juego necesita una actualización"
+        },
+        "wineprefix": "Seleccione la carpeta WinePrefix",
+        "yes": "SÍ"
+    },
+    "button": {
+        "add_to_favourites": "Agregar a Favoritos",
+        "cancel": "Pausar/Cancelar",
+        "continue": "Seguir descargando",
+        "finish": "Finalizar",
+        "force_update": "Comprobar si hay una actualización e instalarla",
+        "force-innstall": "Forzar instalación",
+        "hide_game": "Ocultar Juego",
+        "import": "Importar juego",
+        "install": "Instalar",
+        "no-path-selected": "No se seleccionó ubicación",
+        "queue": {
+            "remove": "Quitar de la cola"
+        },
+        "remove_from_favourites": "Eliminar de Favoritos",
+        "remove_from_recent": "Remover de Recientes",
+        "run-exe-first": "Ejecutar instalador primero",
+        "running-setup": "Ejecutando setup",
+        "sideload": {
+            "edit": "Editar Aplicación/Juego"
+        },
+        "unhide_game": "Mostrar Juego",
+        "uninstall": "Desinstalar",
+        "update": "Actualizar",
+        "details": "Detalles"
+    },
+    "cloud_save_unsupported": "No compatible",
+    "disabled": "Deshabilitado",
+    "dlc": {
+        "installDlcs": "Instalar todos los DLCs"
+    },
+    "enabled": "Habilitado",
+    "game": {
+        "downloadSize": "Tamaño de Descarga",
+        "firstPlayed": "Jugado por Primera Vez",
+        "getting-download-size": "Obteniendo tamaño de descarga",
+        "getting-install-size": "Obteniendo tamaño de instalación",
+        "installSize": "Tamaño de Instalación",
+        "language": "Lenguaje",
+        "lastPlayed": "Jugado por Última Vez",
+        "neverPlayed": "Nunca",
+        "platform": "Seleccionar la Versión de la Plataforma a Instalar",
+        "requirements": "Requerimientos del Sistema",
+        "totalPlayed": "Tiempo Jugado"
+    },
+    "gamecard": {
+        "moving": "Moviendo",
+        "repairing": "Reparando"
+    },
+    "generic": {
+        "error": "Error desconocido",
+        "noDescription": "No hay descripción disponible"
+    },
+    "hours": "Horas",
+    "how-long-to-beat": {
+        "completionist": "complotista",
+        "main-plus-extras": "Principal + Extras",
+        "main-story": "Historia principal"
+    },
+    "howLongToBeat": "Tiempo de juego",
+    "info": {
+        "canRunOffline": "Requiere Online",
+        "installedPlatform": "Plataforma de Instalación",
+        "path": "Instalado en",
+        "size": "Tamaño",
+        "syncsaves": "Sincronizar guardados",
+        "version": "Versión"
+    },
+    "install": {
+        "disk-space-left": "Espacio disponible",
+        "not-enough-disk-space": "Almacenamiento insuficiente",
+        "path": "Seleccione la ruta de instalación",
+        "path-not-writtable": "Advertencia: La ruta puede estar protegida contra escritura.",
+        "space-after-install": "Después de la instalación",
+        "wineprefix": "Prefijo de Wine",
+        "wineversion": "Version de Wine"
+    },
+    "label": {
+        "game": {
+            "third-party-game": "Juego NO soportado"
+        },
+        "playing": {
+            "start": "Jugar",
+            "stop": "Detener"
+        },
+        "saves": {
+            "syncing": "Sincronizando guardados"
+        },
+        "launching": "Ejecutando",
+        "ubisoft": "Insalando Ubisoft Connect"
+    },
+    "launch": {
+        "options": "Opciones de Arranque..."
+    },
+    "not_logged_in": {
+        "epic": "No ha iniciado sesión con una cuenta de Epic en Revealed. No use la página de la tienda, haga click en el siguiente botón:",
+        "gog": "No ha iniciado sesión con una cuenta de GOG en Revealed. No use la página de la tienda, haga click en el siguiente botón:",
+        "login": "Iniciar Sesión",
+        "title": "No ha iniciado sesión"
+    },
+    "report_problem": "Reportar un problema ejecutando este juego",
+    "sdl": {
+        "title": "Elija componentes a instalar"
+    },
+    "setting": {
+        "use-default-wine-settings": "User configuración por defecto de Wine",
+        "winecrossoverbottle": "Botella de CrossOver"
+    },
+    "sideload": {
+        "field": {
+            "title": "Título"
+        },
+        "info": {
+            "exe": "Seleccionar ejecutable",
+            "image": "Imagen de la aplicación/juego",
+            "title": "Título de la aplicación/juego"
+        },
+        "placeholder": {
+            "image": "Ingrese una URL de una imagen aquí",
+            "title": "Agregue un título a su juego/aplicación"
+        }
+    },
+    "specs": {
+        "minimum": "Mínimo",
+        "recommended": "Recomendado"
+    },
+    "status": {
+        "clickToUpdate": "Clic para actualizar",
+        "gameNotAvailable": "Juego no disponible",
+        "hasUpdates": "¡Nueva versión disponible!",
+        "installed": "Instalado",
+        "installing": "Instalando",
+        "moving": "Moviendo la instalación, por favor espere",
+        "notinstalled": "Este juego no está instalado",
+        "notSupported": "No soportado",
+        "notSupportedGame": "No Soportado",
+        "processing": "Procesando los archivos, por favor espere",
+        "queued": "Encolado",
+        "reparing": "Reparando juego, espere por favor",
+        "this-game-uses-third-party": "Este juego usa un launcher de terceros y aún no está soportado",
+        "totalDownloaded": "Total descargado",
+        "uninstalling": "Desinstalando",
+        "updating": "Actualización de juego",
+        "playing": "Jugando",
+        "moving-files": "Moviendo archivo '{{file}}': {{percent}} ",
+        "syncingSaves": "Sincronizando guardados",
+        "launching": "Ejecutando",
+        "ubisoft": "Instalando Ubisoft"
+    },
+    "submenu": {
+        "addShortcut": "Añadir acceso directo",
+        "addToSteam": "Agregar a Steam",
+        "change": "Modificar la ubicación de instalación",
+        "disableEosOverlay": "Desactivar EOS Overlay",
+        "enableEosOverlay": "Activar EOS Overlay",
+        "move": "Mover juego",
+        "protondb": "Verificar compatibilidad",
+        "removeFromSteam": "Eliminar de Steam",
+        "removeShortcut": "Eliminar accesos directos",
+        "settings": "Ajustes",
+        "store": "Página de la tienda",
+        "verify": "Verificar y reparar",
+        "extraInfo": "Información extra",
+        "logs": "Registros"
+    },
+    "help": {
+        "cloud_save_unsupported": "Este juego no admite guardados en la nube. Esta información es proporcionada por los desarrolladores del juego. Algunos juegos implementan su propio sistema de guardado en la nube"
+    }
+}

@@ -1,0 +1,216 @@
+{
+    "box": {
+        "change": {
+            "message": "Això canviarà la ruta d'instal·lació d'aquest joc, estàs segur?",
+            "path": "Tria una ruta d'instal·lació nova",
+            "title": "Canvia la ruta d'instal·lació dels jocs"
+        },
+        "choose": "Tria",
+        "importpath": "Tria un directori per importar",
+        "move": {
+            "message": "Això pot trigar molt de temps, estàs segur?",
+            "path": "Tria on vols moure el joc",
+            "title": "Mou la ruta d'instal·lació del joc"
+        },
+        "no": "NO",
+        "repair": {
+            "message": "Vols provar de reparar aquest joc? Això pot trigar molt de temps.",
+            "title": "Verifica i repara"
+        },
+        "runexe": {
+            "title": "Tria un EXE per executar"
+        },
+        "select": {
+            "button": "Tria"
+        },
+        "sideload": {
+            "exe": "Selecciona l'executable"
+        },
+        "stopInstall": {
+            "keepInstalling": "Continua amb la instal·lació",
+            "message": "Vols MANTENIR els fitxers baixats?",
+            "title": "Atura la instal·lació"
+        },
+        "uninstall": {
+            "checkbox": "Suprimeix el prefix: {{prefix}}{{newLine}}Avís: No es pot desfer i també suprimirà les partides desades de les quals no s'hagin fet còpies de seguretat.",
+            "message": "Vols desinstal·lar aquest joc?",
+            "settingcheckbox": "Esborra la configuració i suprimeix el registre{{newLine}}Avís: aquesta acció no es pot desfer. S'oblidarà qualsevol opció modificada i el registre se suprimirà.",
+            "title": "Desinstal·la",
+            "prefix_warning": "El prefix Wine d'aquest joc és el prefix predefinit. Si realment vols eliminar-lo, has de fer-ho manualment."
+        },
+        "update": {
+            "message": "Hi ha una actualització per a aquest joc, el vols actualitzar ara?",
+            "title": "Cal actualitzar el joc"
+        },
+        "wineprefix": "Tria la carpeta del WinePrefix",
+        "yes": "SÍ"
+    },
+    "button": {
+        "add_to_favourites": "Afegeix a preferits",
+        "cancel": "Pausa/Cancel·la",
+        "continue": "Continua la baixada",
+        "finish": "Finalitza",
+        "force_update": "Força l'actualització si n'hi ha cap disponible",
+        "force-innstall": "Força la instal·lació",
+        "hide_game": "Amaga el joc",
+        "import": "Importa el joc",
+        "install": "Instal·la",
+        "no-path-selected": "No s'ha triat cap ruta",
+        "queue": {
+            "remove": "Suprimeix de la cua"
+        },
+        "remove_from_favourites": "Suprimeix dels preferits",
+        "remove_from_recent": "Suprimeix dels recents",
+        "run-exe-first": "Executa primer l'instal·lador",
+        "running-setup": "S'executa la configuració",
+        "sideload": {
+            "edit": "Edita el joc o aplicació"
+        },
+        "unhide_game": "Torna a mostrar el joc",
+        "uninstall": "Desinstal·la",
+        "update": "Actualitza",
+        "details": "Detalls"
+    },
+    "cloud_save_unsupported": "No compatible",
+    "disabled": "Desactivat",
+    "dlc": {
+        "installDlcs": "Instal·la tots els DLCs"
+    },
+    "enabled": "Activat",
+    "game": {
+        "downloadSize": "Mida de la baixada",
+        "firstPlayed": "Primera partida",
+        "getting-download-size": "S'està obtenint la mida de la baixada",
+        "getting-install-size": "Se cerca la mida de la instal·lació",
+        "installSize": "Mida d'instal·lació",
+        "language": "Llengua",
+        "lastPlayed": "Última partida",
+        "neverPlayed": "Mai",
+        "platform": "Selecciona la versió de la plataforma a instal·lar",
+        "requirements": "Requisits del sistema",
+        "totalPlayed": "Temps jugat"
+    },
+    "gamecard": {
+        "moving": "S'està movent",
+        "repairing": "S'està reparant"
+    },
+    "generic": {
+        "error": "Error desconegut",
+        "noDescription": "No hi ha descripció disponible"
+    },
+    "hours": "Hores",
+    "how-long-to-beat": {
+        "completionist": "Perfeccionista",
+        "main-plus-extras": "Principal + Extres",
+        "main-story": "Història principal"
+    },
+    "howLongToBeat": "Quant de temps costa de completar",
+    "info": {
+        "canRunOffline": "Cal connexió a internet",
+        "installedPlatform": "Plataforma instal·lada",
+        "path": "Ruta d'instal·lació",
+        "size": "Mida",
+        "syncsaves": "Sincronitza les partides desades",
+        "version": "Versió"
+    },
+    "install": {
+        "disk-space-left": "Espai disponible",
+        "not-enough-disk-space": "No hi ha prou espai al disc",
+        "path": "Selecciona la ruta d'instal·lació",
+        "path-not-writtable": "Avís: potser no es pot escriure a la ruta indicada.",
+        "space-after-install": "Després de la instal·lació",
+        "wineprefix": "WinePrefix",
+        "wineversion": "Versió del Wine"
+    },
+    "label": {
+        "game": {
+            "third-party-game": "No s'admeten jocs de tercers"
+        },
+        "playing": {
+            "start": "Juga",
+            "stop": "En execució (Atura)"
+        },
+        "saves": {
+            "syncing": "S'estan sincronitzant les partides"
+        },
+        "launching": "Llançament",
+        "ubisoft": "Instal·lació d'Ubisoft Connect"
+    },
+    "launch": {
+        "options": "Opcions d'execució..."
+    },
+    "not_logged_in": {
+        "epic": "No has iniciat sessió amb un compte d'Epic a l'Revealed. No facis servir la pàgina de la botiga per a iniciar-la. Fes-ho després de prémer el botó següent:",
+        "gog": "No has iniciat sessió amb un compte de GOG a l'Revealed. No facis servir la pàgina de la botiga per a iniciar-la. Fes-ho després de prémer el botó següent:",
+        "login": "Inicia la sessió",
+        "title": "No has iniciat sessió"
+    },
+    "report_problem": "Informa d'un problema quan s'executa el joc",
+    "sdl": {
+        "title": "Selecciona els components a instal·lar"
+    },
+    "setting": {
+        "use-default-wine-settings": "Fes servir la configuració predefinida del Wine",
+        "winecrossoverbottle": "Ampolla CrossOver"
+    },
+    "sideload": {
+        "field": {
+            "title": "Títol"
+        },
+        "info": {
+            "exe": "Selecciona l'executable",
+            "image": "Imatge de l'aplicació",
+            "title": "Títol del joc o aplicació"
+        },
+        "placeholder": {
+            "image": "Enganxa-hi l'URL d'una imatge",
+            "title": "Afegeix un títol al joc o aplicació"
+        }
+    },
+    "specs": {
+        "minimum": "Mínim",
+        "recommended": "Recomanat"
+    },
+    "status": {
+        "clickToUpdate": "Fes clic per a actualitzar",
+        "gameNotAvailable": "Joc no disponible",
+        "hasUpdates": "Hi ha una versió nova disponible!",
+        "installed": "Instal·lat",
+        "installing": "S'està instal·lant",
+        "moving": "S'està movent la instal·lació, espera",
+        "notinstalled": "Aquest joc no està instal·lat",
+        "notSupported": "No compatible",
+        "notSupportedGame": "No compatible",
+        "processing": "S'estan processant els fitxers, espera",
+        "queued": "A la cua",
+        "reparing": "S'està reparant el joc, espera",
+        "this-game-uses-third-party": "Aquest joc fa servir un llançador de tercers que encara no és compatible",
+        "totalDownloaded": "Total baixat",
+        "uninstalling": "Es desinstal·la",
+        "updating": "S'està actualitzant el joc",
+        "playing": "Jugant",
+        "moving-files": "S'està movent el fitxer '{{file}}': {{percent}} ",
+        "syncingSaves": "S'estan sincronitzant les partides",
+        "launching": "Llançament",
+        "ubisoft": "Instal·lació d'Ubisoft"
+    },
+    "submenu": {
+        "addShortcut": "Afegeix una drecera",
+        "addToSteam": "Afegeix a l'Steam",
+        "change": "Canvia la ruta d'instal·lació",
+        "disableEosOverlay": "Desactiva la superposició EOS",
+        "enableEosOverlay": "Activa la superposició EOS",
+        "move": "Mou el joc",
+        "protondb": "Comprova la compatibilitat",
+        "removeFromSteam": "Suprimeix de l'Steam",
+        "removeShortcut": "Suprimeix les dreceres",
+        "settings": "Configuració",
+        "store": "Botiga",
+        "verify": "Verifica i repara",
+        "extraInfo": "Informació extra",
+        "logs": "Registres"
+    },
+    "help": {
+        "cloud_save_unsupported": "Aquest joc no admet desacions al núvol. Aquesta informació la proporcionen els desenvolupadors del joc. Alguns jocs implementen el seu propi sistema de desat al núvol"
+    }
+}

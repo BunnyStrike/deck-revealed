@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["esnext", "dom", "dom.iterable", "WebWorker"],
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "types": [],
+    "typeRoots": ["./node-modules/@types"]
+  },
+  "include": ["src", "*.ts", "**/*.js"],
+  "exclude": ["**/__tests__/**", "**/__mocks__/**", "node_modules"]
+}
