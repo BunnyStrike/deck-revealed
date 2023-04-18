@@ -67,6 +67,7 @@
     "type-fest": "^3.8.0"
   },
   "dependencies": {
+    "@revealed/api": "*",
     "@clerk/clerk-react": "^4.15.1",
     "@fontsource/cabin": "^4.5.10",
     "@fontsource/rubik": "^4.5.14",
@@ -123,6 +124,7 @@
     "tslib": "^2.5.0",
     "@tanstack/react-query": "^4.29.1",
     "@trpc/client": "10.20.0",
+    "@trpc/react": "10.20.0",
     "@trpc/react-query": "10.20.0",
     "@trpc/server": "10.20.0",
     "electron": "^24.1.1",
