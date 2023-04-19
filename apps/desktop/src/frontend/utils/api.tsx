@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 // import { httpBatchLink, loggerLink } from '@trpc/client'
+import { useSession } from '@clerk/clerk-react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
   createTRPCProxyClient,
   createTRPCReact,
   httpBatchLink,
+  splitLink,
 } from '@trpc/react-query'
 import { ipcLink } from 'electron-trpc/renderer'
 import superjson from 'superjson'
@@ -52,19 +54,39 @@ export const api = createTRPCReact<AppRouter & DesktopAppRouter>()
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  // const { session } = useSession()
   const [queryClient] = useState(() => new QueryClient())
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [
-        httpBatchLink({
-          url: `${getBaseUrl()}/api/trpc`,
-          // fetch(url, options) {
-          //   return fetch(url, {
-          //     ...options,
-          //     credentials: 'include',
-          //   })
-          // },
+        splitLink({
+          condition(op) {
+            // check for context property `skipBatch`
+            console.log(op.path.includes('desktop.'))
+            console.log(op)
+            return op.path.includes('desktop.')
+          },
+          // when condition is true, use normal request
+          true: ipcLink(),
+          // when condition is false, use batching
+          false: httpBatchLink({
+            url: `${getBaseUrl()}/api/trpc`,
+            // fetch(url, options) {
+            //   return fetch(url, {
+            //     ...options,
+            //     credentials: 'include',
+            //   })
+            // },
+            // async headers() {
+            //   const sess = await session?.getToken()
+            //   if (!sess) return {}
+            //   return {
+            //     Authorization: `Bearer ${sess}`,
+            //   }
+            // },
+          }),
         }),
+
         // ipcLink(),
       ],
       transformer: superjson,

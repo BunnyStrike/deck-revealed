@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ClerkProvider, SignIn } from '@clerk/clerk-react'
+// import { ClerkProvider, SignIn } from '@clerk/clerk-react'
 import { Provider } from 'jotai'
 import { createRoot } from 'react-dom/client'
 
@@ -13,13 +13,13 @@ console.log(clerkPubKey)
 
 function App() {
   return (
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <ApiProvider>
-        {/* <DesktopApiProvider> */}
-        <HelloElectron />
-        {/* </DesktopApiProvider> */}
-      </ApiProvider>
-    </ClerkProvider>
+    // <ClerkProvider publishableKey={clerkPubKey}>
+    <ApiProvider>
+      {/* <DesktopApiProvider> */}
+      <HelloElectron />
+      {/* </DesktopApiProvider> */}
+    </ApiProvider>
+    // </ClerkProvider>
   )
   //   <ClerkProvider publishableKey={clerkPubKey}>
   //     <Provider>
@@ -34,7 +34,9 @@ function App() {
 }
 
 function HelloElectron() {
+  // const { data, error } = api.desktop.system.info.useQuery()
   const { data, error } = api.app.all.useQuery()
+  // .all.useQuery()
   // const { data: info, error: infoError } = api.system.info.useQuery()
   // desktopApi.subscription.useSubscription(undefined, { // const { data } = desktopApi.greeting.useQuery({ name: 'Electron' })
   //   onData: (data) => {
@@ -49,7 +51,8 @@ function HelloElectron() {
   // return <SignIn />
   return (
     <div className='center'>
-      <SignIn />
+      <div>test</div>
+      {/* <SignIn /> */}
     </div>
   ) // <div>test test</div>
 }

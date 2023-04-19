@@ -11,8 +11,7 @@ import { createTRPCRouter } from './trpc'
 // const ee = new EventEmitter()
 
 export const desktopRouter = createTRPCRouter({
-  gamepad,
-  system,
+  desktop: createTRPCRouter({ gamepad, system }),
 })
 
 export type AppRouter = typeof desktopRouter
