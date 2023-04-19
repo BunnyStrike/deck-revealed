@@ -69,7 +69,7 @@ export const createMainWindow = () => {
       webviewTag: true,
       contextIsolation: true,
       nodeIntegration: true,
-      webSecurity: false,
+      // webSecurity: false,
       // sandbox: false,
       preload: preload,
     },
