@@ -18,7 +18,7 @@ function App() {
     <ClerkProvider publishableKey={clerkPubKey}>
       <Provider>
         <ApiProvider>
-          <div>
+          <div data-theme='cupcake'>
             {/* <RevealedSidenav /> */}
             <RevealedSignupScreen />
           </div>
