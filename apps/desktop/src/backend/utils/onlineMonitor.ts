@@ -1,6 +1,6 @@
 import EventEmitter from 'node:events'
 import axios from 'axios'
-import { ipcMain, net } from 'electron'
+import { net } from 'electron'
 
 import { type ConnectivityStatus } from '~/common/types'
 import { LogPrefix, logInfo } from '../logger/logger'
@@ -15,7 +15,7 @@ let timeBetweenRetries = defaultTimeBetweenRetries
 const connectivityEmitter = new EventEmitter()
 
 // handle setting the status, dispatch events for backend and frontend, and trigger pings
-const setStatus = (newStatus: ConnectivityStatus) => {
+export const setMonitorStatus = (newStatus: ConnectivityStatus) => {
   logInfo(`Connectivity: ${newStatus}`, LogPrefix.Connection)
 
   status = newStatus
@@ -41,7 +41,7 @@ const setStatus = (newStatus: ConnectivityStatus) => {
   connectivityEmitter.emit(status)
 }
 
-const retry = (seconds: number) => {
+export const retry = (seconds: number) => {
   retryIn = seconds
   // dispatch event with retry countdown
   sendFrontendMessage('connectivity-changed', {
@@ -80,7 +80,7 @@ const pingSites = () => {
 
   Promise.any([ping1, ping2, ping3, ping4])
     .then(() => {
-      setStatus('online')
+      setMonitorStatus('online')
       abortController.abort() // abort the rest
       timeBetweenRetries = defaultTimeBetweenRetries
     })
@@ -94,34 +94,34 @@ const pingSites = () => {
 
 export const initOnlineMonitor = () => {
   // listen to events from the frontend
-  ipcMain.on(
-    'connectivity-changed',
-    (event, newStatus: ConnectivityStatus): void => {
-      console.log(`------------- ${newStatus} -------------`)
-      setStatus(newStatus)
-    }
-  )
+  // ipcMain.on(
+  //   'connectivity-changed',
+  //   (event, newStatus: ConnectivityStatus): void => {
+  //     setMonitorStatus(newStatus)
+  //   }
+  // )
 
   if (net.isOnline()) {
     // set initial status and ping external sites
-    setStatus('check-online')
+    setMonitorStatus('check-online')
   } else {
-    console.log('------------- offline -------------')
-    setStatus('offline')
+    setMonitorStatus('offline')
   }
 
   // listen to the frontend asking for current status
-  ipcMain.handle(
-    'get-connectivity-status',
-    (): { status: ConnectivityStatus; retryIn: number } => {
-      return { status, retryIn }
-    }
-  )
+  // ipcMain.handle(
+  //   'get-connectivity-status',
+  //   (): { status: ConnectivityStatus; retryIn: number } => {
+  //     return { status, retryIn }
+  //   }
+  // )
 
-  ipcMain.on('set-connectivity-online', () => {
-    setStatus('online')
-  })
+  // ipcMain.on('set-connectivity-online', () => {
+  //   setMonitorStatus('online')
+  // })
 }
+
+export const getConnectivityStatus = () => ({ status, retryIn })
 
 export const runOnceWhenOnline = (callback: () => unknown) => {
   if (isOnline()) {

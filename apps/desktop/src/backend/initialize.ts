@@ -69,7 +69,6 @@ const init = async () => {
 }
 
 export async function initializeWindow(): Promise<BrowserWindow> {
-  console.log('---------------Initializing window---------------')
   // await init()
   const mainWindow = createMainWindow()
 
@@ -85,7 +84,6 @@ export async function initializeWindow(): Promise<BrowserWindow> {
   //   )
   //   mainWindow.setFullScreen(true)
   // }
-  console.log('-----------------  Instance 1 -----------------')
 
   setTimeout(() => {
     // DXVK.getLatest()
@@ -101,7 +99,6 @@ export async function initializeWindow(): Promise<BrowserWindow> {
   // app.commandLine.appendSwitch('enable-spatial-navigation')
 
   // mainWindow.on('close', (e) => {
-  //   console.log('----------------- Close Instance -----------------')
   //   e.preventDefault()
 
   //   if (!isCLIFullscreen && !isSteamDeckGameMode) {
@@ -122,7 +119,6 @@ export async function initializeWindow(): Promise<BrowserWindow> {
   if (isWindows) {
     detectVCRedist(mainWindow)
   }
-  console.log('-----------------  Instance 2 -----------------')
 
   if (!app.isPackaged) {
     if (!process.env.REVEALED_NO_REACT_DEVTOOLS) {
@@ -136,9 +132,7 @@ export async function initializeWindow(): Promise<BrowserWindow> {
     }
     try {
       await mainWindow.loadURL(devServerUrl)
-    } catch (error) {
-      console.log('---------------', error, '----------------')
-    }
+    } catch (error) {}
     // Open the DevTools.
     mainWindow.webContents.openDevTools()
   } else {
@@ -158,7 +152,6 @@ export async function initializeWindow(): Promise<BrowserWindow> {
       autoUpdater.checkForUpdates()
     }
   }
-  console.log('-----------------  Instance 3 -----------------')
 
   // mainWindow.webContents.setWindowOpenHandler((details) => {
   //   const pattern = app.isPackaged ? publicDir : `localhost:${devServerPort}`
@@ -170,7 +163,6 @@ export async function initializeWindow(): Promise<BrowserWindow> {
   //     processZoomForScreen(parseFloat(zoomFactor))
   //   )
   // })
-  console.log('-----------------  Instance 4 -----------------')
 
   return mainWindow
 }
@@ -182,10 +174,7 @@ export const initializeApp = () => {
     return
   }
 
-  console.log('----------------- Initializing app -----------------')
-
   app.on('second-instance', (event, argv) => {
-    console.log('----------------- Second Instance -----------------')
     // Someone tried to run a second instance, we should focus our window.
     const mainWindow = getMainWindow()
     mainWindow?.show()
@@ -194,8 +183,7 @@ export const initializeApp = () => {
   })
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   app.whenReady().then(async () => {
-    console.log('----------------- Instance Ready -----------------')
-    // initOnlineMonitor()
+    initOnlineMonitor()
 
     getSystemInfo().then((systemInfo) =>
       logInfo(`\n\n${systemInfo}\n`, LogPrefix.Backend)
@@ -252,13 +240,10 @@ export const initializeApp = () => {
     // GOGUser.migrateCredentialsConfig()
     const mainWindow = await initializeWindow()
 
-    console.log('-----------------  Instance 5 -----------------')
-
     // protocol.registerStringProtocol('revealed', (request, callback) => {
     //   void handleProtocol([request.url])
     //   callback('Operation initiated.')
     // })
-    console.log('-----------------  Instance 6 -----------------')
 
     // if (!app.isDefaultProtocolClient('revealed')) {
     //   if (app.setAsDefaultProtocolClient('revealed')) {
@@ -269,7 +254,6 @@ export const initializeApp = () => {
     // } else {
     //   logWarning('Protocol already registered.', LogPrefix.Backend)
     // }
-    console.log('-----------------  Instance 7 -----------------')
 
     const { startInTray } = GlobalConfig.get().getSettings()
     const headless = isCLINoGui || startInTray
@@ -277,7 +261,6 @@ export const initializeApp = () => {
       // ipcMain.once('loadingScreenReady', () => mainWindow.show())
       mainWindow.show()
     }
-    console.log('-----------------  Instance 8 -----------------')
 
     // set initial zoom level after a moment, if set in sync the value stays as 1
     // setTimeout(() => {
@@ -285,7 +268,6 @@ export const initializeApp = () => {
 
     //   mainWindow.webContents.setZoomFactor(processZoomForScreen(zoomFactor))
     // }, 200)
-    console.log('-----------------  Instance 9 -----------------')
 
     // ipcMain.on('changeLanguage', async (event, language) => {
     //   logInfo(['Changing Language to:', language], LogPrefix.Backend)

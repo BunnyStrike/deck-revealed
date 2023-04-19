@@ -3,28 +3,22 @@ import React, { useState } from 'react'
 import { ClerkProvider, SignIn } from '@clerk/clerk-react'
 import { Provider } from 'jotai'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter, useNavigate } from 'react-router-dom'
 
 import { RevealedContextMenu } from '@revealed/ui'
 
+import AppMain from './App'
 import RevealedSidenav from './components/Sidenav'
-import { RevealedSignupScreen } from './screens/signup'
 import { ApiProvider, api } from './utils/api'
 import { getEnvVar } from './utils/envVar'
 
-const clerkPubKey = getEnvVar('VITE_PUBLIC_CLERK_PUBLISHABLE_KEY')
-
 function App() {
   return (
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <Provider>
-        <ApiProvider>
-          <div data-theme='cupcake'>
-            {/* <RevealedSidenav /> */}
-            <RevealedSignupScreen />
-          </div>
-        </ApiProvider>
-      </Provider>
-    </ClerkProvider>
+    <BrowserRouter>
+      <div data-theme='cupcake' className='h-full bg-white'>
+        <AppMain />
+      </div>
+    </BrowserRouter>
   )
 }
 

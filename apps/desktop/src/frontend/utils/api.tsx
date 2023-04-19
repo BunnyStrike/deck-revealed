@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSession } from '@clerk/clerk-react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCReact, httpBatchLink, splitLink } from '@trpc/react-query'
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { ipcLink } from 'electron-trpc/renderer'
 import superjson from 'superjson'
 
@@ -16,6 +17,15 @@ const getBaseUrl = () => {
 }
 
 export const api = createTRPCReact<AppRouter & DesktopAppRouter>()
+
+type RouterInput = inferRouterInputs<AppRouter>
+type RouterOutput = inferRouterOutputs<AppRouter>
+
+export type AppListInput = RouterInput['app']
+export type AppListOutput = RouterOutput['app']['all']
+
+export type GameListInput = RouterInput['game']['all']
+export type GameListOutput = RouterOutput['game']['all']
 
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
