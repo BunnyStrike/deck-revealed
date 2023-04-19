@@ -8,7 +8,7 @@
   },
   "main": "build/electron/main.js",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 3002 --clearScreen false",
+    "dev": "pnpm with-env vite --host 0.0.0.0 --port 3100 --clearScreen false",
     "build": "npm run build:main && npm run build:preload",
     "build:main": "cd ./layers/main && vite build",
     "build:preload": "cd ./layers/preload && vite build",
@@ -124,7 +124,6 @@
     "tslib": "^2.5.0",
     "@tanstack/react-query": "^4.29.1",
     "@trpc/client": "10.20.0",
-    "@trpc/react": "10.20.0",
     "@trpc/react-query": "10.20.0",
     "@trpc/server": "10.20.0",
     "electron": "^24.1.1",

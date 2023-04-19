@@ -10,5 +10,10 @@
     "typeRoots": ["./node-modules/@types"]
   },
   "include": ["src", "*.ts", "**/*.js"],
-  "exclude": ["**/__tests__/**", "**/__mocks__/**", "node_modules"]
+  "exclude": [
+    "vite.config.ts",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "node_modules"
+  ]
 }

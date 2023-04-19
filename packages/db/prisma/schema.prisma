@@ -299,7 +299,7 @@ model GameMedia {
 model Game {
     id      String @id @default(cuid())
     name    String
-    url     String
+    url     String?
     description String?
     iconUrl    String?
     coverUrl    String?

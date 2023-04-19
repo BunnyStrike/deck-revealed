@@ -1,5 +1,6 @@
 export const getEnvVar = (key: string): string => {
   // declare const process: any
   // @ts-ignore
-  return (process.env ?? import.meta.env ?? {})[key] ?? ''
+  // process?.env ??
+  return (import.meta.env ?? {})[key] ?? ''
 }

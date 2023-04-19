@@ -1,5 +1,5 @@
-import { exposeElectronTRPC } from 'electron-trpc/main';
+import { exposeElectronTRPC } from 'electron-trpc/main'
 
 process.once('loaded', async () => {
-  exposeElectronTRPC();
-});
+  exposeElectronTRPC()
+})

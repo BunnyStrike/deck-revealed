@@ -234,6 +234,48 @@ const necessaryFoldersByPlatform: any = {
   darwin: [...defaultFolders, revealedToolsPath],
 }
 
+export const supportedLanguages = [
+  'ar',
+  'az',
+  'be',
+  'bg',
+  'bs',
+  'ca',
+  'cs',
+  'de',
+  'el',
+  'en',
+  'es',
+  'et',
+  'eu',
+  'fa',
+  'fi',
+  'fr',
+  'gl',
+  'hr',
+  'hu',
+  'ja',
+  'ko',
+  'id',
+  'it',
+  'ml',
+  'nb_NO',
+  'nl',
+  'pl',
+  'pt',
+  'pt_BR',
+  'ro',
+  'ru',
+  'sk',
+  'sv',
+  'ta',
+  'tr',
+  'uk',
+  'vi',
+  'zh_Hans',
+  'zh_Hant',
+]
+
 export function createNecessaryFolders() {
   necessaryFoldersByPlatform[platform()].forEach((folder: string) => {
     if (!existsSync(folder)) {

@@ -1,62 +1,63 @@
 import React, { useState } from 'react'
-import { ClerkProvider } from '@clerk/clerk-react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createTRPCReact } from '@trpc/react-query'
-import { ipcLink } from 'electron-trpc/renderer'
+import { ClerkProvider, SignIn } from '@clerk/clerk-react'
 import { Provider } from 'jotai'
-import ReactDom from 'react-dom'
-import superjson from 'superjson'
+import { createRoot } from 'react-dom/client'
 
-import type { AppRouter } from '../backend/api'
-import { api, apiCLient, apiQueryClient } from './utils/api'
+import { ApiProvider, api } from './utils/api'
+import { desktopApi } from './utils/desktopApi'
 import { getEnvVar } from './utils/envVar'
-
-const trpcReact = createTRPCReact<AppRouter>()
 
 const clerkPubKey = getEnvVar('VITE_PUBLIC_CLERK_PUBLISHABLE_KEY')
 
-function App() {
-  const [queryClient] = useState(() => new QueryClient())
-  const [trpcClient] = useState(() =>
-    trpcReact.createClient({
-      links: [ipcLink()],
-      transformer: superjson,
-    })
-  )
-  const [qpiQueryClientState] = useState(apiQueryClient)
-  const [trpcClientState] = useState(apiCLient)
+console.log(clerkPubKey)
 
+function App() {
   return (
     <ClerkProvider publishableKey={clerkPubKey}>
-      <Provider>
-        <api.Provider
-          client={trpcClientState}
-          queryClient={qpiQueryClientState}
-        >
-          <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>
-              <HelloElectron />
-            </QueryClientProvider>
-          </trpcReact.Provider>
-        </api.Provider>
-      </Provider>
+      <ApiProvider>
+        {/* <DesktopApiProvider> */}
+        <HelloElectron />
+        {/* </DesktopApiProvider> */}
+      </ApiProvider>
     </ClerkProvider>
   )
+  //   <ClerkProvider publishableKey={clerkPubKey}>
+  //     <Provider>
+  //       {/* <ApiProvider> */}
+  // {/* <DesktopApiProvider> */}
+  //       <HelloElectron />
+  //       {/* </DesktopApiProvider> */}
+  //       {/* </ApiProvider> */}
+  //     </Provider>
+  //   </ClerkProvider>
+  // )
 }
 
 function HelloElectron() {
-  const { data } = trpcReact.greeting.useQuery({ name: 'Electron' })
-  trpcReact.subscription.useSubscription(undefined, {
-    onData: (data) => {
-      console.log(data)
-    },
-  })
-
-  if (!data) {
-    return null
-  }
-
-  return <div>{data.text}</div>
+  const { data, error } = api.app.all.useQuery()
+  // const { data: info, error: infoError } = api.system.info.useQuery()
+  // desktopApi.subscription.useSubscription(undefined, { // const { data } = desktopApi.greeting.useQuery({ name: 'Electron' })
+  //   onData: (data) => {
+  //     console.log(data)
+  //   },
+  // })
+  // console.log(info, infoError)
+  console.log(data, error)
+  // if (!data) {
+  //   return null
+  // }
+  // return <SignIn />
+  return (
+    <div className='center'>
+      <SignIn />
+    </div>
+  ) // <div>test test</div>
 }
 
-ReactDom.render(<App />, document.getElementById('react-root'))
+const root = createRoot(document.getElementById('react-root') as HTMLElement)
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
