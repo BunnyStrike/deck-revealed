@@ -9,10 +9,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   return (
     <div className='card glass w-96 bg-black'>
       <figure>
-        <img
-          src='/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg'
-          alt='car!'
-        />
+        <img src='public/img/steam-pill.jpg' alt='car!' />
       </figure>
       <div className='card-body'>
         <h2 className='card-title'>{item.name}</h2>
