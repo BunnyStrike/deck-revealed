@@ -23,9 +23,14 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
     <div className='flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
       <div className='flex h-16 shrink-0 items-center'>
         <img
-          className='h-8 w-auto'
-          src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-          alt='Your Company'
+          className='hidden h-auto pt-4 sm:block'
+          src='/img/full-logo.png'
+          alt='Revealed Logo'
+        />
+        <img
+          className='block h-8 w-auto sm:hidden'
+          src='/img/logo.png'
+          alt='Revealed Logo'
         />
       </div>
       <nav className='flex flex-1 flex-col'>
@@ -40,7 +45,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                       item.current
                         ? 'bg-gray-50 text-indigo-600'
                         : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
+                      'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
                     )}
                   >
                     <item.icon
@@ -52,7 +57,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                       )}
                       aria-hidden='true'
                     />
-                    {item.name}
+                    <span className='hidden sm:inline'>{item.name}</span>
                   </a>
                 </li>
               ))}
@@ -109,7 +114,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
               href='#'
               className='flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50'
             >
-              <span aria-hidden='true'>Version: 2.0.0</span>
+              <span aria-hidden='true'>2.0.0</span>
             </a>
           </li>
         </ul>
