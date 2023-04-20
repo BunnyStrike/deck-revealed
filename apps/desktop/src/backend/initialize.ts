@@ -14,7 +14,7 @@ import { createWriteStream, existsSync, mkdirSync } from 'graceful-fs'
 import i18next from 'i18next'
 import Backend from 'i18next-fs-backend'
 
-import { GlobalConfig } from './config'
+import { GlobalConfig } from './configs/config'
 import {
   configStore,
   createNecessaryFolders,
@@ -29,6 +29,7 @@ import {
   supportedLanguages,
   userHome,
 } from './constants'
+import { initImagesCache } from './imagesCache'
 import { LogPrefix, logInfo, logWarning } from './logger/logger'
 import { initTrayIcon } from './tray-icon/trayIcon'
 import { detectVCRedist } from './utils/detectVCRedist'
@@ -63,13 +64,13 @@ export const processZoomForScreen = (zoomFactor: number) => {
 }
 
 const init = async () => {
-  // GlobalConfig.get()
+  GlobalConfig.get()
   createNecessaryFolders()
   configStore.set('userHome', userHome)
 }
 
 export async function initializeWindow(): Promise<BrowserWindow> {
-  // await init()
+  await init()
   const mainWindow = createMainWindow()
 
   // if ((isSteamDeckGameMode || isCLIFullscreen) && !isCLINoGui) {
@@ -189,7 +190,7 @@ export const initializeApp = () => {
       logInfo(`\n\n${systemInfo}\n`, LogPrefix.Backend)
     )
 
-    // initImagesCache()
+    initImagesCache()
 
     // logInfo(
     //   ['Legendary location:', join(...Object.values(getLegendaryBin()))],
@@ -281,32 +282,4 @@ export const initializeApp = () => {
 
     return
   })
-}
-
-export const initImagesCache = () => {
-  // make sure we have a folder to store the cache
-  if (!existsSync(imagesCachePath)) {
-    mkdirSync(imagesCachePath)
-  }
-
-  // use a fake protocol for images we want to cache
-  protocol.registerFileProtocol('imagecache', (request, callback) => {
-    callback({ path: getImageFromCache(request.url) })
-  })
-}
-
-const getImageFromCache = (url: string) => {
-  const realUrl = url.replace('imagecache://', '')
-  // digest of the image url for the file name
-  const digest = createHash('sha256').update(realUrl).digest('hex')
-  const cachePath = join(imagesCachePath, digest)
-
-  if (!existsSync(cachePath) && realUrl.startsWith('http')) {
-    // if not found, download in the background
-    axios
-      .get(realUrl, { responseType: 'stream' })
-      .then((response) => response.data.pipe(createWriteStream(cachePath)))
-  }
-
-  return join(cachePath)
 }

@@ -6,7 +6,7 @@ import { useDebounce } from '../hooks/useDebounce'
 import { listFilterAtom } from '../states'
 import { api } from '../utils/api'
 
-export const AppsScreen = () => {
+export const GamesScreen = () => {
   const [listFilter] = useAtom(listFilterAtom)
   const debouncedFilter = useDebounce(listFilter.name, 500)
   const { data = [], error } = api.app.all.useQuery({

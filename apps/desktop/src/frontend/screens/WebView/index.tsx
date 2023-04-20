@@ -64,6 +64,7 @@ export default function WebView() {
     '/loginweb/legendary': epicLoginUrl,
     '/loginweb/gog': gogLoginUrl,
   }
+  // @ts-expect-error
   let startUrl = urls[pathname]
 
   if (pathname.match(/store-page/)) {

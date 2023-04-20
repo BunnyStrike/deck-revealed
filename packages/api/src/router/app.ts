@@ -3,11 +3,17 @@ import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 export const appRouter = createTRPCRouter({
-  all: publicProcedure.query(({ ctx }) => {
-    // TODO: get only apps that don't have userId and userId that matches current user
-    // TODO: filter list based on categories
-    return ctx.prisma.app.findMany({ orderBy: { createdAt: 'desc' } })
-  }),
+  all: publicProcedure
+    .input(z.object({ search: z.string().optional() }).optional())
+    .query(({ ctx, input }) => {
+      // TODO: get only apps that don't have userId and userId that matches current user
+      // TODO: filter list based on categories
+      return ctx.prisma.app.findMany({
+        // @ts-expect-error
+        where: { name: { search: input.search } },
+        orderBy: { createdAt: 'desc' },
+      })
+    }),
   apps: publicProcedure.query(({ ctx }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories

@@ -29,10 +29,10 @@ import {
   revealedInstallPath,
   revealedToolsPath,
   userHome,
-} from './constants'
+} from '../constants'
 // import { LegendaryUser } from './legendary/user'
-import { LogPrefix, logError, logInfo } from './logger/logger'
-import { execAsync } from './utils/execAsync'
+import { LogPrefix, logError, logInfo } from '../logger/logger'
+import { execAsync } from '../utils/execAsync'
 
 /**
  * This class does config handling.
@@ -592,7 +592,7 @@ class GlobalConfigV0 extends GlobalConfig {
     const userName = user().username
     const defaultWine = isWindows ? {} : this.getDefaultWine()
 
-    // @ts-expect-error TODO: We need to settle on *one* place to define settings defaults
+    // @ts-expect-error
     return {
       checkUpdatesInterval: 10,
       enableUpdates: false,

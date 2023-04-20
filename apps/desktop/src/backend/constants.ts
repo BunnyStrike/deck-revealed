@@ -7,8 +7,8 @@ import { app } from 'electron'
 import { existsSync, mkdirSync, readFileSync } from 'graceful-fs'
 
 import type { GameConfigVersion, GlobalConfigVersion } from '~/common/types'
-import { GlobalConfig } from './config'
-import { TypeCheckedStoreBackend } from './electron_store'
+import { GlobalConfig } from './configs/config'
+import { TypeCheckedStoreBackend } from './electronStore'
 import { createNewLogFileAndClearOldOnes } from './logger/logfile'
 import { LogPrefix, logDebug } from './logger/logger'
 
