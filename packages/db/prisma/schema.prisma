@@ -3,6 +3,7 @@
 
 generator client {
     provider = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -253,6 +254,9 @@ model App {
     userActions   UserActionApp[]
     versions AppVersion[]
     userPlatforms   UserAppPlatform[]
+
+    @@fulltext([name])
+
 }
 
 enum BootVideoType {
@@ -274,6 +278,8 @@ model BootVideo {
     isSuspendVideo Boolean @default(false)
     user    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String?
+
+      @@fulltext([name])
 }
 
 // model Post {
@@ -308,4 +314,7 @@ model Game {
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
     media GameMedia[]
+
+      @@fulltext([name])
+      @@fulltext([description])
 }

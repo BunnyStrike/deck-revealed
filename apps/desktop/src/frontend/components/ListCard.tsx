@@ -7,7 +7,7 @@ interface RevealedListCardProps {
 }
 export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   return (
-    <div className='card glass w-96 bg-black'>
+    <div className='card glass'>
       <figure>
         <img src='public/img/steam-pill.jpg' alt='car!' />
       </figure>
