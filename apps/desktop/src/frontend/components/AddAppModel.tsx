@@ -57,7 +57,7 @@ export const AddAppModal = ({
   const isAppOwner = app?.ownerId === user?.id
 
   useEffect(() => {
-    handleSearchSteamgridImage(debouncedName)
+    void handleSearchSteamgridImage(debouncedName)
   }, [debouncedName])
 
   const handleCancel = () => {
@@ -69,15 +69,17 @@ export const AddAppModal = ({
     preventDefault: () => void
   }) => {
     event.preventDefault()
-    if (!isAppOwner) return
+    // if (!isAppOwner) return
     const data = Object.fromEntries(new FormData(event.currentTarget))
+
+    console.log(data?.description ?? app?.description ?? '')
 
     const appUpdate = await mutateAsync({
       name: data?.name ?? app?.name ?? '',
       url: data?.url ?? app?.url ?? '',
       description: data?.description ?? app?.description ?? '',
       userId: isAdmin ? undefined : user?.id,
-      coverUrl: data?.name ?? steamGridImage,
+      coverUrl: app?.coverUrl ?? steamGridImage,
     } as AppUpsertInput)
 
     // upload image if it exists
@@ -265,7 +267,7 @@ export const AddAppModal = ({
                 </Form.Control>
               </Form.Field>
 
-              <Form.Field className='mb-[10px] grid' name='description'>
+              <Form.Field className='mb-[10px] grid' name='coverUrl'>
                 <div className='flex items-baseline justify-between'>
                   <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
                     Cover Image

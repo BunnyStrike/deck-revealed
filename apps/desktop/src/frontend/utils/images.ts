@@ -1,4 +1,6 @@
-export async function searchSteamgridImage(title: string) {
+export async function searchSteamgridImage(
+  title: string
+): Promise<string | undefined | null> {
   const res = await fetch(
     `https://steamgrid.usebottles.com/api/search/${title}`
   )
