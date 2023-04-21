@@ -21,7 +21,8 @@ export const api = createTRPCReact<AppRouter & DesktopAppRouter>()
 type RouterInput = inferRouterInputs<AppRouter>
 type RouterOutput = inferRouterOutputs<AppRouter>
 
-export type AppListInput = RouterInput['app']
+export type AppListInput = RouterInput['app']['all']
+export type AppUpsertInput = RouterInput['app']['upsert']
 export type AppListOutput = RouterOutput['app']['all']
 
 export type GameListInput = RouterInput['game']['all']

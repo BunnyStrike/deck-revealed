@@ -2,22 +2,23 @@ import { z } from 'zod'
 
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
+const appInput = z
+  .object({
+    search: z.string().optional(),
+    category: z.string().optional(),
+    isFavorited: z.boolean().optional(),
+    sort: z
+      .string()
+      .includes('desc')
+      .or(z.string().includes('asc'))
+      .default('desc'),
+    ownerId: z.string().optional(),
+  })
+  .default({ search: undefined, sort: 'desc' })
+
 export const gameRouter = createTRPCRouter({
-  all: publicProcedure.query(({ ctx }) => {
+  all: publicProcedure.input(appInput).query(({ ctx }) => {
     return ctx.prisma.game.findMany({ orderBy: { createdAt: 'desc' } })
-  }),
-  apps: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.game.findMany({
-      // where: { versions: { none: { platform: 'STEAMOS' } } },
-      orderBy: { createdAt: 'desc' },
-    })
-  }),
-  steamos: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.game.findMany({
-      // where: { versions: { some: { platform: 'STEAMOS' } } },
-      orderBy: { createdAt: 'desc' },
-      // include: { versions: true },
-    })
   }),
   byId: publicProcedure
     .input(z.object({ id: z.string() }))

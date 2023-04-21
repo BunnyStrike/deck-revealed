@@ -33,7 +33,7 @@ export default function RevealedSearchBar() {
   return (
     <div className='sticky top-0 z-40'>
       <div className='mt-2 flex h-12 rounded-md shadow-sm'>
-        <div className='bg-secondary text-secondary-content flex w-10 items-center justify-center rounded-l-md'>
+        <div className='bg-secondary text-secondary-content  flex items-center justify-center rounded-l-md px-4'>
           {listFilter.listCounter}
         </div>
         <div className='relative flex flex-grow items-stretch focus-within:z-10'>
@@ -56,7 +56,10 @@ export default function RevealedSearchBar() {
 
         <div className='flex-none rounded-r-md bg-white'>
           <ul className='menu menu-horizontal '>
-            <div className='text-secondary w-38'>
+            {/* <li className='text-secondary border-r-2'>
+              <a onClick={handleSort}>Add</a>
+            </li> */}
+            <div className='text-secondary w-38 border-r-2'>
               <select
                 className='select w-full max-w-xs'
                 onChange={(e) => handleCategory(e.target.value)}
@@ -69,7 +72,7 @@ export default function RevealedSearchBar() {
                 ))}
               </select>
             </div>
-            <li className='text-secondary'>
+            <li className='text-secondary gb-secondary-content'>
               <a onClick={handleSort}>
                 {listFilter.sort === 'desc' ? (
                   <BarsArrowDownIcon
