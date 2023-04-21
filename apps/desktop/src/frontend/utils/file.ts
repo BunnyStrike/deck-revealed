@@ -2,9 +2,13 @@ import { PutObjectCommand, S3 } from '@aws-sdk/client-s3'
 
 import { getEnvVar } from './envVar'
 
+console.log(
+  "getEnvVar('VITE_SPACES_ACCESS_KEY_ID')",
+  getEnvVar('VITE_SPACES_ACCESS_KEY_ID')
+)
 export const s3Client = new S3({
   forcePathStyle: false, // Configures to use subdomain/virtual calling format.
-  endpoint: 'https://nyc3.digitaloceanspaces.com',
+  endpoint: 'https://sfo3.digitaloceanspaces.com',
   region: 'us-east-1',
   credentials: {
     accessKeyId: getEnvVar('VITE_SPACES_ACCESS_KEY_ID'),

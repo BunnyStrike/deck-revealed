@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const appInput = z
+const appFilterInput = z
   .object({
     search: z.string().optional(),
     category: z.string().optional(),
@@ -101,8 +101,23 @@ const versionInput = z.object({
     .default('UNKNOWN'),
 })
 
+const appInput = {
+  name: z.string().min(1),
+  url: z.string().min(1),
+  description: z.string().optional(),
+  authorName: z.string().optional(),
+  coverUrl: z.string().optional(),
+  authorUrl: z.string().optional(),
+  publisherName: z.string().optional(),
+  publisherUrl: z.string().optional(),
+  category: z.string().default('Entertainment'),
+  ownerId: z.string().optional(),
+  // media: z.array(mediaInput).optional(),
+  // versions: z.array(versionInput).optional(),
+}
+
 export const appRouter = createTRPCRouter({
-  all: publicProcedure.input(appInput).query(({ ctx, input }) => {
+  all: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories\
     const where = {
@@ -122,7 +137,7 @@ export const appRouter = createTRPCRouter({
       orderBy: { createdAt: input.sort },
     })
   }),
-  apps: publicProcedure.input(appInput).query(({ ctx, input }) => {
+  apps: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories
     return ctx.prisma.app.findMany({
@@ -144,7 +159,7 @@ export const appRouter = createTRPCRouter({
       },
     })
   }),
-  steamos: publicProcedure.input(appInput).query(({ ctx, input }) => {
+  steamos: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories
     return ctx.prisma.app.findMany({
@@ -168,31 +183,24 @@ export const appRouter = createTRPCRouter({
   create: publicProcedure
     .input(
       z.object({
-        name: z.string().min(1),
-        description: z.string().min(1),
+        ...appInput,
       })
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.app.create({ data: input })
     }),
-  upsert: publicProcedure
+  update: publicProcedure
     .input(
       z.object({
+        ...appInput,
         id: z.string().optional(),
-        name: z.string().min(1),
-        url: z.string().min(1),
-        description: z.string().optional(),
-        authorName: z.string().optional(),
-        coverUrl: z.string().optional(),
-        authorUrl: z.string().optional(),
-        publisherName: z.string().optional(),
-        publisherUrl: z.string().optional(),
-        category: z.string().default('Entertainment'),
-        ownerId: z.string().optional(),
-        media: z.array(mediaInput).optional(),
-        versions: z.array(versionInput).optional(),
       })
     )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.app.update({ where: { id: input.id }, data: input })
+    }),
+  upsert: publicProcedure
+    .input(z.object({ ...appInput, id: z.string().optional() }))
     .mutation(({ ctx, input }) => {
       const {
         name,
@@ -205,11 +213,13 @@ export const appRouter = createTRPCRouter({
         publisherUrl,
         category,
         ownerId,
-        versions,
-        media,
+        id = undefined,
+        // versions,
+        // media,
       } = input
+      console.log(id)
       return ctx.prisma.app.upsert({
-        where: { id: input.id },
+        where: { id },
         update: {
           name,
           url,
@@ -219,7 +229,7 @@ export const appRouter = createTRPCRouter({
           authorUrl,
           publisherName,
           publisherUrl,
-          category,
+          // category,
         },
         create: {
           name,
@@ -230,21 +240,21 @@ export const appRouter = createTRPCRouter({
           coverUrl,
           publisherName,
           publisherUrl,
-          category,
+          // category,
           ownerId,
-          type: 'PUBLISHED',
-          versions: {
-            createMany: {
-              // @ts-expect-error
-              data: versions ?? [],
-            },
-          },
-          appMedia: {
-            createMany: {
-              // @ts-expect-error
-              data: media ?? [],
-            },
-          },
+          // type: 'PUBLISHED',
+          // versions: {
+          //   createMany: {
+          //     // @ts-expect-error
+          //     data: versions ?? [],
+          //   },
+          // },
+          // appMedia: {
+          //   createMany: {
+          //     // @ts-expect-error
+          //     data: media ?? [],
+          //   },
+          // },
         },
       })
     }),

@@ -245,10 +245,10 @@ model App {
     createdAt DateTime @default(now())
     owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
     ownerId  String?
-    type    AppStatus @default(DRAFT)
+    type    AppStatus? @default(DRAFT)
     typeAt DateTime @default(now())
-    category String @default("Entertainment")
-    subCategory String @default("Other")
+    category String? @default("Entertainment")
+    subCategory String? @default("Other")
     // platforms Platform[] @default([])
     appMedia AppMedia[]
     userActions   UserActionApp[]

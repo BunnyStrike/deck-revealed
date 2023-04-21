@@ -30,7 +30,7 @@ export const AddAppModal = ({
 }: AddAppModalProps) => {
   const { user } = useUser()
 
-  const { mutateAsync, error, isLoading } = api.app.upsert.useMutation()
+  const { mutateAsync, error, isLoading } = api.app.create.useMutation()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -82,10 +82,12 @@ export const AddAppModal = ({
       coverUrl: app?.coverUrl ?? steamGridImage,
     } as AppUpsertInput)
 
+    console.log(appUpdate)
+
     // upload image if it exists
     if (selectedCoverFile && appUpdate?.id) {
       const uploadedFile = await uploadFile(selectedCoverFile)
-
+      console.log(uploadedFile)
       // appUpdate
 
       // await mutateAsync({
