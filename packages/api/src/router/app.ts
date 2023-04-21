@@ -183,6 +183,7 @@ export const appRouter = createTRPCRouter({
         url: z.string().min(1),
         description: z.string().optional(),
         authorName: z.string().optional(),
+        coverUrl: z.string().optional(),
         authorUrl: z.string().optional(),
         publisherName: z.string().optional(),
         publisherUrl: z.string().optional(),
@@ -199,6 +200,7 @@ export const appRouter = createTRPCRouter({
         description,
         authorName,
         authorUrl,
+        coverUrl,
         publisherName,
         publisherUrl,
         category,
@@ -213,6 +215,7 @@ export const appRouter = createTRPCRouter({
           url,
           description,
           authorName,
+          coverUrl,
           authorUrl,
           publisherName,
           publisherUrl,
@@ -224,6 +227,7 @@ export const appRouter = createTRPCRouter({
           description,
           authorName,
           authorUrl,
+          coverUrl,
           publisherName,
           publisherUrl,
           category,
@@ -244,6 +248,8 @@ export const appRouter = createTRPCRouter({
         },
       })
     }),
+  // TODO: ability to add versions
+  // TODO: ability to add media
   recent: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
     const userId = ctx.session?.user.id
     if (!userId) {

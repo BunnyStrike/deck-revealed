@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useUser } from '@clerk/clerk-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Form from '@radix-ui/react-form'
 import { Cross2Icon } from '@radix-ui/react-icons'
 
+import { useDebounce } from '../hooks/useDebounce'
+import { searchSteamgridImage } from '../utils'
 import {
   api,
   type AppListInput,
@@ -27,22 +29,41 @@ export const AddAppModal = ({
   actionButton,
 }: AddAppModalProps) => {
   const { user } = useUser()
+
   const { mutateAsync, error, isLoading } = api.app.upsert.useMutation()
+
   const [isOpen, setIsOpen] = useState(false)
+
   const [category, setCategory] = useState(app?.category ?? 'Entertainment')
+
+  const [name, setName] = useState(app?.name)
+  const debouncedName = useDebounce(name, 500)
+
   const [selectedCoverFile, setSelectedCoverFile] = useState<
     File | undefined | null
   >()
-  const [selectedCoverPreview, setSelectedCoverPreview] = useState<string>(
-    'public/img/steam-pill.jpg'
-  )
+
+  const [selectedCoverPreview, setSelectedCoverPreview] = useState<
+    string | undefined
+  >()
+
+  const [steamGridImage, setSteamGridImage] = useState<
+    string | undefined | null
+  >()
+
   const isAdmin =
     user?.primaryEmailAddress?.emailAddress?.includes('@bunnystrike.com') ===
     true
   const isAppOwner = app?.ownerId === user?.id
+
+  useEffect(() => {
+    handleSearchSteamgridImage(debouncedName)
+  }, [debouncedName])
+
   const handleCancel = () => {
     setIsOpen(false)
   }
+
   const handleSave = async (event: {
     currentTarget: HTMLFormElement | undefined
     preventDefault: () => void
@@ -51,16 +72,25 @@ export const AddAppModal = ({
     if (!isAppOwner) return
     const data = Object.fromEntries(new FormData(event.currentTarget))
 
-    await mutateAsync({
+    const appUpdate = await mutateAsync({
       name: data?.name ?? app?.name ?? '',
       url: data?.url ?? app?.url ?? '',
       description: data?.description ?? app?.description ?? '',
       userId: isAdmin ? undefined : user?.id,
+      coverUrl: data?.name ?? steamGridImage,
     } as AppUpsertInput)
 
     // upload image if it exists
+    if (selectedCoverFile && appUpdate?.id) {
+      const uploadedFile = await uploadFile(selectedCoverFile)
 
-    const uploadedFile = await uploadFile(selectedCoverFile)
+      // appUpdate
+
+      // await mutateAsync({
+      //   id: appUpdate?.id,
+      //   coverUrl: data?.name ?? steamGridImage,
+      // } as AppUpsertInput)
+    }
 
     setIsOpen(false)
 
@@ -76,7 +106,18 @@ export const AddAppModal = ({
     // prevent default form submission
   }
 
-  const handleImageSelect = (file: File) => {
+  const handleSearchSteamgridImage = async (name?: string) => {
+    if (!name || !!selectedCoverPreview) return
+
+    try {
+      setSteamGridImage(await searchSteamgridImage(name))
+    } catch (error) {
+      console.error('Error when getting image from SteamGridDB')
+    }
+  }
+
+  const handleImageSelect = (file?: File) => {
+    if (!file) return
     setSelectedCoverFile(file)
     setSelectedCoverPreview(URL.createObjectURL(file))
   }
@@ -100,7 +141,14 @@ export const AddAppModal = ({
             <Dialog.Title className='text-mauve12 m-2 text-[17px] font-medium'>
               {`${type} App`}
             </Dialog.Title>
-            <img src={selectedCoverPreview} alt='car!' />
+            <img
+              src={
+                selectedCoverPreview ??
+                steamGridImage ??
+                'public/img/steam-pill.jpg'
+              }
+              alt='car!'
+            />
             <h4>Name</h4>
           </div>
           <div className='h-full  w-full'>
@@ -129,6 +177,7 @@ export const AddAppModal = ({
                     placeholder='Name'
                     className='input w-full max-w-xs'
                     defaultValue={app?.name}
+                    onChange={(e) => setName(e.target.value)}
                     required
                   />
                 </Form.Control>
@@ -226,7 +275,11 @@ export const AddAppModal = ({
                   <input
                     type='file'
                     className='file-input w-full max-w-xs'
-                    onChange={(e) => handleImageSelect(e.target.files[0])}
+                    onChange={(e) => {
+                      if (e.target.files?.length) {
+                        handleImageSelect(e.target.files[0])
+                      }
+                    }}
                   />
                 </Form.Control>
               </Form.Field>
