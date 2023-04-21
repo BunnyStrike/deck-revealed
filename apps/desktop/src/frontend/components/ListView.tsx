@@ -6,6 +6,7 @@ import { type AppListOutput, type GameListOutput } from '../utils/api'
 import AddAppModal from './AddAppModel'
 import AddGameModal from './AddGameModel'
 import DialogModal from './Dialog'
+import EmptyState from './EmptyState'
 import { RevealedListCard } from './ListCard'
 import RevealedSearchBar from './SearchBar'
 
@@ -22,10 +23,6 @@ export const RevealedListView = ({
 }: RevealedListViewProps) => {
   const [listFilter] = useAtom(listFilterAtom)
 
-  if (!isLoading && !list.length) {
-    return <div className='bg-neutral'>Empty</div>
-  }
-
   return (
     <div className='bg-neutral'>
       <RevealedSearchBar />
@@ -41,6 +38,19 @@ export const RevealedListView = ({
             {/* <h3>Loading</h3> */}
             <progress className='progress progress-primary	 w-full'></progress>
           </div>
+        )}
+        {!isLoading && !list.length && listFilter.add === 'app' && (
+          <AddAppModal
+            actionButton={<EmptyState message={`Add a new app`} />}
+          />
+        )}
+        {!isLoading && !list.length && listFilter.add === 'game' && (
+          <AddGameModal
+            actionButton={<EmptyState message={`Add a new game`} />}
+          />
+        )}
+        {!isLoading && !list.length && listFilter.add === 'both' && (
+          <EmptyState message={`Empty`} />
         )}
         <div className='xs:grid-cols-2  mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-4 2xl:grid-cols-8'>
           {list.map((item) => (
