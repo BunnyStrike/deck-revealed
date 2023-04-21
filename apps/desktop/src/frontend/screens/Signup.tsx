@@ -1,8 +1,6 @@
 import React from 'react'
 import { SignIn } from '@clerk/clerk-react'
 
-import { RevealedContextMenu } from '@revealed/ui'
-
 import { api } from '../utils/api'
 
 export function RevealedSignupScreen() {
@@ -19,7 +17,6 @@ export function RevealedSignupScreen() {
 
   return (
     <div className='flex h-screen items-center justify-center '>
-      <RevealedContextMenu />
       <SignIn />
     </div>
   )

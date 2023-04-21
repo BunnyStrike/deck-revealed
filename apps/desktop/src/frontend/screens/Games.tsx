@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAtom } from 'jotai'
 
 import { RevealedListView } from '../components/ListView'
@@ -7,11 +7,15 @@ import { listFilterAtom } from '../states'
 import { api } from '../utils/api'
 
 export const GamesScreen = () => {
-  const [listFilter] = useAtom(listFilterAtom)
+  const [listFilter, setListFilter] = useAtom(listFilterAtom)
   const debouncedFilter = useDebounce(listFilter.name, 500)
   const { data = [], error } = api.app.all.useQuery({
     search: debouncedFilter,
   })
+
+  useEffect(() => {
+    setListFilter((prev) => ({ ...prev, listCounter: data.length ?? 0 }))
+  }, [data.length, setListFilter])
 
   if (error) return <div>{error.message}</div>
 

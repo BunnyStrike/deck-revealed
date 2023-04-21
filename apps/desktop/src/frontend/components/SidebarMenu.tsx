@@ -1,11 +1,14 @@
 import React from 'react'
+import { useUser } from '@clerk/clerk-react'
+import { Link, useLocation } from 'react-router-dom'
 
 import { classNames } from '../utils'
 
 export interface SidebarMenuProps {
   navigation: {
     name: string
-    href: string
+    link: string
+    showWhenLoggedIn?: boolean
     icon:
       | React.FC<React.SVGProps<SVGSVGElement>>
       | React.ForwardRefExoticComponent<
@@ -14,13 +17,15 @@ export interface SidebarMenuProps {
             titleId?: string | undefined
           } & React.RefAttributes<SVGSVGElement>
         >
-    current: boolean
   }[]
 }
 
 export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
+  const location = useLocation()
+  const { user } = useUser()
+
   return (
-    <div className='flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
+    <div className='bg-neutral flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-800 px-6'>
       <div className='flex h-16 shrink-0 items-center'>
         <img
           className='hidden h-auto pt-4 sm:block'
@@ -37,30 +42,31 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
         <ul role='list' className='flex flex-1 flex-col gap-y-7'>
           <li>
             <ul role='list' className='-mx-2 space-y-1'>
-              {navigation.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? 'bg-gray-50 text-indigo-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                      'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
-                    )}
-                  >
-                    <item.icon
+              {navigation
+                .filter(
+                  (item) =>
+                    item?.showWhenLoggedIn === undefined ||
+                    (item?.showWhenLoggedIn === false && !user)
+                )
+                .map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      to={item.link}
                       className={classNames(
-                        item.current
-                          ? 'text-indigo-600'
-                          : 'text-gray-400 group-hover:text-indigo-600',
-                        'h-6 w-6 shrink-0'
+                        item.link === location.pathname
+                          ? 'bg-primary-focus text-white'
+                          : 'hover:bg-primary text-white hover:text-white',
+                        'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
                       )}
-                      aria-hidden='true'
-                    />
-                    <span className='hidden sm:inline'>{item.name}</span>
-                  </a>
-                </li>
-              ))}
+                    >
+                      <item.icon
+                        className={'h-6 w-6 shrink-0'}
+                        aria-hidden='true'
+                      />
+                      <span className='hidden sm:inline'>{item.name}</span>
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </li>
           {/* <li>
@@ -109,11 +115,8 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
               <span aria-hidden='true'>Tom Cook</span>
             </a>
           </li> */}
-          <li className='-mx-6 mt-auto'>
-            <a
-              href='#'
-              className='flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50'
-            >
+          <li className='-mx-6 mt-auto '>
+            <a className='flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'>
               <span aria-hidden='true'>2.0.0</span>
             </a>
           </li>

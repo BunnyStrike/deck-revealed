@@ -13,7 +13,12 @@ import {
 import { RevealedOfflineMessage } from './components'
 import RevealedApplicationShell from './components/ApplicationShell'
 import { AppsScreen } from './screens/Apps'
+import { GamesScreen } from './screens/Games'
+import { HomeScreen } from './screens/Home'
+import { SettingsScreen } from './screens/Settings'
 import { RevealedSignupScreen } from './screens/Signup'
+import { SteamDeckScreen } from './screens/SteamDeck'
+import { StoresScreen } from './screens/Stores'
 import WebView from './screens/WebView'
 import { ApiProvider, api } from './utils/api'
 import { getEnvVar } from './utils/envVar'
@@ -47,7 +52,7 @@ function AppMain() {
     <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
       <Provider>
         <ApiProvider>
-          <div id='app' className='App'>
+          <div id='app' className='bg-neutral  h-full w-full'>
             {/* <HashRouter> */}
             <RevealedOfflineMessage />
             <RevealedApplicationShell>
@@ -60,10 +65,15 @@ function AppMain() {
           )} */}
               {/* <ExternalLinkDialog /> */}
               <Routes>
-                <Route path='/' element={<Navigate replace to='/apps' />} />
+                {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
+                <Route path='/' element={<HomeScreen />} />
                 <Route path='/apps' element={<AppsScreen />} />
+                <Route path='/games' element={<GamesScreen />} />
+                <Route path='/steam-deck' element={<SteamDeckScreen />} />
+                <Route path='/stores' element={<StoresScreen />} />
+                <Route path='/settings' element={<SettingsScreen />} />
 
-                <Route path='loginui'>
+                <Route path='login'>
                   <Route path='revealed' element={<RevealedSignupScreen />} />
                 </Route>
 

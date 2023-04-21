@@ -6,7 +6,11 @@ import {
   DotFilledIcon,
 } from '@radix-ui/react-icons'
 
-const RevealedContextMenu = () => {
+interface AppContextMenuProps {
+  children: React.ReactNode
+}
+
+export const AppContextMenu = ({ children }: AppContextMenuProps) => {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [urlsChecked, setUrlsChecked] = React.useState(false)
   const [person, setPerson] = React.useState('pedro')
@@ -133,4 +137,4 @@ const RevealedContextMenu = () => {
   )
 }
 
-export default RevealedContextMenu
+export default AppContextMenu

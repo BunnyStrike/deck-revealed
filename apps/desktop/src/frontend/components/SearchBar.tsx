@@ -1,21 +1,40 @@
 import React from 'react'
-import { BarsArrowUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import {
+  BarsArrowDownIcon,
+  BarsArrowUpIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/20/solid'
 import { useAtom } from 'jotai'
 
 import { listFilterAtom } from '../states'
+import { appCategories } from '../utils/app'
 
 export default function RevealedSearchBar() {
-  const [value, setValue] = useAtom(listFilterAtom)
+  const [listFilter, setListFilter] = useAtom(listFilterAtom)
 
   const handleSearch = (search: string) => {
-    setValue(() => ({ ...value, name: search }))
+    setListFilter(() => ({
+      ...listFilter,
+      name: search ? `${search}` : undefined,
+    }))
+  }
+
+  const handleCategory = (category: string) => {
+    setListFilter(() => ({ ...listFilter, category: category }))
+  }
+
+  const handleSort = () => {
+    setListFilter(() => ({
+      ...listFilter,
+      sort: listFilter.sort === 'asc' ? 'desc' : 'asc',
+    }))
   }
 
   return (
-    <div>
-      <div className='mt-2 flex rounded-md shadow-sm'>
-        <div className='flex w-10 items-center justify-center rounded-l-md bg-gray-900 text-white'>
-          2
+    <div className='sticky top-0 z-40'>
+      <div className='mt-2 flex h-12 rounded-md shadow-sm'>
+        <div className='bg-secondary text-secondary-content flex w-10 items-center justify-center rounded-l-md'>
+          {listFilter.listCounter}
         </div>
         <div className='relative flex flex-grow items-stretch focus-within:z-10'>
           <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
@@ -28,22 +47,45 @@ export default function RevealedSearchBar() {
             type='search'
             name='search'
             id='search'
-            className='block w-full rounded-none  border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-            placeholder='John Smith'
-            defaultValue={value.name}
+            className='focus:primary-focus primary bg-primary-content block w-full rounded-none border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset placeholder:text-black focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
+            placeholder='Search'
+            defaultValue={listFilter.name}
             onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
-        <button
-          type='button'
-          className='relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-        >
-          <BarsArrowUpIcon
-            className='-ml-0.5 h-5 w-5 text-gray-400'
-            aria-hidden='true'
-          />
-          Sort
-        </button>
+
+        <div className='flex-none rounded-r-md bg-white'>
+          <ul className='menu menu-horizontal '>
+            <div className='text-secondary w-38'>
+              <select
+                className='select w-full max-w-xs'
+                onChange={(e) => handleCategory(e.target.value)}
+              >
+                <option value='All'>All</option>
+                {appCategories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <li className='text-secondary'>
+              <a onClick={handleSort}>
+                {listFilter.sort === 'desc' ? (
+                  <BarsArrowDownIcon
+                    className='text-secondary -ml-0.5 h-5 w-5'
+                    aria-hidden='true'
+                  />
+                ) : (
+                  <BarsArrowUpIcon
+                    className='text-secondary -ml-0.5 h-5 w-5'
+                    aria-hidden='true'
+                  />
+                )}
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   )

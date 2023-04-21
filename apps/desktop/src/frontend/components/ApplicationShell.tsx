@@ -1,27 +1,35 @@
 import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
-  Bars3Icon,
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
+  AdjustmentsHorizontalIcon,
+  BuildingStorefrontIcon,
   FolderIcon,
   HomeIcon,
   UsersIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline'
-import classNames from 'classnames'
+import {
+  IconApps,
+  IconBrandSteam,
+  IconDeviceGamepad2,
+  IconLogin,
+} from '@tabler/icons-react'
 import { useLocation } from 'react-router-dom'
 
 import { SidebarMenu } from './SidebarMenu'
 
 const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
-  { name: 'Apps', href: '#', icon: UsersIcon, current: false },
-  { name: 'Games', href: '#', icon: FolderIcon, current: false },
-  { name: 'Steam Deck', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Stores', href: '#', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Settings', href: '#', icon: FolderIcon, current: false },
+  {
+    name: 'Login',
+    link: '/login/revealed',
+    icon: IconLogin,
+    showWhenLoggedIn: false,
+  },
+  { name: 'Home', link: '/', icon: HomeIcon },
+  { name: 'Apps', link: '/apps', icon: IconApps },
+  { name: 'Games', link: '/games', icon: IconDeviceGamepad2 },
+  { name: 'Steam Deck', link: '/steam-deck', icon: IconBrandSteam },
+  { name: 'Stores', link: '/stores', icon: BuildingStorefrontIcon },
+  { name: 'Settings', link: '/settings', icon: AdjustmentsHorizontalIcon },
 ]
 interface RevealedApplicationShellPros {
   children: React.ReactNode
@@ -30,12 +38,9 @@ interface RevealedApplicationShellPros {
 export default function RevealedApplicationShell({
   children,
 }: RevealedApplicationShellPros) {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const location = useLocation()
-
   return (
     <>
-      <div>
+      <div className='bg-neutral'>
         {/* Static sidebar for desktop */}
         <div className='fixed inset-y-0 flex w-20 flex-col sm:z-50 sm:w-60'>
           <SidebarMenu navigation={navigation} />

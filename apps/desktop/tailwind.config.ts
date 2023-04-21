@@ -43,6 +43,16 @@ export default {
       'night',
       'coffee',
       'winter',
+      {
+        revealed: {
+          ...require('daisyui/src/colors/themes')['[data-theme=dark]'],
+          primary: '#BA40D5',
+          secondary: '#663DBC',
+          accent: '#37cdbe',
+          neutral: '#000000',
+          'base-100': '#ffffff',
+        },
+      },
     ],
   },
   plugins: [
