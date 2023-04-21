@@ -108,11 +108,27 @@ export const appRouter = createTRPCRouter({
       },
     })
   }),
+  hide: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+    const userId = ctx.session?.user.id
+    if (!userId) {
+      throw new Error('Not logged in')
+    }
+
+    return ctx.prisma.userActionApp.upsert({
+      where: { userId_appId: { appId: input, userId } },
+      update: {
+        hideAt: new Date(),
+      },
+      create: {
+        appId: input,
+        userId,
+        hideAt: new Date(),
+      },
+    })
+  }),
   favorite: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
-      // TODO: only allow delete if user is admin
-      // TODO: only allow apps to delete if they are the owner
       const userId = ctx.session?.user.id
       if (!userId) {
         throw new Error('Not logged in')
