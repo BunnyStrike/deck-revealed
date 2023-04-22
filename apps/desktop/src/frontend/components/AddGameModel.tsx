@@ -1,5 +1,7 @@
 import React from 'react'
+import { useAtom } from 'jotai'
 
+import { modalsAtom } from '../states'
 import DialogModal from './Dialog'
 
 interface AddGameModalProps {
@@ -11,7 +13,11 @@ export const AddGameModal = ({
   type = 'Add',
   actionButton,
 }: AddGameModalProps) => {
-  const handleSave = () => {}
+  const [modals, setModals] = useAtom(modalsAtom)
+
+  const handleSave = () => {
+    setModals((prev) => ({ ...prev, showAddGame: true }))
+  }
 
   return (
     <DialogModal

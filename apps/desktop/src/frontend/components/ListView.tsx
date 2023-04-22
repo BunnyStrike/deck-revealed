@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAtom } from 'jotai'
 
-import { listFilterAtom } from '../states'
+import { listFilterAtom, modalsAtom } from '../states'
 import { type AppListOutput, type GameListOutput } from '../utils/api'
 import AddAppModal from './AddAppModel'
 import AddGameModal from './AddGameModel'
@@ -22,15 +22,26 @@ export const RevealedListView = ({
   list = [],
 }: RevealedListViewProps) => {
   const [listFilter] = useAtom(listFilterAtom)
+  const [modals, setModals] = useAtom(modalsAtom)
 
   return (
     <div className='bg-neutral'>
       <RevealedSearchBar />
       {(listFilter.add === 'app' || listFilter.add === 'both') && (
-        <AddAppModal />
+        <button
+          onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}
+          className='btn btn-primary mr-4 mt-4'
+        >
+          Add App
+        </button>
       )}
       {(listFilter.add === 'game' || listFilter.add === 'both') && (
-        <AddGameModal />
+        <button
+          onClick={() => setModals((prev) => ({ ...prev, showAddGame: true }))}
+          className='btn btn-primary mr-4 mt-4'
+        >
+          Add App
+        </button>
       )}
       <div className=''>
         {isLoading && (
@@ -40,13 +51,17 @@ export const RevealedListView = ({
           </div>
         )}
         {!isLoading && !list.length && listFilter.add === 'app' && (
-          <AddAppModal
-            actionButton={<EmptyState message={`Add a new app`} />}
+          <EmptyState
+            message={`Add a new app`}
+            onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}
           />
         )}
         {!isLoading && !list.length && listFilter.add === 'game' && (
-          <AddGameModal
-            actionButton={<EmptyState message={`Add a new game`} />}
+          <EmptyState
+            message={`Add a new game`}
+            onClick={() =>
+              setModals((prev) => ({ ...prev, showAddGame: true }))
+            }
           />
         )}
         {!isLoading && !list.length && listFilter.add === 'both' && (

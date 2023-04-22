@@ -3,8 +3,10 @@ import { useUser } from '@clerk/clerk-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Form from '@radix-ui/react-form'
 import { Cross2Icon } from '@radix-ui/react-icons'
+import { useAtom } from 'jotai'
 
 import { useDebounce } from '../hooks/useDebounce'
+import { modalsAtom } from '../states'
 import { searchSteamgridImage } from '../utils'
 import {
   api,
@@ -15,24 +17,24 @@ import {
 import { appCategories } from '../utils/app'
 import { uploadFile } from '../utils/file'
 import DialogModal from './Dialog'
+import EmptyState from './EmptyState'
 import { UploadButton } from './UploadButton'
 
 interface AddAppModalProps {
   type?: 'Add' | 'Edit'
   app?: AppListOutput[number]
-  actionButton?: React.ReactNode
+  isEmptyState?: boolean
 }
 
 export const AddAppModal = ({
   type = 'Add',
   app,
-  actionButton,
+  isEmptyState = false,
 }: AddAppModalProps) => {
   const { user } = useUser()
+  const [modals, setModals] = useAtom(modalsAtom)
 
   const { mutateAsync, error, isLoading } = api.app.create.useMutation()
-
-  const [isOpen, setIsOpen] = useState(false)
 
   const [category, setCategory] = useState(app?.category ?? 'Entertainment')
 
@@ -61,7 +63,7 @@ export const AddAppModal = ({
   }, [debouncedName])
 
   const handleCancel = () => {
-    setIsOpen(false)
+    setModals((prev) => ({ ...prev, showAddApp: false }))
   }
 
   const handleSave = async (event: {
@@ -96,7 +98,7 @@ export const AddAppModal = ({
       // } as AppUpsertInput)
     }
 
-    setIsOpen(false)
+    setModals((prev) => ({ ...prev, showAddApp: false }))
 
     // // Submit form data and catch errors in the response
     // submitForm(data)
@@ -127,11 +129,13 @@ export const AddAppModal = ({
   }
 
   return (
-    <Dialog.Root className='z-40' open={isOpen}>
+    <Dialog.Root className='z-40' open={modals.showAddApp}>
       <Dialog.Trigger asChild>
-        {actionButton || (
+        {isEmptyState ? (
+          <EmptyState key='test' message={`Add a new app`} />
+        ) : (
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}
             className='btn btn-primary mr-4 mt-4'
           >
             {type} App

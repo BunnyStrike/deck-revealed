@@ -11,6 +11,8 @@ import {
 } from 'react-router-dom'
 
 import { RevealedOfflineMessage } from './components'
+import AddAppModal from './components/AddAppModel'
+import AddGameModal from './components/AddGameModel'
 import RevealedApplicationShell from './components/ApplicationShell'
 import { AppsScreen } from './screens/Apps'
 import { GamesScreen } from './screens/Games'
@@ -122,6 +124,9 @@ function AppMain() {
             </RevealedApplicationShell>
             <div className='controller'>
               {/* <ControllerHints /> */}
+              <AddAppModal></AddAppModal>
+              <AddGameModal />
+
               <div className='simple-keyboard'></div>
             </div>
             {/* </HashRouter> */}
