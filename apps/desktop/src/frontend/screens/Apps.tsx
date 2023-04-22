@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useUser } from '@clerk/clerk-react'
 import { useAtom } from 'jotai'
 
 import { RevealedListView } from '../components/ListView'
@@ -7,6 +8,7 @@ import { listFilterAtom } from '../states'
 import { api } from '../utils/api'
 
 export const AppsScreen = () => {
+  const { user } = useUser()
   const [listFilter, setListFilter] = useAtom(listFilterAtom)
   const debouncedFilter = useDebounce(listFilter.name, 500)
   const {
@@ -17,6 +19,7 @@ export const AppsScreen = () => {
     search: debouncedFilter ? `${debouncedFilter}*` : undefined,
     category: listFilter.category === 'All' ? undefined : listFilter.category,
     sort: listFilter.sort,
+    userId: user?.id,
   })
 
   useEffect(() => {

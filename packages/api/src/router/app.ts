@@ -7,12 +7,14 @@ const appFilterInput = z
     search: z.string().optional(),
     category: z.string().optional(),
     isFavorited: z.boolean().optional(),
+    showHidden: z.boolean().optional(),
     sort: z
       .string()
       .includes('desc')
       .or(z.string().includes('asc'))
       .default('desc'),
     ownerId: z.string().optional(),
+    userId: z.string().optional(),
   })
   .default({ search: undefined, sort: 'desc' })
 
@@ -118,6 +120,7 @@ const appInput = {
 
 export const appRouter = createTRPCRouter({
   all: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
+    const { showHidden = false, isFavorited, userId } = input
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories\
     const where = {
@@ -126,9 +129,15 @@ export const appRouter = createTRPCRouter({
       ownerId: input.ownerId,
       userActions: {},
     }
-    if (input.isFavorited) {
+    if (userId) {
       where.userActions = {
-        some: { userId: input.ownerId, favoritedAt: { not: null } },
+        some: {
+          userId,
+        },
+        none: {
+          favoritedAt: isFavorited ? { not: null } : null,
+          hideAt: showHidden ? { not: null } : null,
+        },
       }
     }
     return ctx.prisma.app.findMany({
@@ -140,20 +149,38 @@ export const appRouter = createTRPCRouter({
   apps: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories
+    const { showHidden = false, isFavorited, userId } = input
+
+    const where = {
+      versions: { none: { platform: 'STEAMOS' } },
+      name: { search: input.search },
+      category: input.category,
+      ownerId: input.ownerId,
+      userActions: {},
+    }
+    if (userId) {
+      where.userActions = {
+        // some: {
+        //   userId,
+        //   favoritedAt: isFavorited ? { not: null } : null,
+        //   hideAt: showHidden ? { not: null } : null,
+        // },
+        // none: {
+        //   favoritedAt: isFavorited ? { not: null } : null,
+        //   hideAt: showHidden ? { not: null } : null,
+        // },
+      }
+    }
+
     return ctx.prisma.app.findMany({
-      where: {
-        versions: { none: { platform: 'STEAMOS' } },
-        category: input.category,
-        name: { search: input.search },
-        ownerId: input.ownerId,
-      },
+      where,
       // @ts-expect-error
       orderBy: { createdAt: input.sort },
       include: {
         versions: true,
         userActions: {
           where: {
-            userId: input.ownerId,
+            userId,
           },
         },
       },
@@ -260,79 +287,91 @@ export const appRouter = createTRPCRouter({
     }),
   // TODO: ability to add versions
   // TODO: ability to add media
-  recent: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-    const userId = ctx.session?.user.id
-    if (!userId) {
-      throw new Error('Not logged in')
-    }
-
-    return ctx.prisma.userActionApp.upsert({
-      where: { userId_appId: { appId: input, userId } },
-      update: {
-        recentAt: new Date(),
-      },
-      create: {
-        appId: input,
-        userId,
-        recentAt: new Date(),
-      },
-    })
-  }),
-  hide: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-    const userId = ctx.session?.user.id
-    if (!userId) {
-      throw new Error('Not logged in')
-    }
-
-    return ctx.prisma.userActionApp.upsert({
-      where: { userId_appId: { appId: input, userId } },
-      update: {
-        hideAt: new Date(),
-      },
-      create: {
-        appId: input,
-        userId,
-        hideAt: new Date(),
-      },
-    })
-  }),
-  favorite: publicProcedure
-    .input(z.string())
+  recent: publicProcedure
+    .input(z.object({ userId: z.string(), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session?.user.id
+      // const userId = ctx.session?.user.id
+      const { userId, id } = input
+
+      if (!userId) {
+        throw new Error('Not logged in')
+      }
+
+      return ctx.prisma.userActionApp.upsert({
+        where: { userId_appId: { appId: id, userId } },
+        update: {
+          recentAt: new Date(),
+        },
+        create: {
+          appId: id,
+          userId,
+          recentAt: new Date(),
+        },
+      })
+    }),
+  hide: publicProcedure
+    .input(z.object({ userId: z.string(), id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // const userId = ctx.session?.user.id
+      const { userId, id } = input
+
+      if (!userId) {
+        throw new Error('Not logged in')
+      }
+
+      return ctx.prisma.userActionApp.upsert({
+        where: { userId_appId: { appId: id, userId } },
+        update: {
+          hideAt: new Date(),
+        },
+        create: {
+          appId: id,
+          userId,
+          hideAt: new Date(),
+        },
+      })
+    }),
+  favorite: publicProcedure
+    .input(z.object({ userId: z.string(), id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // const userId = ctx.session?.user.id
+      const { userId, id } = input
       if (!userId) {
         throw new Error('Not logged in')
       }
 
       const userAppAction = await ctx.prisma.userActionApp.findFirst({
-        where: { appId: input, userId },
+        where: { appId: id, userId },
       })
 
       if (!!userAppAction?.favoritedAt) {
         return ctx.prisma.userActionApp.create({
           data: {
-            appId: input,
+            appId: id,
             userId,
             favoritedAt: new Date(),
           },
         })
       } else {
         return ctx.prisma.userActionApp.upsert({
-          where: { userId_appId: { appId: input, userId } },
+          where: { userId_appId: { appId: id, userId } },
           update: {
             favoritedAt: null,
           },
           create: {
-            appId: input,
+            appId: id,
             userId,
             favoritedAt: new Date(),
           },
         })
       }
     }),
-  delete: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    // TODO: only allow delete if user is admin
-    // TODO: only allow apps to delete if they are the owner
-    return ctx.prisma.app.delete({ where: { id: input } })
-  }),
+  delete: publicProcedure
+    .input(z.object({ ownerId: z.string(), id: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { ownerId, id } = input
+      // TODO: only allow delete if user is admin
+      // TODO: only allow apps to delete if they are the owner
+      return ctx.prisma.app.deleteMany({ where: { id, ownerId } })
+    }),
 })

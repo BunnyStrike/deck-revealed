@@ -1,19 +1,44 @@
 import React from 'react'
+import { useUser } from '@clerk/clerk-react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import {
   CheckIcon,
   ChevronRightIcon,
   DotFilledIcon,
 } from '@radix-ui/react-icons'
+import { app } from 'electron'
+
+import { GameListOutput, api, type AppListOutput } from '../utils/api'
 
 interface AppContextMenuProps {
+  appId?: string
+  ownerId?: string | null
   children: React.ReactNode
+  app: AppListOutput[number]
 }
 
-export const AppContextMenu = ({ children }: AppContextMenuProps) => {
-  const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
-  const [urlsChecked, setUrlsChecked] = React.useState(false)
-  const [person, setPerson] = React.useState('pedro')
+export const AppContextMenu = ({
+  appId,
+  ownerId,
+  children,
+  app,
+}: AppContextMenuProps) => {
+  const { user } = useUser()
+  const { mutateAsync: hideApp } = api.app.hide.useMutation()
+  const { mutateAsync: deleteApp } = api.app.delete.useMutation()
+  // const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
+  // const [urlsChecked, setUrlsChecked] = React.useState(false)
+  // const [person, setPerson] = React.useState('pedro')
+
+  const handleDelete = async () => {
+    if (!appId || !user?.id) return
+    await deleteApp({ id: appId, ownerId: user?.id })
+  }
+
+  const handleHide = async () => {
+    if (!appId || !user?.id) return
+    await hideApp({ id: appId, userId: user?.id })
+  }
 
   return (
     <ContextMenu.Root>
@@ -23,7 +48,25 @@ export const AppContextMenu = ({ children }: AppContextMenuProps) => {
           className='bg-secondary z-20 min-w-[220px] overflow-hidden rounded-md p-[5px] text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
           alignOffset={5}
         >
-          <ContextMenu.Item className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'>
+          {user?.id === ownerId && (
+            <ContextMenu.Item
+              onClick={handleDelete}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+              disabled
+            >
+              Delete
+            </ContextMenu.Item>
+          )}
+
+          {/* {!!user?.id && (
+            <ContextMenu.Item
+              onClick={handleHide}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Hide
+            </ContextMenu.Item>
+          )} */}
+          {/* <ContextMenu.Item className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'>
             Back{' '}
             <div className='text-mauve11 group-data-[disabled]:text-mauve8 ml-auto pl-5 group-data-[highlighted]:text-white'>
               ⌘+[
@@ -43,8 +86,8 @@ export const AppContextMenu = ({ children }: AppContextMenuProps) => {
             <div className='text-mauve11 group-data-[disabled]:text-mauve8 ml-auto pl-5 group-data-[highlighted]:text-white'>
               ⌘+R
             </div>
-          </ContextMenu.Item>
-          <ContextMenu.Sub>
+          </ContextMenu.Item> */}
+          {/* <ContextMenu.Sub>
             <ContextMenu.SubTrigger className=' text-violet11 data-[state=open]:bg-violet4 data-[state=open]:text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 data-[highlighted]:data-[state=open]:bg-violet9 data-[highlighted]:data-[state=open]:text-violet1 group relative z-20 flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'>
               More Tools
               <div className='text-mauve11 group-data-[disabled]:text-mauve8 ml-auto pl-5 group-data-[highlighted]:text-white'>
@@ -75,11 +118,11 @@ export const AppContextMenu = ({ children }: AppContextMenuProps) => {
                 </ContextMenu.Item>
               </ContextMenu.SubContent>
             </ContextMenu.Portal>
-          </ContextMenu.Sub>
+          </ContextMenu.Sub> */}
 
-          <ContextMenu.Separator className='bg-violet6 m-[5px] h-[1px]' />
+          {/* <ContextMenu.Separator className='bg-violet6 m-[5px] h-[1px]' /> */}
 
-          <ContextMenu.CheckboxItem
+          {/* <ContextMenu.CheckboxItem
             className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
             checked={bookmarksChecked}
             onCheckedChange={setBookmarksChecked}
@@ -127,7 +170,7 @@ export const AppContextMenu = ({ children }: AppContextMenuProps) => {
               </ContextMenu.ItemIndicator>
               Colm Tuite
             </ContextMenu.RadioItem>
-          </ContextMenu.RadioGroup>
+          </ContextMenu.RadioGroup> */}
         </ContextMenu.Content>
       </ContextMenu.Portal>
     </ContextMenu.Root>

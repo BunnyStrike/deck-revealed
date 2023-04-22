@@ -124,7 +124,7 @@ function AppMain() {
             </RevealedApplicationShell>
             <div className='controller'>
               {/* <ControllerHints /> */}
-              <AddAppModal></AddAppModal>
+              <AddAppModal />
               <AddGameModal />
 
               <div className='simple-keyboard'></div>

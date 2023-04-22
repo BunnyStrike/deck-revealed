@@ -36,8 +36,9 @@ model User {
     bio           String?
     role          Role @default(USER)
     apps         App[]
-    userRecentApps   UserActionApp[]
+    recentApps   UserActionApp[]
     bootVideos   BootVideo[]
+    games   Game[]
     launcherCredentials UserLauncherCredential[]
     appPlatforms   UserAppPlatform[]
 }
@@ -311,6 +312,8 @@ model Game {
     coverUrl    String?
     authorName String?
     authorUrl String?
+    owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId  String?
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
     media GameMedia[]

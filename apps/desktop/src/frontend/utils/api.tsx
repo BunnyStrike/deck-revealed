@@ -23,7 +23,7 @@ type RouterOutput = inferRouterOutputs<AppRouter>
 
 export type AppListInput = RouterInput['app']['all']
 export type AppUpsertInput = RouterInput['app']['upsert']
-export type AppListOutput = RouterOutput['app']['all']
+export type AppListOutput = RouterOutput['app']['apps']
 
 export type GameListInput = RouterInput['game']['all']
 export type GameListOutput = RouterOutput['game']['all']
@@ -49,14 +49,15 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
             //     credentials: 'include',
             //   })
             // },
-            async headers() {
-              const sess = await session?.getToken()
-              console.log(sess)
-              if (!sess) return {}
-              return {
-                Authorization: `Bearer ${sess}`,
-              }
-            },
+            // headers() {
+            //   // const sess = await session?.getToken()
+            //   const jwt = localStorage.getItem('clerk-db-jwt')
+            //   // console.log(jwt)
+            //   if (jwt) return {}
+            //   return {
+            //     Authorization: `Bearer ${jwt}`,
+            //   }
+            // },
           }),
         }),
       ],

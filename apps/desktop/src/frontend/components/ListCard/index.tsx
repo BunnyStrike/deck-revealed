@@ -9,16 +9,20 @@ interface RevealedListCardProps {
   item: GameListOutput[number] | AppListOutput[number]
 }
 export const RevealedListCard = ({ item }: RevealedListCardProps) => {
+  const { name, coverUrl, id, ownerId } = item
+  console.log(item)
   return (
-    <AppContextMenu>
+    <AppContextMenu
+      appId={id}
+      ownerId={ownerId}
+      app={item as AppListOutput[number]}
+    >
       <div className='card image-full-color hover-bordered active:outline-offset-3 outline-primary group cursor-pointer pb-0 hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'>
         <figure>
-          <img src='public/img/steam-pill.jpg' alt='car!' />
+          <img src={coverUrl ?? 'img/steam-pill.jpg'} alt='car!' />
         </figure>
         <div className='card-body h-full justify-end p-0'>
-          <h2 className='card-title p-2 group-hover:text-white '>
-            {item.name}
-          </h2>
+          <h2 className='card-title p-2 group-hover:text-white '>{name}</h2>
           <div className='bg-secondary flex justify-end rounded-b-2xl p-2'>
             <button className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'>
               <PlayIcon />

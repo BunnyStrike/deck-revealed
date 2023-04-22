@@ -14,6 +14,8 @@ const apiKey =
   env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   env.SUPABASE_API_SECRET_KEY
 
+const apiSupabaseId = getEnv('VITE_SUPABASE_ID')
+
 export const supabaseClient = createClient(apiSupabaseURL, apiKey, {
   // <Database>
   db: {
@@ -29,6 +31,37 @@ export const supabaseClient = createClient(apiSupabaseURL, apiKey, {
 
 export type PermissionLevel = 'any' | 'user' | 'member' | 'admin'
 
+export const getFormatedDate = (date: string | number | Date) => {
+  return new Date(date).toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+export const filterArray = (arr1: any, arr2: any) => {
+  const filtered = arr1.filter((el: any) => {
+    return !arr2.includes(el)
+  })
+  return filtered
+}
+
+export const difference = (arr1: any, arr2: any) =>
+  arr1.filter((x: any) => !arr2.includes(x))
+
+export const getFileUrl = (id: string) => {
+  return `https://${apiSupabaseId}.nhost.run/v1/storage/files/${id}`
+}
+
+export const getMediaUrl = (filePath?: string | null, bucket = 'media') => {
+  if (!filePath) return ''
+  const { data } = supabaseClient.storage.from(bucket).getPublicUrl(filePath)
+  return data.publicUrl
+}
+
+function getEnv(arg0: string) {
+  throw new Error('Function not implemented.')
+}
 // export type Profile = Database['public']['Tables']['profiles']['Row']
 
 // export const getUserProfile = async (userId: string) => {
