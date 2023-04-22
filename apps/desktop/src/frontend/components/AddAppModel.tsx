@@ -15,7 +15,7 @@ import {
   type AppUpsertInput,
 } from '../utils/api'
 import { appCategories } from '../utils/app'
-import { uploadFile } from '../utils/file'
+import { uploadAppimage, uploadFile } from '../utils/file'
 import DialogModal from './Dialog'
 import EmptyState from './EmptyState'
 import { UploadButton } from './UploadButton'
@@ -88,8 +88,22 @@ export const AddAppModal = ({
 
     // upload image if it exists
     if (selectedCoverFile && appUpdate?.id) {
-      const uploadedFile = await uploadFile(selectedCoverFile)
-      console.log(uploadedFile)
+      const uploadedCover = await uploadAppimage(
+        selectedCoverFile,
+        appUpdate?.id
+      )
+
+      // const uploadedBanner = await uploadAppimage(
+      //   selectedCoverFile,
+      //   appUpdate?.id,
+      //   'banner'
+      // )
+      // const uploadedIcon = await uploadAppimage(
+      //   selectedCoverFile,
+      //   appUpdate?.id,
+      //   'icon'
+      // )
+
       // appUpdate
 
       // await mutateAsync({

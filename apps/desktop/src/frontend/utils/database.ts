@@ -10,8 +10,10 @@ import { uploadFile } from './file'
 // @ts-ignore
 const env = import.meta.env ?? {} //?? process?.env ?? {}
 
-const apiSupabaseURL = env.VITE_SUPABASE_URL || env.SUPABASE_URL
+const apiSupabaseURL =
+  env.VITE_PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL || env.SUPABASE_URL
 const apiKey =
+  env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
   env.VITE_SUPABASE_API_SECRET_KEY ||
   env.SUPABASE_SERVICE_ROLE_KEY ||
   env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
@@ -63,50 +65,44 @@ export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
 }
 
 export async function syncDBs() {
-  const supabaseOldClient = createClient(
-    VITE_SUPABASE_URL,
-    VITE_SUPABASE_API_SECRET_KEY,
-    {
-      // <Database>
-      db: {
-        schema: 'public',
-      },
-      auth: {
-        // storage: AsyncStorage,
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,
-      },
-    }
-  )
-
-  const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
-
-  const appMapped = data
-    ?.filter((item) => !item.user_id)
-    .map((item) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
-      category: item.category,
-      url: item.sourceUrl ?? item.url ?? item.link,
-      authorName: item.authorName,
-      authorUrl: item.authorUrl,
-      updatedAt: item.updatedAt,
-      createdAt: item.createdAt,
-      type: 'PUBLISHED',
-    }))
-
+  // const supabaseOldClient = createClient(
+  //   VITE_SUPABASE_URL,
+  //   VITE_SUPABASE_API_SECRET_KEY,
+  //   {
+  //     // <Database>
+  //     db: {
+  //       schema: 'public',
+  //     },
+  //     auth: {
+  //       // storage: AsyncStorage,
+  //       autoRefreshToken: true,
+  //       persistSession: true,
+  //       detectSessionInUrl: true,
+  //     },
+  //   }
+  // )
+  // const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
+  // const appMapped = data
+  //   ?.filter((item) => !item.user_id)
+  //   .map((item) => ({
+  //     id: item.id,
+  //     name: item.name,
+  //     description: item.description,
+  //     coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
+  //     category: item.category,
+  //     url: item.sourceUrl ?? item.url ?? item.link,
+  //     authorName: item.authorName,
+  //     authorUrl: item.authorUrl,
+  //     updatedAt: item.updatedAt,
+  //     createdAt: item.createdAt,
+  //     type: 'PUBLISHED',
+  //   }))
   // console.log(appMapped)
-
   // console.log(data)
-
   // const { data: appData = [], error } = await supabaseClient
   //   .from('App')
   //   .upsert(appMapped)
   // console.log(error)
-
   // const dataImagePromises = data
   //   ?.filter((item) => !item.user_id)
   //   .map(async (item: any) => {
@@ -118,7 +114,6 @@ export async function syncDBs() {
   //       .download(item?.mediaPath ?? '')
   //     console.log(res)
   //     // uploadFile(res.blob, 'apps', '')
-
   //     const { data, error } = await supabaseClient.storage
   //       .from('apps')
   //       .upload(`images/${item.id}/cover.png`, res.data, {
@@ -128,12 +123,9 @@ export async function syncDBs() {
   //     console.log(data, error)
   //     return data
   //   })
-
   // await Promise.all(dataImagePromises)
-
-  const { error } = await supabaseClient.from('App').upsert(appMapped)
-
-  console.log(error)
+  // const { error } = await supabaseClient.from('App').upsert(appMapped)
+  // console.log(error)
 }
 
 // export type Profile = Database['public']['Tables']['profiles']['Row']

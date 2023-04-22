@@ -53,3 +53,19 @@ export const uploadFile = async (
 
   return { data, error }
 }
+
+export const uploadAppimage = async (
+  file: File,
+  id: string,
+  appImageType = 'cover'
+) => {
+  const fileType = file.type.split('/')[0]
+  const { data, error } = await supabaseClient.storage
+    .from('apps')
+    .upload(`images/${id}/${appImageType}.${fileType}`, file, {
+      cacheControl: '3600',
+      upsert: true,
+    })
+
+  return { data, error }
+}
