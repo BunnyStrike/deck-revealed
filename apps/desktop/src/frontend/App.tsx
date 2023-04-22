@@ -21,6 +21,7 @@ import { SettingsScreen } from './screens/Settings'
 import { RevealedSignupScreen } from './screens/Signup'
 import { SteamDeckScreen } from './screens/SteamDeck'
 import { StoresScreen } from './screens/Stores'
+import WebAppScreen from './screens/WebApp'
 import WebView from './screens/WebView'
 import { ApiProvider, api } from './utils/api'
 import { getEnvVar } from './utils/envVar'
@@ -70,6 +71,11 @@ function AppMain() {
                 {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
                 <Route path='/' element={<HomeScreen />} />
                 <Route path='/apps' element={<AppsScreen />} />
+                <Route path='/app'>
+                  <Route path='web'>
+                    <Route path=':id' element={<WebAppScreen />} />
+                  </Route>
+                </Route>
                 <Route path='/games' element={<GamesScreen />} />
                 <Route path='/steam-deck' element={<SteamDeckScreen />} />
                 <Route path='/stores' element={<StoresScreen />} />

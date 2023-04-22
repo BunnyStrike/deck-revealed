@@ -3,6 +3,7 @@ import { useAtom } from 'jotai'
 
 import { listFilterAtom, modalsAtom } from '../states'
 import { type AppListOutput, type GameListOutput } from '../utils/api'
+import { syncDBs } from '../utils/database'
 import AddAppModal from './AddAppModel'
 import AddGameModal from './AddGameModel'
 import DialogModal from './Dialog'
@@ -27,6 +28,9 @@ export const RevealedListView = ({
   return (
     <div className='bg-neutral'>
       <RevealedSearchBar />
+      <button onClick={() => syncDBs()} className='btn btn-primary mr-4 mt-4'>
+        Sync
+      </button>
       {(listFilter.add === 'app' || listFilter.add === 'both') && (
         <button
           onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}

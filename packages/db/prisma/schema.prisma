@@ -7,9 +7,10 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
+//   provider = "mysql"
   url = env("DATABASE_URL")
-  relationMode = "prisma"
+//   relationMode = "prisma"
 }
 
 // datasource db {
@@ -256,7 +257,7 @@ model App {
     versions AppVersion[]
     userPlatforms   UserAppPlatform[]
 
-    @@fulltext([name])
+    // @@fulltext([name])
 
 }
 
@@ -280,7 +281,7 @@ model BootVideo {
     user    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String?
 
-    @@fulltext([name])
+    // @@fulltext([name])
 }
 
 // model Post {
@@ -318,6 +319,6 @@ model Game {
     createdAt DateTime @default(now())
     media GameMedia[]
 
-    @@fulltext([name])
-    @@fulltext([description])
+    // @@fulltext([name])
+    // @@fulltext([description])
 }

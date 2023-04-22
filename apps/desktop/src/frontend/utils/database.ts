@@ -1,6 +1,9 @@
 // import { Database } from '../../common/types/database.types'
 import { createClient } from '@supabase/supabase-js'
 
+import { getEnvVar } from './'
+import { uploadFile } from './file'
+
 // import { useShallowEffect, useDebouncedState } from '@mantine/hooks'
 
 // declare const process: any
@@ -14,7 +17,7 @@ const apiKey =
   env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   env.SUPABASE_API_SECRET_KEY
 
-const apiSupabaseId = getEnv('VITE_SUPABASE_ID')
+const apiSupabaseId = getEnvVar('VITE_SUPABASE_ID')
 
 export const supabaseClient = createClient(apiSupabaseURL, apiKey, {
   // <Database>
@@ -53,15 +56,86 @@ export const getFileUrl = (id: string) => {
   return `https://${apiSupabaseId}.nhost.run/v1/storage/files/${id}`
 }
 
-export const getMediaUrl = (filePath?: string | null, bucket = 'media') => {
+export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
   if (!filePath) return ''
   const { data } = supabaseClient.storage.from(bucket).getPublicUrl(filePath)
   return data.publicUrl
 }
 
-function getEnv(arg0: string) {
-  throw new Error('Function not implemented.')
+export async function syncDBs() {
+  const supabaseOldClient = createClient(
+    VITE_SUPABASE_URL,
+    VITE_SUPABASE_API_SECRET_KEY,
+    {
+      // <Database>
+      db: {
+        schema: 'public',
+      },
+      auth: {
+        // storage: AsyncStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      },
+    }
+  )
+
+  const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
+
+  const appMapped = data
+    ?.filter((item) => !item.user_id)
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
+      category: item.category,
+      url: item.sourceUrl ?? item.url ?? item.link,
+      authorName: item.authorName,
+      authorUrl: item.authorUrl,
+      updatedAt: item.updatedAt,
+      createdAt: item.createdAt,
+      type: 'PUBLISHED',
+    }))
+
+  // console.log(appMapped)
+
+  // console.log(data)
+
+  // const { data: appData = [], error } = await supabaseClient
+  //   .from('App')
+  //   .upsert(appMapped)
+  // console.log(error)
+
+  // const dataImagePromises = data
+  //   ?.filter((item) => !item.user_id)
+  //   .map(async (item: any) => {
+  //     if (!item.mediaPath) return
+  //     console.log(item)
+  //     // supabaseClient.storage.from(bucket).getPublicUrl(filePath)
+  //     const res = await supabaseOldClient.storage
+  //       .from('media')
+  //       .download(item?.mediaPath ?? '')
+  //     console.log(res)
+  //     // uploadFile(res.blob, 'apps', '')
+
+  //     const { data, error } = await supabaseClient.storage
+  //       .from('apps')
+  //       .upload(`images/${item.id}/cover.png`, res.data, {
+  //         cacheControl: '3600',
+  //         upsert: true,
+  //       })
+  //     console.log(data, error)
+  //     return data
+  //   })
+
+  // await Promise.all(dataImagePromises)
+
+  const { error } = await supabaseClient.from('App').upsert(appMapped)
+
+  console.log(error)
 }
+
 // export type Profile = Database['public']['Tables']['profiles']['Row']
 
 // export const getUserProfile = async (userId: string) => {
