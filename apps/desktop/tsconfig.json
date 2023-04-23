@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "es2021",
     "lib": ["esnext", "dom", "dom.iterable", "WebWorker"],
     "paths": {
       "~/*": ["./src/*"]

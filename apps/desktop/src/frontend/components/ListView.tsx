@@ -5,6 +5,7 @@ import { listFilterAtom, modalsAtom } from '../states'
 import { type AppListOutput, type GameListOutput } from '../utils/api'
 import EmptyState from './EmptyState'
 import { RevealedListCard } from './ListCard'
+import { LoadingBar } from './LoadingBar'
 import RevealedSearchBar from './SearchBar'
 
 interface RevealedListViewProps {
@@ -45,7 +46,7 @@ export const RevealedListView = ({
         {isLoading && (
           <div className='bg-neutral'>
             {/* <h3>Loading</h3> */}
-            <progress className='progress progress-primary	 w-full'></progress>
+            <LoadingBar />
           </div>
         )}
         {!isLoading && !list.length && listFilter.add === 'app' && (

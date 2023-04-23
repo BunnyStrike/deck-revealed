@@ -176,14 +176,14 @@ export const appRouter = createTRPCRouter({
       where,
       // @ts-expect-error
       orderBy: { createdAt: input.sort },
-      include: {
-        versions: true,
-        userActions: {
-          where: {
-            userId,
-          },
-        },
-      },
+      // include: {
+      //   versions: true,
+      //   userActions: {
+      //     where: {
+      //       userId,
+      //     },
+      //   },
+      // },
     })
   }),
   steamos: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {

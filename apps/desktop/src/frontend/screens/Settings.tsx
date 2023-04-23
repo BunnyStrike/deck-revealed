@@ -13,7 +13,7 @@
   ```
 */
 import { Fragment, useState } from 'react'
-import { UserProfile } from '@clerk/clerk-react'
+import { SignedIn, SignedOut, UserProfile } from '@clerk/clerk-react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import {
@@ -25,6 +25,8 @@ import {
   SignalIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
+
+import { RevealedSignupScreen } from './Signup'
 
 const navigation = [
   { name: 'Projects', href: '#', icon: FolderIcon, current: false },
@@ -77,7 +79,12 @@ export function SettingsScreen() {
         </nav>
       </header>
 
-      <UserProfile />
+      <SignedIn>
+        <UserProfile />
+      </SignedIn>
+      <SignedOut>
+        <RevealedSignupScreen />
+      </SignedOut>
 
       {/* Settings forms */}
       {/* <div className='divide-y divide-white/5'>

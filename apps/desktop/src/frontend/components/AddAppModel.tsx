@@ -188,7 +188,7 @@ export const AddAppModal = ({
             >
               Details
             </a>
-            <a
+            {/* <a
               className={classNames(
                 'tab ',
                 currentTab === 1 ? 'tab-active' : ''
@@ -205,7 +205,7 @@ export const AddAppModal = ({
               onClick={() => setCurrentTab(2)}
             >
               Steam Images
-            </a>
+            </a> */}
           </div>
           {currentTab === 0 && (
             <div className='flex flex-row gap-6'>

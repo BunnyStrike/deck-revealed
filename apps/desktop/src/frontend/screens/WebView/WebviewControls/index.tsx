@@ -74,6 +74,7 @@ export default function WebviewControls({
         setCanGoBack(webview.canGoBack())
         setCanGoForward(webview.canGoForward())
       })
+
       return () => {
         webview.removeEventListener('did-navigate-in-page', eventCallback)
         webview.removeEventListener('did-navigate', eventCallback)

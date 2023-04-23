@@ -21,18 +21,22 @@ const apiKey =
 
 const apiSupabaseId = getEnvVar('VITE_SUPABASE_ID')
 
-export const supabaseClient = createClient(apiSupabaseURL, apiKey, {
-  // <Database>
-  db: {
-    schema: 'public',
-  },
-  auth: {
-    // storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-  },
-})
+export const supabaseClient = (supabaseAccessToken?: string) =>
+  createClient(apiSupabaseURL, apiKey, {
+    global: supabaseAccessToken
+      ? { headers: { Authorization: `Bearer ${supabaseAccessToken}` } }
+      : {},
+    // <Database>
+    db: {
+      schema: 'public',
+    },
+    auth: {
+      // storage: AsyncStorage,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+    },
+  })
 
 export type PermissionLevel = 'any' | 'user' | 'member' | 'admin'
 
@@ -60,7 +64,7 @@ export const getFileUrl = (id: string) => {
 
 export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
   if (!filePath) return ''
-  const { data } = supabaseClient.storage.from(bucket).getPublicUrl(filePath)
+  const { data } = supabaseClient().storage.from(bucket).getPublicUrl(filePath)
   return data.publicUrl
 }
 

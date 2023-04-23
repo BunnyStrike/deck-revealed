@@ -6,6 +6,7 @@ import { RevealedListView } from '../components/ListView'
 import { useDebounce } from '../hooks/useDebounce'
 import { listFilterAtom } from '../states'
 import { api } from '../utils/api'
+import { supabaseClient } from '../utils/database'
 
 export const AppsScreen = () => {
   const { user } = useUser()

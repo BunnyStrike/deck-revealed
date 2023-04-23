@@ -31,6 +31,8 @@ export const AppContextMenu = ({
   const isOwner = user?.id === ownerId
   const { mutateAsync: hideApp } = api.app.hide.useMutation()
   const { mutateAsync: deleteApp } = api.app.delete.useMutation()
+  const { mutateAsync: addToSteam } =
+    api.desktop.steam.addAppToSteam.useMutation()
   const [modals, setModals] = useAtom(modalsAtom)
   // const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   // const [urlsChecked, setUrlsChecked] = React.useState(false)
@@ -49,6 +51,11 @@ export const AppContextMenu = ({
   const handleHide = async () => {
     if (!appId || !user?.id) return
     await hideApp({ id: appId, userId: user?.id })
+  }
+
+  const handleAddToSteam = () => {
+    if (!app?.id) return
+    addToSteam({ appInfo: app })
   }
 
   return (
@@ -76,6 +83,12 @@ export const AppContextMenu = ({
               Edit
             </ContextMenu.Item>
           )}
+          <ContextMenu.Item
+            onClick={() => handleAddToSteam()}
+            className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+          >
+            Add To Steam
+          </ContextMenu.Item>
 
           {/* {!!user?.id && (
             <ContextMenu.Item

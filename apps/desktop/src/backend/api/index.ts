@@ -6,13 +6,15 @@ import z from 'zod'
 
 import { connectivity } from './connectivity'
 import { gamepad } from './gamepad'
+import { info } from './info'
+import { steam } from './steam'
 import { system } from './system'
 import { createTRPCRouter } from './trpc'
 
 // const ee = new EventEmitter()
 
 export const desktopRouter = createTRPCRouter({
-  desktop: createTRPCRouter({ gamepad, system, connectivity }),
+  desktop: createTRPCRouter({ gamepad, system, connectivity, steam, info }),
 })
 
 export type AppRouter = typeof desktopRouter
