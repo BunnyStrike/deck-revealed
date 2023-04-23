@@ -26,8 +26,6 @@ const fontsStore = new TypeCheckedStoreBackend('fontsStore', {
   name: 'fonts',
 })
 
-console.log('-----------machine--------', process.env.XDG_CURRENT_DESKTOP)
-
 const isMac = platform() === 'darwin'
 const isWindows = platform() === 'win32'
 const isLinux = platform() === 'linux'

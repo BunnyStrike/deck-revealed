@@ -13,7 +13,6 @@ interface RevealedListCardProps {
 export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { name, coverUrl, id, ownerId } = item
   const navigate = useNavigate()
-  console.log(item)
 
   const handleClick = () => {
     navigate('/app/web/' + id)
