@@ -18,6 +18,7 @@ import { appCategories } from '../utils/app'
 import { uploadAppimage, uploadFile } from '../utils/file'
 import DialogModal from './Dialog'
 import EmptyState from './EmptyState'
+import { FileUploadCard } from './FileUploadCard'
 import { UploadButton } from './UploadButton'
 
 interface AddAppModalProps {
@@ -177,8 +178,8 @@ export const AddAppModal = ({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className='bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />
-        <Dialog.Content className='data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-40 flex max-h-[85vh] w-[90vw]  max-w-[650px] translate-x-[-50%] translate-y-[-50%] flex-col items-center gap-8 rounded-[6px] bg-slate-600 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>
-          <div className='tabs tabs-boxed'>
+        <Dialog.Content className='data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-40 flex max-h-[85vh] w-[90vw]  max-w-[650px] translate-x-[-50%] translate-y-[-50%] flex-col items-center gap-8 rounded-[6px] bg-gray-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>
+          {/* <div className='tabs tabs-boxed'>
             <a
               className={classNames(
                 'tab ',
@@ -188,7 +189,7 @@ export const AddAppModal = ({
             >
               Details
             </a>
-            {/* <a
+            <a
               className={classNames(
                 'tab ',
                 currentTab === 1 ? 'tab-active' : ''
@@ -205,125 +206,24 @@ export const AddAppModal = ({
               onClick={() => setCurrentTab(2)}
             >
               Steam Images
-            </a> */}
-          </div>
+            </a>
+          </div> */}
           {currentTab === 0 && (
             <div className='flex flex-row gap-6'>
-              <div className=' h-full w-full'>
-                {/* <Dialog.Title className='text-mauve12 m-2 text-[17px] font-medium'>
-                {`${type} App`}
-              </Dialog.Title> */}
-                {/* <img
-                  src={
-                    selectedCoverPreview ??
-                    steamGridImage ??
-                    'public/img/steam-pill.jpg'
-                  }
-                  alt='car!'
-                /> */}
-                <div className='overflow-hidden rounded-lg bg-gray-400 shadow'>
-                  <div className='px-2 py-3 sm:p-2'>
-                    {selectedCoverPreview || steamGridImage ? (
-                      <div className='bg-grey-lighter flex h-72 w-full items-center justify-center'>
-                        <label className='text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white uppercase tracking-wide shadow-lg hover:text-white'>
-                          <img
-                            src={
-                              selectedCoverPreview ??
-                              steamGridImage ??
-                              'public/img/steam-pill.jpg'
-                            }
-                            className='rounded-lg bg-cover bg-center'
-                            alt='Cover Image'
-                          />
-                          <input
-                            type='file'
-                            className='hidden'
-                            onChange={(e) => {
-                              if (e.target.files?.length) {
-                                handleImageSelect(e.target.files[0])
-                              }
-                            }}
-                          />
-                        </label>
-                      </div>
-                    ) : (
-                      <div className='bg-grey-lighter flex h-72 w-full items-center justify-center'>
-                        <label className='text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 uppercase tracking-wide shadow-lg hover:text-white'>
-                          <svg
-                            className='h-8 w-8'
-                            fill='currentColor'
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox='0 0 20 20'
-                          >
-                            <path d='M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z' />
-                          </svg>
-                          <span className='mt-2 text-base leading-normal'>
-                            Cover Image
-                          </span>
-                          <input
-                            type='file'
-                            className='hidden'
-                            onChange={(e) => {
-                              if (e.target.files?.length) {
-                                handleImageSelect(e.target.files[0])
-                              }
-                            }}
-                          />
-                        </label>
-                      </div>
-                    )}
-                  </div>
-                  <div className='bg-gray-500 px-4 py-4 sm:px-6'>
-                    {selectedBannerPreview ? (
-                      <div className='bg-grey-lighter flex w-full items-center justify-center'>
-                        <label className='text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white  uppercase tracking-wide shadow-lg hover:text-white'>
-                          <img
-                            src={
-                              selectedBannerPreview ??
-                              'public/img/steam-pill.jpg'
-                            }
-                            className='rounded-lg bg-cover bg-center'
-                            alt='Banner Image'
-                          />
-                          <input
-                            type='file'
-                            className='hidden'
-                            onChange={(e) => {
-                              if (e.target.files?.length) {
-                                handleBannerSelect(e.target.files[0])
-                              }
-                            }}
-                          />
-                        </label>
-                      </div>
-                    ) : (
-                      <div className='bg-grey-lighter flex w-full items-center justify-center'>
-                        <label className='text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white px-4 py-6 uppercase tracking-wide shadow-lg hover:text-white'>
-                          <svg
-                            className='h-8 w-8'
-                            fill='currentColor'
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox='0 0 20 20'
-                          >
-                            <path d='M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z' />
-                          </svg>
-                          <span className='mt-2 text-base leading-normal'>
-                            Banner Image
-                          </span>
-                          <input
-                            type='file'
-                            className='hidden'
-                            onChange={(e) => {
-                              if (e.target.files?.length) {
-                                handleBannerSelect(e.target.files[0])
-                              }
-                            }}
-                          />
-                        </label>
-                      </div>
-                    )}
-                    {/* We use less vertical padding on card footers at all sizes than on headers or body sections */}
-                  </div>
+              <div className='flex h-full w-full flex-col'>
+                <div className='grow'>
+                  <FileUploadCard
+                    selectedPreview={selectedCoverPreview ?? steamGridImage}
+                    onSelectedFile={handleImageSelect}
+                    title='Select Cover Image'
+                  />
+                </div>
+                <div className='h-48'>
+                  <FileUploadCard
+                    selectedPreview={selectedBannerPreview}
+                    onSelectedFile={handleBannerSelect}
+                    title='Select Banner Image'
+                  />
                 </div>
               </div>
               <div className='h-full  w-full'>

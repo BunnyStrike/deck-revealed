@@ -109,21 +109,20 @@ const legendaryMetadata = join(legendaryConfigPath, 'metadata')
 const fallBackImage = 'fallback'
 const epicLoginUrl = 'https://legendary.gl/epiclogin'
 const sidInfoUrl =
-  'https://github.com/BunnyStrike/revealed-desktop-app/wiki/How-To:-Epic-Alternative-Login'
+  'https://github.com/BunnyStrike/revealed/wiki/How-To:-Epic-Alternative-Login'
 const revealedGithubURL =
-  'https://github.com/BunnyStrike/revealed-desktop-app/releases/latest'
-const GITHUB_API =
-  'https://api.github.com/repos/Revealed-Games-Launcher/RevealedGamesLauncher/releases'
+  'https://github.com/BunnyStrike/revealed/releases/latest'
+const GITHUB_API = 'https://api.github.com/repos/BunnyStrike/revealed/releases'
 const supportURL =
-  'https://github.com/BunnyStrike/revealed-desktop-app/blob/main/Support.md'
+  'https://github.com/BunnyStrike/revealed/blob/main/Support.md'
 const discordLink = 'https://discord.gg/rHJ2uqdquK'
-const wikiLink = 'https://github.com/BunnyStrike/revealed-desktop-app/wiki'
+const wikiLink = 'https://github.com/BunnyStrike/revealed/wiki'
 const weblateUrl = 'https://hosted.weblate.org/projects/revealed-games-launcher'
 const kofiPage = 'https://ko-fi.com/revealedgames'
 const patreonPage = 'https://www.patreon.com/deckrevealed'
 const wineprefixFAQ = 'https://wiki.winehq.org/FAQ#Wineprefixes'
 const customThemesWikiLink =
-  'https://github.com/BunnyStrike/revealed-desktop-app/wiki/Custom-Themes'
+  'https://github.com/BunnyStrike/revealed/wiki/Custom-Themes'
 
 const supabaseApiURL = process.env.SUPABASE_URL
 const supabaseApiKey =

@@ -18,18 +18,18 @@ import { useLocation } from 'react-router-dom'
 import { SidebarMenu } from './SidebarMenu'
 
 const navigation = [
-  {
-    name: 'Login',
-    link: '/login/revealed',
-    icon: IconLogin,
-    showWhenLoggedIn: false,
-  },
   { name: 'Home', link: '/', icon: HomeIcon },
   { name: 'Apps', link: '/apps', icon: IconApps },
   { name: 'Games', link: '/games', icon: IconDeviceGamepad2 },
   { name: 'Steam Deck', link: '/steam-deck', icon: IconBrandSteam },
   { name: 'Stores', link: '/stores', icon: BuildingStorefrontIcon },
   { name: 'Settings', link: '/settings', icon: AdjustmentsHorizontalIcon },
+  {
+    name: 'Login',
+    link: '/login/revealed',
+    icon: IconLogin,
+    showWhenLoggedIn: false,
+  },
 ]
 interface RevealedApplicationShellPros {
   children: React.ReactNode

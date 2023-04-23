@@ -14,8 +14,15 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { name, coverUrl, id, ownerId } = item
   const navigate = useNavigate()
 
-  const handleClick = () => {
+  const handleLaunchClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation()
     navigate('/app/web/' + id)
+  }
+
+  const handleDetailClick = () => {
+    // navigate('/app/web/' + id)
   }
 
   return (
@@ -25,7 +32,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
       app={item as AppListOutput[number]}
     >
       <div
-        onClick={handleClick}
+        onClick={() => handleDetailClick()}
         className='card image-full-color hover-bordered active:outline-offset-3 outline-primary group cursor-pointer pb-0 hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
       >
         <figure>
@@ -36,8 +43,11 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
         </figure>
         <div className='card-body h-full justify-end p-0'>
           <h2 className='card-title p-2 group-hover:text-white '>{name}</h2>
-          <div className='bg-secondary flex justify-end rounded-b-2xl p-2'>
-            <button className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'>
+          <div className='flex justify-end rounded-b-2xl bg-gray-800 p-2'>
+            <button
+              onClick={(e) => handleLaunchClick(e)}
+              className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+            >
               <PlayIcon />
             </button>
           </div>

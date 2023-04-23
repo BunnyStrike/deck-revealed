@@ -1,8 +1,11 @@
-import { BrowserWindow } from 'electron'
+import * as axios from 'axios'
+import { BrowserWindow, app } from 'electron'
 import { z } from 'zod'
 
-import { type GamepadInputEvent } from '~/common/types'
+import { type GamepadInputEvent, type Release } from '~/common/types'
+import { GlobalConfig } from '../configs/config'
 import {
+  GITHUB_API,
   customThemesWikiLink,
   discordLink,
   epicLoginUrl,
@@ -15,8 +18,11 @@ import {
   wikiLink,
   wineprefixFAQ,
 } from '../constants'
+import { LogPrefix, logError, logInfo } from '../logger/logger'
+import { clearCache } from '../utils'
 import { openUrlOrFile } from '../utils/openUrlOrFile'
 import { getSystemInfo } from '../utils/systemInfo'
+import { getLatestReleases } from '../utils/version'
 import { getMainWindow } from '../windows/mainWindow'
 import { showAboutWindow } from '../windows/showAboutWindow'
 import { createTRPCRouter, publicProcedure } from './trpc'
@@ -56,4 +62,39 @@ export const system = createTRPCRouter({
     .mutation((req) =>
       new BrowserWindow({ height: 700, width: 1200 }).loadURL(req.input.url)
     ),
+  clearCache: publicProcedure
+    .input(
+      z
+        .object({ showDialog: z.boolean().default(false) })
+        .default({ showDialog: false })
+    )
+    .mutation(({ input }) => clearCache(input.showDialog)),
+  getRevealedVersion: publicProcedure.query(() => app.getVersion()),
+  getLatestReleases: publicProcedure.query(() => {
+    const { checkForUpdatesOnStartup } = GlobalConfig.get().getSettings()
+    if (checkForUpdatesOnStartup) {
+      return getLatestReleases()
+    } else {
+      return []
+    }
+  }),
+  getCurrentChangelog: publicProcedure.query(async () => {
+    logInfo('Checking for current version changelog', LogPrefix.Backend)
+
+    try {
+      const current = app.getVersion()
+
+      const { data: release } = await axios.default.get(
+        `${GITHUB_API}/tags/v${current}`
+      )
+
+      return release as Release
+    } catch (error) {
+      logError(
+        ['Error when checking for current Revealed changelog'],
+        LogPrefix.Backend
+      )
+      return null
+    }
+  }),
 })

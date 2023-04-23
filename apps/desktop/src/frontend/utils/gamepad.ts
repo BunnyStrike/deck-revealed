@@ -17,7 +17,7 @@ const STICK_REPEAT_DELAY = 250
 const SCROLL_REPEAT_DELAY = 50
 
 /*
- * For more documentation, check here https://github.com/BunnyStrike/revealed-desktop-app/wiki/Gamepad-Navigation
+ * For more documentation, check here https://github.com/BunnyStrike/revealed/wiki/Gamepad-Navigation
  */
 
 let controllerIsDisabled = false

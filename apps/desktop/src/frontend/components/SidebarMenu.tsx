@@ -70,55 +70,14 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                 ))}
             </ul>
           </li>
-          <li className='flex items-center justify-center'>
+
+          <li className=' hidden items-center justify-center sm:flex'>
             <UserButton showName appearance={{ baseTheme: dark }} />
           </li>
-          {/* <li>
-            <div className='text-xs font-semibold leading-6 text-gray-400'>
-              More
-            </div>
-            <ul role='list' className='-mx-2 mt-2 space-y-1'>
-              {more.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? 'bg-gray-50 text-indigo-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
-                      'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6'
-                    )}
-                  >
-                    <span
-                      className={classNames(
-                        item.current
-                          ? 'border-indigo-600 text-indigo-600'
-                          : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium'
-                      )}
-                    >
-                      {item.initial}
-                    </span>
-                    <span className='truncate'>{item.name}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </li> */}
-          {/* <li className='-mx-6 mt-auto'>
-            <a
-              href='#'
-              className='flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50'
-            >
-              <img
-                className='h-8 w-8 rounded-full bg-gray-50'
-                src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                alt=''
-              />
-              <span className='sr-only'>Your profile</span>
-              <span aria-hidden='true'>Tom Cook</span>
-            </a>
-          </li> */}
+          <li className=' flex items-center justify-center sm:hidden'>
+            <UserButton appearance={{ baseTheme: dark }} />
+          </li>
+
           <li className='-mx-6 mt-auto '>
             <a className='flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'>
               <span aria-hidden='true'>2.0.0</span>
