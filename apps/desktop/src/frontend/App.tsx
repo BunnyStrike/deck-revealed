@@ -20,6 +20,7 @@ import AddAppModal from './components/AddAppModel'
 import AddGameModal from './components/AddGameModel'
 import RevealedApplicationShell from './components/ApplicationShell'
 import { LoadingBar } from './components/LoadingBar'
+import { AppDetailsScreen } from './screens'
 import { AppsScreen } from './screens/Apps'
 import { GamesScreen } from './screens/Games'
 import { HomeScreen } from './screens/Home'
@@ -68,6 +69,7 @@ function AppMain() {
                     <Route path='web'>
                       <Route path=':id' element={<WebAppScreen />} />
                     </Route>
+                    <Route path=':id' element={<AppDetailsScreen />} />
                   </Route>
                   <Route path='/games' element={<GamesScreen />} />
                   <Route path='/steam-deck' element={<SteamDeckScreen />} />

@@ -25,7 +25,7 @@ export const DialogModal = ({
   onSave,
   saveTitle = 'Save',
 }: DialogModalProps) => (
-  <Dialog.Root className='z-40' open={open}>
+  <Dialog.Root open={open}>
     <Dialog.Trigger asChild>{button}</Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay className='bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />

@@ -4,6 +4,7 @@ import { dark } from '@clerk/themes'
 import { Link, useLocation } from 'react-router-dom'
 
 import { classNames } from '../utils'
+import RevealedVersion from './Version'
 
 export interface SidebarMenuProps {
   navigation: {
@@ -79,9 +80,10 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
           </li>
 
           <li className='-mx-6 mt-auto '>
-            <a className='flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'>
+            {/* <a className='flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'>
               <span aria-hidden='true'>2.0.0</span>
-            </a>
+            </a> */}
+            <RevealedVersion />
           </li>
         </ul>
       </nav>

@@ -22,7 +22,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   }
 
   const handleDetailClick = () => {
-    // navigate('/app/web/' + id)
+    navigate('/app/' + id)
   }
 
   return (
