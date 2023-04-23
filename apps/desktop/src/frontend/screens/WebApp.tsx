@@ -156,7 +156,7 @@ export default function WebAppScreen() {
   }
 
   return (
-    <div className='WebView'>
+    <div className=''>
       {webviewRef.current && (
         <WebviewControls
           webview={webviewRef.current}

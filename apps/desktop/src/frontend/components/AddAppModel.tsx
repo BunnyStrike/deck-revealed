@@ -6,7 +6,7 @@ import { Cross2Icon } from '@radix-ui/react-icons'
 import { useAtom } from 'jotai'
 
 import { useDebounce } from '../hooks/useDebounce'
-import { modalsAtom } from '../states'
+import { modalsAtom, modalsAtomDefault } from '../states'
 import { searchSteamgridImage } from '../utils'
 import {
   api,
@@ -28,11 +28,15 @@ interface AddAppModalProps {
 
 export const AddAppModal = ({
   type = 'Add',
-  app,
+  // app,
   isEmptyState = false,
 }: AddAppModalProps) => {
   const { user } = useUser()
   const [modals, setModals] = useAtom(modalsAtom)
+  const { data: app } = api.app.byId.useQuery({
+    id: modals.editApp ?? '',
+  })
+  console.log(app)
 
   const { mutateAsync, error, isLoading } = api.app.create.useMutation()
 
@@ -63,7 +67,7 @@ export const AddAppModal = ({
   }, [debouncedName])
 
   const handleCancel = () => {
-    setModals((prev) => ({ ...prev, showAddApp: false }))
+    setModals(modalsAtomDefault)
   }
 
   const handleSave = async (event: {

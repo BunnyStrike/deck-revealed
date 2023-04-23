@@ -7,7 +7,9 @@ import {
   DotFilledIcon,
 } from '@radix-ui/react-icons'
 import { app } from 'electron'
+import { useAtom } from 'jotai'
 
+import { modalsAtom } from '../states'
 import { GameListOutput, api, type AppListOutput } from '../utils/api'
 
 interface AppContextMenuProps {
@@ -24,8 +26,12 @@ export const AppContextMenu = ({
   app,
 }: AppContextMenuProps) => {
   const { user } = useUser()
+  const isAdmin =
+    user?.primaryEmailAddress?.emailAddress.includes('@bunnystrike.com')
+  const isOwner = user?.id === ownerId
   const { mutateAsync: hideApp } = api.app.hide.useMutation()
   const { mutateAsync: deleteApp } = api.app.delete.useMutation()
+  const [modals, setModals] = useAtom(modalsAtom)
   // const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   // const [urlsChecked, setUrlsChecked] = React.useState(false)
   // const [person, setPerson] = React.useState('pedro')
@@ -33,6 +39,11 @@ export const AppContextMenu = ({
   const handleDelete = async () => {
     if (!appId || !user?.id) return
     await deleteApp({ id: appId, ownerId: user?.id })
+  }
+
+  const handleEdit = () => {
+    if (!appId || !user?.id) return
+    setModals((prev) => ({ ...prev, editApp: appId, showAddApp: true }))
   }
 
   const handleHide = async () => {
@@ -48,13 +59,21 @@ export const AppContextMenu = ({
           className='bg-secondary z-20 min-w-[220px] overflow-hidden rounded-md p-[5px] text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
           alignOffset={5}
         >
-          {user?.id === ownerId && (
+          {(isOwner || isAdmin) && (
             <ContextMenu.Item
               onClick={handleDelete}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
               disabled
             >
               Delete
+            </ContextMenu.Item>
+          )}
+          {!!app?.id && (
+            <ContextMenu.Item
+              onClick={() => handleEdit()}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Edit
             </ContextMenu.Item>
           )}
 

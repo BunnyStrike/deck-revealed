@@ -152,7 +152,7 @@ export const appRouter = createTRPCRouter({
     const { showHidden = false, isFavorited, userId } = input
 
     const where = {
-      versions: { none: { platform: 'STEAMOS' } },
+      // versions: { none: { platform: 'STEAMOS' } },
       name: { search: input.search },
       category: input.category,
       ownerId: input.ownerId,

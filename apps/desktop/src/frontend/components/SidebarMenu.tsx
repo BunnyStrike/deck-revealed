@@ -1,5 +1,6 @@
 import React from 'react'
-import { useUser } from '@clerk/clerk-react'
+import { UserButton, useUser } from '@clerk/clerk-react'
+import { dark } from '@clerk/themes'
 import { Link, useLocation } from 'react-router-dom'
 
 import { classNames } from '../utils'
@@ -68,6 +69,9 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                   </li>
                 ))}
             </ul>
+          </li>
+          <li className='flex items-center justify-center'>
+            <UserButton showName appearance={{ baseTheme: dark }} />
           </li>
           {/* <li>
             <div className='text-xs font-semibold leading-6 text-gray-400'>

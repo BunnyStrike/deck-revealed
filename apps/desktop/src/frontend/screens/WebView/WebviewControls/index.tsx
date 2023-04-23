@@ -17,6 +17,19 @@ import { useTranslation } from 'react-i18next'
 import { type WebviewType } from '~/common/types'
 // import SvgButton from '../SvgButton'
 import './index.css'
+import {
+  IconAdjustmentsQuestion,
+  IconArrowBack,
+  IconArrowLeft,
+  IconArrowNarrowLeft,
+  IconArrowRight,
+  IconArrowRotaryLeft,
+  IconBrowser,
+  IconReload,
+  IconWindowMaximize,
+} from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
+
 import { api } from '../../../utils/api'
 
 interface WebviewControlsProps {
@@ -41,6 +54,7 @@ export default function WebviewControls({
   initURL,
   openInBrowser,
 }: WebviewControlsProps) {
+  const navigate = useNavigate()
   const [url, setUrl] = React.useState(initURL)
   const { t } = useTranslation()
   const [canGoBack, setCanGoBack] = useState(false)
@@ -69,7 +83,7 @@ export default function WebviewControls({
   }, [webview])
 
   const handleButtons = useCallback(
-    (event: 'reload' | 'back' | 'forward') => {
+    (event: 'reload' | 'back' | 'forward' | 'fullscreen') => {
       try {
         if (event === 'reload') {
           return webview?.reload()
@@ -80,6 +94,9 @@ export default function WebviewControls({
         if (event === 'forward') {
           return webview?.goForward()
         }
+        if (event === 'fullscreen') {
+          return webview?.requestFullscreen()
+        }
       } catch (error) {
         console.error(error)
       }
@@ -89,30 +106,33 @@ export default function WebviewControls({
 
   return (
     <div className='WebviewControls'>
-      <div className='WebviewControls__icons'>
-        {/* <SvgButton
-          className='WebviewControls__icon'
-          title={t('webview.controls.back')}
+      <div className='WebviewControls__icons flex gap-2'>
+        <button
+          className='WebviewControls__icon btn btn-square'
+          // title={t('webview.controls.back')}
           onClick={() => handleButtons('back')}
           disabled={!canGoBack}
         >
-          <ArrowBackOutlined />
-        </SvgButton>
-        <SvgButton
-          className='WebviewControls__icon'
-          title={t('webview.controls.forward')}
+          {/* <ArrowBackOutlined /> */}
+          <IconArrowLeft />
+        </button>
+        <button
+          className='WebviewControls__icon btn btn-square'
+          // title={t('webview.controls.forward')}
           onClick={() => handleButtons('forward')}
           disabled={!canGoForward}
         >
-          <ArrowForwardRounded />
-        </SvgButton>
-        <SvgButton
-          className='WebviewControls__icon'
-          title={t('webview.controls.reload')}
+          {/* <ArrowForwardRounded /> */}
+          <IconArrowRight />
+        </button>
+        <button
+          className='WebviewControls__icon btn btn-square'
+          // title={t('webview.controls.reload')}
           onClick={() => handleButtons('reload')}
         >
-          <Replay />
-        </SvgButton> */}
+          {/* <Replay /> */}
+          <IconReload />
+        </button>
       </div>
       <span className='WebviewControls__url'>
         {url && (
@@ -129,7 +149,7 @@ export default function WebviewControls({
         )}
       </span>
       <div className='WebviewControls__icons'>
-        <button className='btn btn-square'>
+        <button className='btn btn-square' onClick={() => navigate(-1)}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='h-6 w-6'
@@ -145,14 +165,21 @@ export default function WebviewControls({
             />
           </svg>
         </button>
-        {/* <SvgButton
-          className='WebviewControls__icon'
-          title={t('webview.controls.openInBrowser')}
+        <button
+          className='WebviewControls__icon btn btn-square'
+          // title={t('webview.controls.openInBrowser')}
           disabled={!openInBrowser || !url}
           onClick={() => mutate({ url })}
         >
-          <OpenInBrowser />
-        </SvgButton> */}
+          <IconBrowser />
+        </button>
+        <button
+          className='WebviewControls__icon btn btn-square'
+          // title={t('webview.controls.openInBrowser')}
+          onClick={() => handleButtons('fullscreen')}
+        >
+          <IconWindowMaximize />
+        </button>
       </div>
     </div>
   )
