@@ -12,10 +12,12 @@ export const seedRouter = createTRPCRouter({
 
     return apps
   }),
-  restoreApps: publicProcedure.mutation(async ({ ctx }) => {
-    console.log(appsSeed[0])
-    const apps = await ctx.prisma.app.createMany({ data: appsSeed })
+  restoreApps: publicProcedure
+    .input(z.any())
+    .mutation(async ({ ctx, input }) => {
+      console.log(appsSeed[0])
+      const apps = await ctx.prisma.app.createMany({ data: input })
 
-    return apps
-  }),
+      return apps
+    }),
 })

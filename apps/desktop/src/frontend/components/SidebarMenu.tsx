@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 import { classNames } from '../utils'
 import { api } from '../utils/api'
+import { syncDBs } from '../utils/database'
 import RevealedVersion from './Version'
 
 export interface SidebarMenuProps {
@@ -82,7 +83,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
           </li>
 
           <li>
-            <button onClick={() => mutate()}>Create App Seed</button>
+            <button onClick={() => syncDBs(mutate)}>Create App Seed</button>
           </li>
 
           <li className='-mx-6 mt-auto '>

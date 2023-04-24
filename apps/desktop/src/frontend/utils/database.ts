@@ -68,41 +68,41 @@ export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
   return data.publicUrl
 }
 
-export async function syncDBs() {
-  // const supabaseOldClient = createClient(
-  //   VITE_SUPABASE_URL,
-  //   VITE_SUPABASE_API_SECRET_KEY,
-  //   {
-  //     // <Database>
-  //     db: {
-  //       schema: 'public',
-  //     },
-  //     auth: {
-  //       // storage: AsyncStorage,
-  //       autoRefreshToken: true,
-  //       persistSession: true,
-  //       detectSessionInUrl: true,
-  //     },
-  //   }
-  // )
-  // const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
-  // const appMapped = data
-  //   ?.filter((item) => !item.user_id)
-  //   .map((item) => ({
-  //     id: item.id,
-  //     name: item.name,
-  //     description: item.description,
-  //     coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
-  //     category: item.category,
-  //     url: item.sourceUrl ?? item.url ?? item.link,
-  //     authorName: item.authorName,
-  //     authorUrl: item.authorUrl,
-  //     updatedAt: item.updatedAt,
-  //     createdAt: item.createdAt,
-  //     type: 'PUBLISHED',
-  //   }))
-  // console.log(appMapped)
-  // console.log(data)
+export async function syncDBs(mutate: any) {
+  const supabaseOldClient = createClient(
+    'https://thnfdwdttxqjouofsgmq.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRobmZkd2R0dHhxam91b2ZzZ21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjYyOTY5NjAsImV4cCI6MTk4MTg3Mjk2MH0.KAzhyKqlocidDpt9qXrWrhpixdvF9bQKm01VRNsZBJw',
+    {
+      // <Database>
+      db: {
+        schema: 'public',
+      },
+      auth: {
+        // storage: AsyncStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      },
+    }
+  )
+  const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
+  const appMapped = data
+    ?.filter((item) => !item.user_id)
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
+      category: item.category,
+      url: item.sourceUrl ?? item.url ?? item.link,
+      authorName: item.authorName,
+      authorUrl: item.authorUrl,
+      updatedAt: item.updatedAt,
+      createdAt: item.createdAt,
+      type: 'PUBLISHED',
+    }))
+  console.log(appMapped)
+  console.log(data)
   // const { data: appData = [], error } = await supabaseClient
   //   .from('App')
   //   .upsert(appMapped)
@@ -128,7 +128,8 @@ export async function syncDBs() {
   //     return data
   //   })
   // await Promise.all(dataImagePromises)
-  // const { error } = await supabaseClient.from('App').upsert(appMapped)
+  mutate(appMapped)
+  // const { error } = await supabaseClient().from('App').upsert(appMapped)
   // console.log(error)
 }
 
