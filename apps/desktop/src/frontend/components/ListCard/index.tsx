@@ -1,9 +1,10 @@
 import './style.css'
 import React from 'react'
+import { useUser } from '@clerk/clerk-react'
 import { PlayIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom'
 
-import { type AppListOutput, type GameListOutput } from '../../utils/api'
+import { api, type AppListOutput, type GameListOutput } from '../../utils/api'
 import { getMediaUrl } from '../../utils/database'
 import AppContextMenu from '../ContextMenu'
 
@@ -12,16 +13,24 @@ interface RevealedListCardProps {
 }
 export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { name, coverUrl, id, ownerId } = item
+  const { user } = useUser()
   const navigate = useNavigate()
+  const { mutate } = api.app.recent.useMutation()
 
   const handleLaunchClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation()
+    if (user?.id) {
+      mutate({ id, userId: user.id })
+    }
     navigate('/app/web/' + id)
   }
 
   const handleDetailClick = () => {
+    if (user?.id) {
+      mutate({ id, userId: user.id })
+    }
     navigate('/app/' + id)
   }
 

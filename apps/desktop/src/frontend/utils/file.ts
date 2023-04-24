@@ -44,8 +44,8 @@ export const uploadFile = async (
 ) => {
   name ??= file.name
   const fileType = file.type.split('/')[0]
-  const { data, error } = await supabaseClient.storage
-    .from(bucket)
+  const { data, error } = await supabaseClient()
+    .storage.from(bucket)
     .upload(`${path}/${name}.${fileType}`, file, {
       cacheControl: '3600',
       upsert: true,
@@ -60,8 +60,8 @@ export const uploadAppimage = async (
   appImageType = 'cover'
 ) => {
   const fileType = file.type.split('/')[0]
-  const { data, error } = await supabaseClient.storage
-    .from('apps')
+  const { data, error } = await supabaseClient()
+    .storage.from('apps')
     .upload(`images/${id}/${appImageType}.${fileType}`, file, {
       cacheControl: '3600',
       upsert: true,

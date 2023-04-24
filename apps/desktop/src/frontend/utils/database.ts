@@ -69,66 +69,66 @@ export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
 }
 
 export async function syncDBs(mutate: any) {
-  const supabaseOldClient = createClient(
-    'https://thnfdwdttxqjouofsgmq.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRobmZkd2R0dHhxam91b2ZzZ21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjYyOTY5NjAsImV4cCI6MTk4MTg3Mjk2MH0.KAzhyKqlocidDpt9qXrWrhpixdvF9bQKm01VRNsZBJw',
-    {
-      // <Database>
-      db: {
-        schema: 'public',
-      },
-      auth: {
-        // storage: AsyncStorage,
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,
-      },
-    }
-  )
-  const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
-  const appMapped = data
-    ?.filter((item) => !item.user_id)
-    .map((item) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
-      category: item.category,
-      url: item.sourceUrl ?? item.url ?? item.link,
-      authorName: item.authorName,
-      authorUrl: item.authorUrl,
-      updatedAt: item.updatedAt,
-      createdAt: item.createdAt,
-      type: 'PUBLISHED',
-    }))
-  console.log(appMapped)
-  console.log(data)
-  // const { data: appData = [], error } = await supabaseClient
-  //   .from('App')
-  //   .upsert(appMapped)
-  // console.log(error)
-  // const dataImagePromises = data
+  // const supabaseOldClient = createClient(
+  //   'sgmq.supabase.co',
+  //   'NsZBJw',
+  //   {
+  //     // <Database>
+  //     db: {
+  //       schema: 'public',
+  //     },
+  //     auth: {
+  //       // storage: AsyncStorage,
+  //       autoRefreshToken: true,
+  //       persistSession: true,
+  //       detectSessionInUrl: true,
+  //     },
+  //   }
+  // )
+  // const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
+  // const appMapped = data
   //   ?.filter((item) => !item.user_id)
-  //   .map(async (item: any) => {
-  //     if (!item.mediaPath) return
-  //     console.log(item)
-  //     // supabaseClient.storage.from(bucket).getPublicUrl(filePath)
-  //     const res = await supabaseOldClient.storage
-  //       .from('media')
-  //       .download(item?.mediaPath ?? '')
-  //     console.log(res)
-  //     // uploadFile(res.blob, 'apps', '')
-  //     const { data, error } = await supabaseClient.storage
-  //       .from('apps')
-  //       .upload(`images/${item.id}/cover.png`, res.data, {
-  //         cacheControl: '3600',
-  //         upsert: true,
-  //       })
-  //     console.log(data, error)
-  //     return data
-  //   })
-  // await Promise.all(dataImagePromises)
-  mutate(appMapped)
+  //   .map((item) => ({
+  //     id: item.id,
+  //     name: item.name,
+  //     description: item.description,
+  //     coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
+  //     category: item.category,
+  //     url: item.sourceUrl ?? item.url ?? item.link,
+  //     authorName: item.authorName,
+  //     authorUrl: item.authorUrl,
+  //     updatedAt: item.updatedAt,
+  //     createdAt: item.createdAt,
+  //     type: 'PUBLISHED',
+  //   }))
+  // console.log(appMapped)
+  // console.log(data)
+  // // const { data: appData = [], error } = await supabaseClient
+  // //   .from('App')
+  // //   .upsert(appMapped)
+  // // console.log(error)
+  // // const dataImagePromises = data
+  // //   ?.filter((item) => !item.user_id)
+  // //   .map(async (item: any) => {
+  // //     if (!item.mediaPath) return
+  // //     console.log(item)
+  // //     // supabaseClient.storage.from(bucket).getPublicUrl(filePath)
+  // //     const res = await supabaseOldClient.storage
+  // //       .from('media')
+  // //       .download(item?.mediaPath ?? '')
+  // //     console.log(res)
+  // //     // uploadFile(res.blob, 'apps', '')
+  // //     const { data, error } = await supabaseClient.storage
+  // //       .from('apps')
+  // //       .upload(`images/${item.id}/cover.png`, res.data, {
+  // //         cacheControl: '3600',
+  // //         upsert: true,
+  // //       })
+  // //     console.log(data, error)
+  // //     return data
+  // //   })
+  // // await Promise.all(dataImagePromises)
+  // mutate(appMapped)
   // const { error } = await supabaseClient().from('App').upsert(appMapped)
   // console.log(error)
 }

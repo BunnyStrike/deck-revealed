@@ -152,7 +152,7 @@ export const appRouter = createTRPCRouter({
     const { showHidden = false, isFavorited, userId } = input
 
     const where = {
-      // versions: { none: { platform: 'STEAMOS' } },
+      versions: { none: { platform: 'STEAMOS' } },
       name: { search: input.search },
       category: input.category,
       ownerId: input.ownerId,
@@ -161,9 +161,9 @@ export const appRouter = createTRPCRouter({
     if (userId) {
       where.userActions = {
         // some: {
-        //   userId,
-        //   favoritedAt: isFavorited ? { not: null } : null,
-        //   hideAt: showHidden ? { not: null } : null,
+        // userId,
+        // favoritedAt: isFavorited ? { not: null } : null,
+        // hideAt: showHidden ? { not: null } : null,
         // },
         // none: {
         //   favoritedAt: isFavorited ? { not: null } : null,
