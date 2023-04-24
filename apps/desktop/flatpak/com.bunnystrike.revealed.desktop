@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Revealed Launcher
+Exec=revealed-run %u
+Terminal=false
+Type=Application
+Icon=com.bunnystrike.revealed
+StartupWMClass=Revealed
+Comment=An App Store launcher
+Comment[de]=Ein Open Source Spielelauncher for Apps und Games
+MimeType=x-scheme-handler/revealed;
+Categories=Game;

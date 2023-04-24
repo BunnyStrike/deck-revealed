@@ -163,7 +163,7 @@ export const AddAppModal = ({
   }
 
   return (
-    <Dialog.Root className='z-40' open={modals.showAddApp}>
+    <Dialog.Root open={modals.showAddApp}>
       <Dialog.Trigger asChild>
         {isEmptyState ? (
           <EmptyState key='test' message={`Add a new app`} />
@@ -178,7 +178,7 @@ export const AddAppModal = ({
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className='bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />
-        <Dialog.Content className='data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-40 flex max-h-[85vh] w-[90vw]  max-w-[650px] translate-x-[-50%] translate-y-[-50%] flex-col items-center gap-8 rounded-[6px] bg-gray-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>
+        <Dialog.Content className='data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-40 flex max-h-[85vh] w-[90vw]  max-w-[650px] translate-x-[-50%] translate-y-[-50%] flex-col  gap-8 rounded-[6px] bg-gray-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>
           {/* <div className='tabs tabs-boxed'>
             <a
               className={classNames(
@@ -209,7 +209,7 @@ export const AddAppModal = ({
             </a>
           </div> */}
           {currentTab === 0 && (
-            <div className='flex flex-row gap-6'>
+            <div className='flex flex-row gap-6 '>
               <div className='flex h-full w-full flex-col'>
                 <div className='grow'>
                   <FileUploadCard
@@ -226,9 +226,9 @@ export const AddAppModal = ({
                   />
                 </div>
               </div>
-              <div className='h-full  w-full'>
+              <div className='h-full w-full'>
                 <Form.Root onSubmit={handleSave}>
-                  <Form.Field className='mb-[10px] grid w-full' name='name'>
+                  <Form.Field className='mb-2 grid w-full' name='name'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
                         Name
@@ -258,7 +258,7 @@ export const AddAppModal = ({
                     </Form.Control>
                   </Form.Field>
 
-                  <Form.Field className='mb-[10px] grid w-full' name='url'>
+                  <Form.Field className='mb-2 grid w-full' name='url'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
                         Category
@@ -291,7 +291,7 @@ export const AddAppModal = ({
                     </Form.Control>
                   </Form.Field>
 
-                  <Form.Field className='mb-[10px] grid w-full' name='url'>
+                  <Form.Field className='mb-2 grid w-full' name='url'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
                         Url
@@ -320,7 +320,7 @@ export const AddAppModal = ({
                     </Form.Control>
                   </Form.Field>
 
-                  <Form.Field className='mb-[10px] grid' name='description'>
+                  <Form.Field className='mb-2 grid' name='description'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
                         Description
@@ -339,7 +339,7 @@ export const AddAppModal = ({
                       ></textarea>
                     </Form.Control>
                   </Form.Field>
-
+                  {/* 
                   <Form.Field className='mb-[10px] grid' name='coverUrl'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
@@ -357,7 +357,7 @@ export const AddAppModal = ({
                         }}
                       />
                     </Form.Control>
-                  </Form.Field>
+                  </Form.Field> */}
 
                   <div className='mt-[25px] flex justify-end'>
                     <Form.Submit>
