@@ -33,10 +33,9 @@ export const AppContextMenu = ({
   const { mutateAsync: deleteApp } = api.app.delete.useMutation()
   const { mutateAsync: addToSteam } =
     api.desktop.steam.addAppToSteam.useMutation()
+  const { mutate: openWebviewPage } =
+    api.desktop.system.openWebviewPage.useMutation()
   const [modals, setModals] = useAtom(modalsAtom)
-  // const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
-  // const [urlsChecked, setUrlsChecked] = React.useState(false)
-  // const [person, setPerson] = React.useState('pedro')
 
   const handleDelete = async () => {
     if (!appId || !user?.id) return
@@ -56,6 +55,11 @@ export const AppContextMenu = ({
   const handleAddToSteam = () => {
     if (!app?.id) return
     addToSteam({ appInfo: app })
+  }
+
+  const handleLaunchInBrowser = () => {
+    if (!app.url) return
+    openWebviewPage({ url: app.url })
   }
 
   return (
@@ -88,6 +92,13 @@ export const AppContextMenu = ({
             className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
           >
             Add To Steam
+          </ContextMenu.Item>
+
+          <ContextMenu.Item
+            onClick={() => handleLaunchInBrowser()}
+            className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+          >
+            Launch In Browser
           </ContextMenu.Item>
 
           {/* {!!user?.id && (

@@ -70,8 +70,8 @@ export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
 
 export async function syncDBs(mutate: any) {
   // const supabaseOldClient = createClient(
-  //   'https://thnfdwdttxqjouofsgmq.supabase.co',
-  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRobmZkd2R0dHhxam91b2ZzZ21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjYyOTY5NjAsImV4cCI6MTk4MTg3Mjk2MH0.KAzhyKqlocidDpt9qXrWrhpixdvF9bQKm01VRNsZBJw',
+  //   'sgmq.supabase.co',
+  //   'NsZBJw',
   //   {
   //     // <Database>
   //     db: {

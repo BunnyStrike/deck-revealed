@@ -248,7 +248,13 @@ model App {
     authorName String?
     authorUrl String?
     publisherName String?
-    publisherUrl String?
+    //     url     String? @db.VarChar(1028)
+    // description String? @db.Text
+    // iconUrl    String? @db.VarChar(1028)
+    // coverUrl    String? @db.VarChar(1028)
+    // authorName String? 
+    // authorUrl String? @db.VarChar(1028)
+    publisherUrl String? @db.VarChar(1028)
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
     owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -263,8 +269,11 @@ model App {
     source     String? 
     uninstallUrl     String? 
     sha256 String?
+    // sourceUrl     String? @db.VarChar(1028)
+    // uninstallUrl     String? @db.VarChar(1028)
+    // sha256 String? @db.VarChar(512)
     store AppStore?
-    storeUrl String?
+    storeUrl String? @db.VarChar(1028)
     platform Platform @default(OTHER)
     runnerType AppRunnerType @default(UNKNOWN)
     installLocation String?
