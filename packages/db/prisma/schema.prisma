@@ -8,16 +8,16 @@ generator client {
 
 datasource db {
 //   provider = "postgresql"
-    provider = "mysql"
+    // provider = "mysql"
 //   provider = "cockroachdb"
-  url = env("DATABASE_URL")
-  relationMode = "prisma"
+//   url = env("DATABASE_URL")
+//   relationMode = "prisma"
 
 
     // Supabase with prisma
-    // provider = "postgresql"
-    // url               = env("DATABASE_URL")
-    // directUrl         = env("DIRECT_URL")
+    provider          = "postgresql"
+    url               = env("DATABASE_URL")
+    directUrl         = env("DIRECT_URL")
 }
 
 // datasource db {
@@ -242,7 +242,6 @@ model AppMedia {
 model App {
     id      String @id @default(cuid())
     name    String
-    url     String?
     description String?
     iconUrl    String?
     coverUrl    String?
@@ -261,7 +260,7 @@ model App {
     // platforms Platform[] @default([])
 
     // Core Parts for platform
-    sourceUrl     String? 
+    source     String? 
     uninstallUrl     String? 
     sha256 String?
     store AppStore?
@@ -277,7 +276,7 @@ model App {
     versions AppVersion[]
     userPlatforms   UserAppPlatform[]
 
-    @@fulltext([name])
+    // @@fulltext([name])
 
 }
 
@@ -301,7 +300,7 @@ model BootVideo {
     user    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String?
 
-    @@fulltext([name])
+    // @@fulltext([name])
 }
 
 // model Post {
@@ -338,6 +337,6 @@ model Game {
     createdAt DateTime @default(now())
     media GameMedia[]
 
-    @@fulltext([name])
-    @@fulltext([description])
+    // @@fulltext([name])
+    // @@fulltext([description])
 }
