@@ -4,6 +4,7 @@ import { dark } from '@clerk/themes'
 import { Link, useLocation } from 'react-router-dom'
 
 import { classNames } from '../utils'
+import { api } from '../utils/api'
 import RevealedVersion from './Version'
 
 export interface SidebarMenuProps {
@@ -23,6 +24,7 @@ export interface SidebarMenuProps {
 }
 
 export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
+  const { mutate } = api.seed.restoreApps.useMutation()
   const location = useLocation()
   const { user } = useUser()
 
@@ -77,6 +79,10 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
           </li>
           <li className=' flex items-center justify-center sm:hidden'>
             <UserButton appearance={{ baseTheme: dark }} />
+          </li>
+
+          <li>
+            <button onClick={() => mutate()}>Create App Seed</button>
           </li>
 
           <li className='-mx-6 mt-auto '>

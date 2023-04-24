@@ -16,12 +16,18 @@ export const AppsScreen = () => {
     data = [],
     error,
     isLoading,
-  } = api.app.apps.useQuery({
-    search: debouncedFilter ? `${debouncedFilter}*` : undefined,
-    category: listFilter.category === 'All' ? undefined : listFilter.category,
-    sort: listFilter.sort,
-    userId: user?.id,
-  })
+  } = api.app.apps.useQuery(
+    {
+      search: debouncedFilter ? `${debouncedFilter}*` : undefined,
+      category: listFilter.category === 'All' ? undefined : listFilter.category,
+      sort: listFilter.sort,
+      userId: user?.id,
+    },
+    {
+      refetchOnWindowFocus: false,
+      staleTime: 300000,
+    }
+  )
 
   useEffect(() => {
     setListFilter((prev) => ({

@@ -25,7 +25,11 @@ export function VersionChangelogModel({
   isOpen = false,
 }: Props) {
   const { data: currentChangelog } =
-    api.desktop.system.getCurrentChangelog.useQuery()
+    api.desktop.system.getCurrentChangelog.useQuery(undefined, {
+      staleTime: 1000,
+    })
+
+  console.log(currentChangelog)
 
   const handleClose = () => {
     onClose()

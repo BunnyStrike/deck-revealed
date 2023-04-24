@@ -9,6 +9,7 @@ generator client {
 datasource db {
 //   provider = "postgresql"
   provider = "mysql"
+//   provider = "cockroachdb"
   url = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -270,7 +271,7 @@ model App {
     versions AppVersion[]
     userPlatforms   UserAppPlatform[]
 
-    // @@fulltext([name])
+    @@fulltext([name])
 
 }
 
@@ -294,7 +295,7 @@ model BootVideo {
     user    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String?
 
-    // @@fulltext([name])
+    @@fulltext([name])
 }
 
 // model Post {
@@ -302,7 +303,6 @@ model BootVideo {
 //     title   String
 //     content String
 // }
-
 
 model GameMedia {
     media    Media   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
@@ -332,6 +332,6 @@ model Game {
     createdAt DateTime @default(now())
     media GameMedia[]
 
-    // @@fulltext([name])
-    // @@fulltext([description])
+    @@fulltext([name])
+    @@fulltext([description])
 }
