@@ -92,7 +92,7 @@ export const AddAppModal = ({
 
     const appUpdate = await mutateAsync({
       name: data?.name ?? app?.name ?? '',
-      url: data?.url ?? app?.url ?? '',
+      url: data?.url ?? app?.source ?? '',
       description: data?.description ?? app?.description ?? '',
       userId: isAdmin ? undefined : user?.id,
       coverUrl: app?.coverUrl ?? steamGridImage,
@@ -314,7 +314,7 @@ export const AddAppModal = ({
                         type='text'
                         placeholder='Source'
                         className='input w-full max-w-xs'
-                        defaultValue={app?.url ?? ''}
+                        defaultValue={app?.source ?? ''}
                         required
                       />
                     </Form.Control>

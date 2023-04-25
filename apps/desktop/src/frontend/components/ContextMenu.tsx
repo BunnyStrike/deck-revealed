@@ -37,6 +37,8 @@ export const AppContextMenu = ({
     api.desktop.system.openWebviewPage.useMutation()
   const [modals, setModals] = useAtom(modalsAtom)
 
+  const installable = app?.platform !== 'WEB' && app?.source
+
   const handleDelete = async () => {
     if (!appId || !user?.id) return
     await deleteApp({ id: appId, ownerId: user?.id })
@@ -58,8 +60,12 @@ export const AppContextMenu = ({
   }
 
   const handleLaunchInBrowser = () => {
-    if (!app.url) return
-    openWebviewPage({ url: app.url })
+    if (!app.source || app.platform !== 'WEB') return
+    openWebviewPage({ url: app.source })
+  }
+
+  const handleInstall = () => {
+    // TODO: install app
   }
 
   return (
@@ -94,12 +100,21 @@ export const AppContextMenu = ({
             Add To Steam
           </ContextMenu.Item>
 
-          <ContextMenu.Item
-            onClick={() => handleLaunchInBrowser()}
-            className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
-          >
-            Launch In Browser
-          </ContextMenu.Item>
+          {installable ? (
+            <ContextMenu.Item
+              onClick={() => handleInstall()}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Install
+            </ContextMenu.Item>
+          ) : (
+            <ContextMenu.Item
+              onClick={() => handleLaunchInBrowser()}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Launch In Browser
+            </ContextMenu.Item>
+          )}
 
           {/* {!!user?.id && (
             <ContextMenu.Item

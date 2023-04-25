@@ -40,7 +40,7 @@ export default function WebAppScreen() {
     id,
   })
 
-  const startUrl = data?.url ?? 'https://google.com' //'https://netflix.com'
+  const startUrl = data?.source ?? 'https://google.com' //'https://netflix.com'
 
   const [preloadPath, setPreloadPath] = useState('')
 

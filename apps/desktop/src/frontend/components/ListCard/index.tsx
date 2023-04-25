@@ -1,7 +1,8 @@
 import './style.css'
 import React from 'react'
 import { useUser } from '@clerk/clerk-react'
-import { PlayIcon } from '@radix-ui/react-icons'
+import { DownloadIcon, PlayIcon } from '@radix-ui/react-icons'
+import { IconDownload } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
 import { api, type AppListOutput, type GameListOutput } from '../../utils/api'
@@ -17,7 +18,19 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const navigate = useNavigate()
   const { mutate } = api.app.recent.useMutation()
 
+  const installable = app?.platform !== 'WEB' && app?.source
+
   const handleLaunchClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation()
+    if (user?.id) {
+      mutate({ id, userId: user.id })
+    }
+    navigate('/app/web/' + id)
+  }
+
+  const handleInstall = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation()
@@ -53,12 +66,21 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
         <div className='card-body h-full justify-end p-0'>
           <h2 className='card-title p-2 group-hover:text-white '>{name}</h2>
           <div className='flex justify-end rounded-b-2xl bg-gray-800 p-2'>
-            <button
-              onClick={(e) => handleLaunchClick(e)}
-              className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
-            >
-              <PlayIcon />
-            </button>
+            {installable ? (
+              <button
+                onClick={(e) => handleInstall(e)}
+                className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+              >
+                <DownloadIcon />
+              </button>
+            ) : (
+              <button
+                onClick={(e) => handleLaunchClick(e)}
+                className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+              >
+                <PlayIcon />
+              </button>
+            )}
           </div>
         </div>
       </div>
