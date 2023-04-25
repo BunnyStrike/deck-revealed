@@ -52,6 +52,7 @@ model User {
     games   Game[]
     launcherCredentials UserLauncherCredential[]
     appPlatforms   UserAppPlatform[]
+    modOwner   GameMod[]
     
 }
 
@@ -293,6 +294,15 @@ model App {
 
 }
 
+// TODO: design emulator save and game backup and syncs
+// model EmulatorGame {
+//     id     String @id @default(cuid())
+//     app    App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+//     appId  String
+
+//     location
+// }
+
 enum BootVideoType {
     STEAM_BOOT 
     STEAM_SUSPEND
@@ -331,7 +341,51 @@ model GameMedia {
     @@id([mediaId, gameId])
 }
 
+
+model GameVersion {
+    id      String @id @default(cuid())
+    version String @default("0.0.0")
+    sourceUrl     String 
+    name     String?
+    uninstallUrl     String? 
+    game     Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+    gameId   String
+    gameMod     GameMod?    @relation(fields: [gameModId], references: [id], onDelete: Cascade)
+    gameModId   String?
+    duration Int @default(0)
+    size Int @default(0)
+    sha256 String?
+    store AppStore?
+    storeUrl String?
+    platform Platform @default(OTHER)
+    runnerType AppRunnerType @default(UNKNOWN)
+    installLocation String?
+    runnerLocation String?
+    saveLocation String?
+    isRecommended   Boolean @default(false)
+    status AppStatus @default(DRAFT)
+    changelog   String?
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+}
+
 // TODO: Add GameMod
+model GameMod {
+    id      String @id @default(cuid())
+    name    String
+    description String?
+    iconUrl    String?
+    coverUrl    String?
+    authorName String?
+    authorUrl String?
+    owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId  String?
+    game    Game?   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+    gameId  String?
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+    versions GameVersion[]
+}
 
 // Game Details from Steam, GOG, Epic, Origin, Uplay, etc
 
@@ -349,6 +403,8 @@ model Game {
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
     media GameMedia[]
+    versions GameVersion[]
+    mods GameMod[]
 
     // @@fulltext([name])
     // @@fulltext([description])
@@ -382,6 +438,8 @@ model Supporter {
 
     status SupporterStatus @default(ACTIVE)
 
+    isPublic Boolean @default(true)
+
     user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String? @unique
 
@@ -397,10 +455,7 @@ model Sponsor {
     coverUrl    String?
     bannerUrl    String?
 
-    priority Int @default(0)
-
-    startAt DateTime?
-    endAt DateTime?
+    status SupporterStatus @default(ACTIVE)
 
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
