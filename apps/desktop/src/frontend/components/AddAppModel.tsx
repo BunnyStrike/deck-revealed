@@ -14,7 +14,7 @@ import {
   type AppListOutput,
   type AppUpsertInput,
 } from '../utils/api'
-import { appCategories } from '../utils/app'
+import { appCategories, appRunnerTypes, appStores } from '../utils/app'
 import { uploadAppimage, uploadFile } from '../utils/file'
 import DialogModal from './Dialog'
 import EmptyState from './EmptyState'
@@ -317,6 +317,72 @@ export const AddAppModal = ({
                         defaultValue={app?.source ?? ''}
                         required
                       />
+                    </Form.Control>
+                  </Form.Field>
+
+                  <Form.Field className='mb-2 grid w-full' name='url'>
+                    <div className='flex items-baseline justify-between'>
+                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                        Category
+                      </Form.Label>
+                      <Form.Message
+                        className='text-[13px] text-white opacity-[0.8]'
+                        match='valueMissing'
+                      >
+                        Please enter a Category
+                      </Form.Message>
+                      <Form.Message
+                        className='text-[13px] text-white opacity-[0.8]'
+                        match='typeMismatch'
+                      >
+                        Please provide a valid Category
+                      </Form.Message>
+                    </div>
+                    <Form.Control asChild>
+                      <select
+                        className='select w-full max-w-xs'
+                        defaultValue={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                      >
+                        {appCategories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    </Form.Control>
+                  </Form.Field>
+
+                  <Form.Field className='mb-2 grid w-full' name='url'>
+                    <div className='flex items-baseline justify-between'>
+                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                        Category
+                      </Form.Label>
+                      <Form.Message
+                        className='text-[13px] text-white opacity-[0.8]'
+                        match='valueMissing'
+                      >
+                        Please enter a Category
+                      </Form.Message>
+                      <Form.Message
+                        className='text-[13px] text-white opacity-[0.8]'
+                        match='typeMismatch'
+                      >
+                        Please provide a valid Category
+                      </Form.Message>
+                    </div>
+                    <Form.Control asChild>
+                      <select
+                        className='select w-full max-w-xs'
+                        defaultValue={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                      >
+                        {appCategories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
                     </Form.Control>
                   </Form.Field>
 

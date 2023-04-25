@@ -3,7 +3,7 @@ import { Menu, Tray, ipcMain, nativeImage, type BrowserWindow } from 'electron'
 import i18next from 'i18next'
 
 import { type RecentGame } from '~/common/types'
-import { GlobalConfig } from '../config'
+import { GlobalConfig } from '../configs/config'
 import { iconDark, iconLight } from '../constants'
 import { LogPrefix, logInfo } from '../logger/logger'
 // import { getRecentGames, maxRecentGames } from '../recent_games/recent_games'

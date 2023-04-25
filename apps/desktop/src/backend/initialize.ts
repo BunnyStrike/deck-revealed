@@ -64,58 +64,56 @@ export const processZoomForScreen = (zoomFactor: number) => {
 }
 
 const init = async () => {
-  GlobalConfig.get()
   createNecessaryFolders()
   configStore.set('userHome', userHome)
+  GlobalConfig.get()
+  // LegendaryLibrary.get()
+  // GOGLibrary.get()
 }
 
 export async function initializeWindow(): Promise<BrowserWindow> {
   await init()
   const mainWindow = createMainWindow()
 
-  // if ((isSteamDeckGameMode || isCLIFullscreen) && !isCLINoGui) {
-  //   logInfo(
-  //     [
-  //       isSteamDeckGameMode
-  //         ? 'Revealed started via Steam-Deck gamemode.'
-  //         : 'Revealed started with --fullscreen',
-  //       'Switching to fullscreen',
-  //     ],
-  //     LogPrefix.Backend
-  //   )
-  //   mainWindow.setFullScreen(true)
-  // }
+  if ((isSteamDeckGameMode || isCLIFullscreen) && !isCLINoGui) {
+    logInfo(
+      [
+        isSteamDeckGameMode
+          ? 'Revealed started via Steam-Deck gamemode.'
+          : 'Revealed started with --fullscreen',
+        'Switching to fullscreen',
+      ],
+      LogPrefix.Backend
+    )
+    mainWindow.setFullScreen(true)
+  }
 
   setTimeout(() => {
     // DXVK.getLatest()
     // Winetricks.download()
   }, 2500)
 
-  // GlobalConfig.get()
-  // LegendaryLibrary.get()
-  // GOGLibrary.get()
+  mainWindow.setIcon(icon)
+  app.setAppUserModelId('Revealed')
+  app.commandLine.appendSwitch('enable-spatial-navigation')
 
-  // mainWindow.setIcon(icon)
-  // app.setAppUserModelId('Revealed')
-  // app.commandLine.appendSwitch('enable-spatial-navigation')
+  mainWindow.on('close', (e) => {
+    e.preventDefault()
 
-  // mainWindow.on('close', (e) => {
-  //   e.preventDefault()
+    if (!isCLIFullscreen && !isSteamDeckGameMode) {
+      // store windows properties
+      configStore.set('window-props', mainWindow.getBounds())
+    }
 
-  //   if (!isCLIFullscreen && !isSteamDeckGameMode) {
-  //     // store windows properties
-  //     configStore.set('window-props', mainWindow.getBounds())
-  //   }
+    const { exitToTray } = GlobalConfig.get().getSettings()
 
-  //   const { exitToTray } = GlobalConfig.get().getSettings()
+    if (exitToTray) {
+      logInfo('Exitting to tray instead of quitting', LogPrefix.Backend)
+      return mainWindow.hide()
+    }
 
-  //   if (exitToTray) {
-  //     logInfo('Exitting to tray instead of quitting', LogPrefix.Backend)
-  //     return mainWindow.hide()
-  //   }
-
-  //   exitApp()
-  // })
+    exitApp()
+  })
 
   if (isWindows) {
     detectVCRedist(mainWindow)
@@ -154,16 +152,16 @@ export async function initializeWindow(): Promise<BrowserWindow> {
     }
   }
 
-  // mainWindow.webContents.setWindowOpenHandler((details) => {
-  //   const pattern = app.isPackaged ? publicDir : `localhost:${devServerPort}`
-  //   return { action: !details.url.match(pattern) ? 'allow' : 'deny' }
-  // })
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    const pattern = app.isPackaged ? publicDir : `localhost:${devServerPort}`
+    return { action: !details.url.match(pattern) ? 'allow' : 'deny' }
+  })
 
-  // ipcMain.on('setZoomFactor', (event, zoomFactor) => {
-  //   mainWindow.webContents.setZoomFactor(
-  //     processZoomForScreen(parseFloat(zoomFactor))
-  //   )
-  // })
+  ipcMain.on('setZoomFactor', (event, zoomFactor) => {
+    mainWindow.webContents.setZoomFactor(
+      processZoomForScreen(parseFloat(zoomFactor))
+    )
+  })
 
   return mainWindow
 }
@@ -241,20 +239,20 @@ export const initializeApp = () => {
     // GOGUser.migrateCredentialsConfig()
     const mainWindow = await initializeWindow()
 
-    // protocol.registerStringProtocol('revealed', (request, callback) => {
-    //   void handleProtocol([request.url])
-    //   callback('Operation initiated.')
-    // })
+    protocol.registerStringProtocol('revealed', (request, callback) => {
+      void handleProtocol([request.url])
+      callback('Operation initiated.')
+    })
 
-    // if (!app.isDefaultProtocolClient('revealed')) {
-    //   if (app.setAsDefaultProtocolClient('revealed')) {
-    //     logInfo('Registered protocol with OS.', LogPrefix.Backend)
-    //   } else {
-    //     logWarning('Failed to register protocol with OS.', LogPrefix.Backend)
-    //   }
-    // } else {
-    //   logWarning('Protocol already registered.', LogPrefix.Backend)
-    // }
+    if (!app.isDefaultProtocolClient('revealed')) {
+      if (app.setAsDefaultProtocolClient('revealed')) {
+        logInfo('Registered protocol with OS.', LogPrefix.Backend)
+      } else {
+        logWarning('Failed to register protocol with OS.', LogPrefix.Backend)
+      }
+    } else {
+      logWarning('Protocol already registered.', LogPrefix.Backend)
+    }
 
     const { startInTray } = GlobalConfig.get().getSettings()
     const headless = isCLINoGui || startInTray
@@ -264,11 +262,11 @@ export const initializeApp = () => {
     }
 
     // set initial zoom level after a moment, if set in sync the value stays as 1
-    // setTimeout(() => {
-    //   const zoomFactor = configStore.get('zoomPercent', 100) / 100
+    setTimeout(() => {
+      const zoomFactor = configStore.get('zoomPercent', 100) / 100
 
-    //   mainWindow.webContents.setZoomFactor(processZoomForScreen(zoomFactor))
-    // }, 200)
+      mainWindow.webContents.setZoomFactor(processZoomForScreen(zoomFactor))
+    }, 200)
 
     // ipcMain.on('changeLanguage', async (event, language) => {
     //   logInfo(['Changing Language to:', language], LogPrefix.Backend)
@@ -278,7 +276,7 @@ export const initializeApp = () => {
 
     // downloadAntiCheatData()
 
-    // await initTrayIcon(mainWindow)
+    await initTrayIcon(mainWindow)
 
     return
   })

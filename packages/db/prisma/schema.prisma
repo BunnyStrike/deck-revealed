@@ -43,12 +43,16 @@ model User {
     image         String?
     bio           String?
     role          Role @default(USER)
+    
+    supporter Supporter?
+
     apps         App[]
     recentApps   UserActionApp[]
     bootVideos   BootVideo[]
     games   Game[]
     launcherCredentials UserLauncherCredential[]
     appPlatforms   UserAppPlatform[]
+    
 }
 
 model UserActionApp {
@@ -348,4 +352,87 @@ model Game {
 
     // @@fulltext([name])
     // @@fulltext([description])
+}
+
+
+enum SupporterSource {
+    PATREON
+    GITHUB
+    WEBSITE
+    OPEN_COLLECTIVE
+    CONTRIBUTION
+    OTHER
+}
+
+enum SupporterStatus {
+    UNKNOWN
+    ACTIVE
+    INACTIVE
+    BANNED
+}
+
+model Supporter {
+    id      String @id @default(cuid())
+    name    String
+    source    SupporterSource @default(OTHER)
+    url     String?
+
+    months Int @default(0)
+    score Int @default(0)
+
+    status SupporterStatus @default(ACTIVE)
+
+    user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId  String? @unique
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+}
+
+model Sponsor {
+    id      String @id @default(cuid())
+    title    String
+    content    String
+    url     String?
+    coverUrl    String?
+    bannerUrl    String?
+
+    priority Int @default(0)
+
+    startAt DateTime?
+    endAt DateTime?
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+
+    ads Ad[]
+}
+
+enum AdType {
+    CHARITY
+    AFFILIATE
+    PAID
+    OTHER
+}
+
+model Ad {
+    id      String @id @default(cuid())
+    title    String
+    content    String
+    url     String?
+    coverUrl    String?
+    bannerUrl    String?
+
+    priority Int @default(0)
+
+    type AdType @default(OTHER)
+
+    startAt DateTime?
+    endAt DateTime?
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+
+    sponsor Sponsor? @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+    sponsorId String?
 }
