@@ -222,19 +222,19 @@ export const initializeApp = () => {
     //   // }
     // })
 
-    // await i18next.use(Backend).init({
-    //   backend: {
-    //     addPath: path.join(publicDir, 'locales', '{{lng}}', '{{ns}}'),
-    //     allowMultiLoading: false,
-    //     loadPath: path.join(publicDir, 'locales', '{{lng}}', '{{ns}}.json'),
-    //   },
-    //   debug: false,
-    //   returnEmptyString: false,
-    //   returnNull: false,
-    //   fallbackLng: 'en',
-    //   lng: 'en', // language ?? 'en',
-    //   supportedLngs: supportedLanguages,
-    // })
+    await i18next.use(Backend).init({
+      backend: {
+        addPath: path.join(publicDir, 'locales', '{{lng}}', '{{ns}}'),
+        allowMultiLoading: false,
+        loadPath: path.join(publicDir, 'locales', '{{lng}}', '{{ns}}.json'),
+      },
+      debug: false,
+      returnEmptyString: false,
+      returnNull: false,
+      fallbackLng: 'en',
+      lng: 'en', // language ?? 'en',
+      supportedLngs: supportedLanguages,
+    })
 
     // GOGUser.migrateCredentialsConfig()
     const mainWindow = await initializeWindow()
