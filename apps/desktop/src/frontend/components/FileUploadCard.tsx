@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 
 type FileUploadCardProps = {
-  selectedPreview: string | undefined | null
+  selectedPreview?: string | undefined | null
   onSelectedFile: (file?: File) => void
   title?: string
   className?: string
@@ -14,14 +14,22 @@ export const FileUploadCard = ({
   title = 'Select a file',
   className,
 }: FileUploadCardProps) => {
+  const [preview, setPreview] = useState<string | undefined>()
+
+  const handleFileSelected = (file?: File) => {
+    if (!file) return
+    if (onSelectedFile) onSelectedFile(file)
+    setPreview(URL.createObjectURL(file))
+  }
+
   return (
     <div className={classNames('overflow-hidden rounded-lg', className)}>
       <div className='px-2 py-3 sm:p-2'>
-        {selectedPreview ? (
+        {preview || selectedPreview ? (
           <div className='bg-grey-lighter flex w-full items-center justify-center'>
             <label className='text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white uppercase tracking-wide shadow-lg hover:text-white'>
               <img
-                src={selectedPreview ?? 'public/img/steam-pill.jpg'}
+                src={preview ?? selectedPreview ?? 'public/img/steam-pill.jpg'}
                 className='rounded-lg bg-cover bg-center'
                 alt='Cover Image'
               />
@@ -30,7 +38,7 @@ export const FileUploadCard = ({
                 className='hidden'
                 onChange={(e) => {
                   if (e.target.files?.length) {
-                    onSelectedFile(e.target.files[0])
+                    handleFileSelected(e.target.files[0])
                   }
                 }}
               />
@@ -53,7 +61,7 @@ export const FileUploadCard = ({
                 className='hidden'
                 onChange={(e) => {
                   if (e.target.files?.length) {
-                    onSelectedFile(e.target.files[0])
+                    handleFileSelected(e.target.files[0])
                   }
                 }}
               />

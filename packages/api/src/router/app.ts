@@ -20,7 +20,7 @@ const appFilterInput = z
 
 const mediaInput = z.object({
   name: z.string().min(1),
-  url: z.string().min(1),
+  source: z.string().min(1),
   description: z.string().optional(),
   type: z
     .string()
@@ -105,7 +105,7 @@ const versionInput = z.object({
 
 const appInput = {
   name: z.string().min(1),
-  url: z.string().min(1),
+  source: z.string().min(1),
   description: z.string().optional(),
   authorName: z.string().optional(),
   coverUrl: z.string().optional(),
@@ -231,7 +231,7 @@ export const appRouter = createTRPCRouter({
     .mutation(({ ctx, input }) => {
       const {
         name,
-        url,
+        source,
         description,
         authorName,
         authorUrl,
@@ -249,7 +249,7 @@ export const appRouter = createTRPCRouter({
         where: { id },
         update: {
           name,
-          url,
+          source,
           description,
           authorName,
           coverUrl,
@@ -260,7 +260,7 @@ export const appRouter = createTRPCRouter({
         },
         create: {
           name,
-          url,
+          source,
           description,
           authorName,
           authorUrl,

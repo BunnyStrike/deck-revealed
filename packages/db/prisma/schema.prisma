@@ -253,13 +253,7 @@ model App {
     authorName String?
     authorUrl String?
     publisherName String?
-    //     url     String? @db.VarChar(1028)
-    // description String? @db.Text
-    // iconUrl    String? @db.VarChar(1028)
-    // coverUrl    String? @db.VarChar(1028)
-    // authorName String? 
-    // authorUrl String? @db.VarChar(1028)
-    publisherUrl String? @db.VarChar(1028)
+    publisherUrl String?
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
     owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -268,22 +262,19 @@ model App {
     typeAt DateTime @default(now())
     category String? @default("Entertainment")
     subCategory String? @default("Other")
-    // platforms Platform[] @default([])
 
     // Core Parts for platform
-    source     String? 
-    uninstallUrl     String? 
-    sha256 String?
-    // sourceUrl     String? @db.VarChar(1028)
-    // uninstallUrl     String? @db.VarChar(1028)
-    // sha256 String? @db.VarChar(512)
     store AppStore?
-    storeUrl String? @db.VarChar(1028)
+    storeUrl String?
     platform Platform @default(OTHER)
     runnerType AppRunnerType @default(UNKNOWN)
-    installLocation String?
-    runnerLocation String?
-    saveLocation String?
+    //
+    source     String? // url | File Location | Script | Id (flatpak, snap, pacman, etc)
+    uninstall     String? // url | File Location | Script | Id (flatpak, snap, pacman, etc)
+    installLocation String? // /home/deck/.local/share/scawp/SDSCK/
+    runnerLocation String? // /home/deck/.local/share/scawp/SDSCK/zShaderCacheKiller.sh
+    saveLocation String? // /home/deck/.local/share/scawp/SDSCK/Saves
+    sha256 String?
     //
     appMedia AppMedia[]
     userActions   UserActionApp[]
@@ -396,6 +387,7 @@ model Game {
     description String?
     iconUrl    String?
     coverUrl    String?
+    bannerUrl    String?
     authorName String?
     authorUrl String?
     owner    User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)

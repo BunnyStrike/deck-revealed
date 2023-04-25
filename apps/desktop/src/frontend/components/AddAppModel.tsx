@@ -14,7 +14,15 @@ import {
   type AppListOutput,
   type AppUpsertInput,
 } from '../utils/api'
-import { appCategories, appRunnerTypes, appStores } from '../utils/app'
+import {
+  appCategories,
+  appPlatforms,
+  appRunnerTypes,
+  appStores,
+  type AppPlatform,
+  type AppRunnerType,
+  type AppStore,
+} from '../utils/app'
 import { uploadAppimage, uploadFile } from '../utils/file'
 import DialogModal from './Dialog'
 import EmptyState from './EmptyState'
@@ -41,26 +49,32 @@ export const AddAppModal = ({
   console.log(app)
 
   const { mutateAsync, error, isLoading } = api.app.create.useMutation()
+  const {
+    mutateAsync: updateAsync,
+    error: errorUpdate,
+    isLoading: isLoadingUpdate,
+  } = api.app.update.useMutation()
 
   const [category, setCategory] = useState(app?.category ?? 'Entertainment')
+  const [store, setStore] = useState<AppStore>(app?.store ?? 'OTHER')
+  const [platform, setPlatform] = useState<AppPlatform>(app?.store ?? 'WEB')
+  const [runnerType, setRunnerType] = useState<AppRunnerType>(
+    app?.runnerType ?? 'UNKNOWN'
+  )
 
   const [name, setName] = useState(app?.name)
   const debouncedName = useDebounce(name, 500)
+
+  const [selectedIconFile, setSelectedIconFile] = useState<
+    File | undefined | null
+  >()
 
   const [selectedBannerFile, setSelectedBannerFile] = useState<
     File | undefined | null
   >()
 
-  const [selectedBannerPreview, setSelectedBannerPreview] = useState<
-    string | undefined
-  >()
-
   const [selectedCoverFile, setSelectedCoverFile] = useState<
     File | undefined | null
-  >()
-
-  const [selectedCoverPreview, setSelectedCoverPreview] = useState<
-    string | undefined
   >()
 
   const [steamGridImage, setSteamGridImage] = useState<
@@ -92,56 +106,71 @@ export const AddAppModal = ({
 
     const appUpdate = await mutateAsync({
       name: data?.name ?? app?.name ?? '',
-      url: data?.url ?? app?.source ?? '',
+      source: data?.source ?? app?.source ?? '',
       description: data?.description ?? app?.description ?? '',
       userId: isAdmin ? undefined : user?.id,
       coverUrl: app?.coverUrl ?? steamGridImage,
+      bannerUrl: app?.bannerUrl,
+      iconUrl: app?.iconUrl,
     } as AppUpsertInput)
 
     console.log(appUpdate)
 
     // upload image if it exists
-    if (selectedCoverFile && appUpdate?.id) {
+    if (!appUpdate?.id) {
+      setModals((prev) => ({ ...prev, showAddApp: false }))
+      return
+    }
+    let updateDoc: any = {
+      id: appUpdate?.id,
+    }
+    if (selectedCoverFile) {
       const uploadedCover = await uploadAppimage(
         selectedCoverFile,
         appUpdate?.id
       )
-
-      // const uploadedBanner = await uploadAppimage(
-      //   selectedCoverFile,
-      //   appUpdate?.id,
-      //   'banner'
-      // )
-      // const uploadedIcon = await uploadAppimage(
-      //   selectedCoverFile,
-      //   appUpdate?.id,
-      //   'icon'
-      // )
-
-      // appUpdate
-
-      // await mutateAsync({
-      //   id: appUpdate?.id,
-      //   coverUrl: data?.name ?? steamGridImage,
-      // } as AppUpsertInput)
+      if (uploadedCover?.data?.path) {
+        updateDoc = {
+          ...updateDoc,
+          coverUrl: uploadedCover?.data?.path ?? '',
+        }
+      }
+    }
+    if (selectedBannerFile) {
+      const uploadedBanner = await uploadAppimage(
+        selectedBannerFile,
+        appUpdate?.id,
+        'banner'
+      )
+      if (uploadedBanner?.data?.path) {
+        updateDoc = {
+          ...updateDoc,
+          bannerUrl: uploadedBanner?.data?.path ?? '',
+        }
+      }
     }
 
+    if (selectedIconFile) {
+      const uploadedIcon = await uploadAppimage(
+        selectedIconFile,
+        appUpdate?.id,
+        'icon'
+      )
+      if (uploadedIcon?.data?.path) {
+        updateDoc = {
+          ...updateDoc,
+          iconUrl: uploadedIcon?.data?.path ?? '',
+        }
+      }
+    }
+
+    await updateAsync(updateDoc)
+
     setModals((prev) => ({ ...prev, showAddApp: false }))
-
-    // // Submit form data and catch errors in the response
-    // submitForm(data)
-    //   .then(() => {})
-    //   /**
-    //    * Map errors from your server response into a structure you'd like to work with.
-    //    * In this case resulting in this object: `{ email: false, password: true }`
-    //    */
-    //   .catch((errors) => setServerErrors(mapServerErrors(errors)))
-
-    // prevent default form submission
   }
 
   const handleSearchSteamgridImage = async (name?: string) => {
-    if (!name || !!selectedCoverPreview) return
+    if (!name || !!selectedCoverFile) return
 
     try {
       setSteamGridImage(await searchSteamgridImage(name))
@@ -153,13 +182,11 @@ export const AddAppModal = ({
   const handleImageSelect = (file?: File) => {
     if (!file) return
     setSelectedCoverFile(file)
-    setSelectedCoverPreview(URL.createObjectURL(file))
   }
 
   const handleBannerSelect = (file?: File) => {
     if (!file) return
     setSelectedBannerFile(file)
-    setSelectedBannerPreview(URL.createObjectURL(file))
   }
 
   return (
@@ -177,28 +204,31 @@ export const AddAppModal = ({
         )}
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className='bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />
-        <Dialog.Content className='data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-40 flex max-h-[85vh] w-[90vw]  max-w-[650px] translate-x-[-50%] translate-y-[-50%] flex-col  gap-8 rounded-[6px] bg-gray-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>
-          {/* <div className='tabs tabs-boxed'>
-            <a
-              className={classNames(
-                'tab ',
-                currentTab === 0 ? 'tab-active' : ''
-              )}
-              onClick={() => setCurrentTab(0)}
-            >
-              Details
-            </a>
-            <a
-              className={classNames(
-                'tab ',
-                currentTab === 1 ? 'tab-active' : ''
-              )}
-              onClick={() => setCurrentTab(1)}
-            >
-              Versions
-            </a>
-            <a
+        <Dialog.Overlay className='data-[state=open]:animate-overlayShow fixed inset-0 z-50 h-full w-full items-center overflow-y-auto overflow-x-hidden bg-black bg-opacity-40'>
+          <Dialog.Content className='data-[state=open]:animate-contentShow  relative left-[50%] top-[50%] z-50 flex w-[90vw] max-w-[650px] translate-x-[-50%] translate-y-[-50%]  flex-col gap-8 rounded-[6px] bg-gray-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]  focus:outline-none'>
+            <div className='flex justify-center'>
+              <div className='tabs tabs-boxed'>
+                <a
+                  className={classNames(
+                    'tab ',
+                    currentTab === 0 ? 'tab-active' : ''
+                  )}
+                  onClick={() => setCurrentTab(0)}
+                >
+                  Details
+                </a>
+                {platform !== 'WEB' && (
+                  <a
+                    className={classNames(
+                      'tab ',
+                      currentTab === 1 ? 'tab-active' : ''
+                    )}
+                    onClick={() => setCurrentTab(1)}
+                  >
+                    Installer
+                  </a>
+                )}
+                {/* <a
               className={classNames(
                 'tab ',
                 currentTab === 2 ? 'tab-active' : ''
@@ -206,206 +236,354 @@ export const AddAppModal = ({
               onClick={() => setCurrentTab(2)}
             >
               Steam Images
-            </a>
-          </div> */}
-          {currentTab === 0 && (
-            <div className='flex flex-row gap-6 '>
-              <div className='flex h-full w-full flex-col'>
-                <div className='grow'>
-                  <FileUploadCard
-                    selectedPreview={selectedCoverPreview ?? steamGridImage}
-                    onSelectedFile={handleImageSelect}
-                    title='Select Cover Image'
-                  />
-                </div>
-                <div className='h-48'>
-                  <FileUploadCard
-                    selectedPreview={selectedBannerPreview}
-                    onSelectedFile={handleBannerSelect}
-                    title='Select Banner Image'
-                  />
-                </div>
+            </a> */}
               </div>
+            </div>
+
+            <div className='flex flex-row gap-6 '>
+              {currentTab === 0 && (
+                <div className='flex h-full w-full flex-col'>
+                  <div className='grow'>
+                    <FileUploadCard
+                      selectedPreview={steamGridImage}
+                      onSelectedFile={handleImageSelect}
+                      title='Select Cover Image'
+                    />
+                  </div>
+                  <div className='h-48'>
+                    <FileUploadCard
+                      onSelectedFile={setSelectedIconFile}
+                      title='Select Icon Image'
+                    />
+                  </div>
+                  <div className='h-48'>
+                    <FileUploadCard
+                      onSelectedFile={handleBannerSelect}
+                      title='Select Banner Image'
+                    />
+                  </div>
+                </div>
+              )}
               <div className='h-full w-full'>
                 <Form.Root onSubmit={handleSave}>
-                  <Form.Field className='mb-2 grid w-full' name='name'>
-                    <div className='flex items-baseline justify-between'>
-                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                        Name
-                      </Form.Label>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='valueMissing'
-                      >
-                        Please enter your name
-                      </Form.Message>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='typeMismatch'
-                      >
-                        Please provide a valid name
-                      </Form.Message>
-                    </div>
-                    <Form.Control asChild>
-                      <input
-                        type='text'
-                        placeholder='Name'
-                        className='input w-full max-w-xs'
-                        defaultValue={app?.name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </Form.Control>
-                  </Form.Field>
+                  {currentTab === 0 && (
+                    <div>
+                      <Form.Field className='mb-2 grid w-full' name='name'>
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Name
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter your name
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a valid name
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <input
+                            type='text'
+                            placeholder='Name'
+                            className='input w-full max-w-xs'
+                            defaultValue={app?.name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                          />
+                        </Form.Control>
+                      </Form.Field>
 
-                  <Form.Field className='mb-2 grid w-full' name='url'>
+                      <Form.Field className='mb-2 grid w-full' name='category'>
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Category
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter a Category
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a valid Category
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <select
+                            className='select w-full max-w-xs'
+                            defaultValue={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                          >
+                            {appCategories.map((category) => (
+                              <option key={category} value={category}>
+                                {category}
+                              </option>
+                            ))}
+                          </select>
+                        </Form.Control>
+                      </Form.Field>
+
+                      <Form.Field className='mb-2 grid w-full' name='platform'>
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Platform
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter a Platform
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a valid Platform
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <select
+                            className='select w-full max-w-xs'
+                            defaultValue={platform}
+                            onChange={(e) => setPlatform(e.target.value)}
+                          >
+                            {appPlatforms.map(
+                              (platformValue: AppRunnerType) => (
+                                <option
+                                  key={platformValue}
+                                  value={platformValue}
+                                >
+                                  {platformValue}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </Form.Control>
+                      </Form.Field>
+
+                      {platform !== 'WEB' && (
+                        <Form.Field className='mb-2 grid w-full' name='store'>
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Store
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter a Store
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a valid Store
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <select
+                              className='select w-full max-w-xs'
+                              defaultValue={store}
+                              onChange={(e) => setStore(e.target.value)}
+                            >
+                              {appStores.map((storeValue) => (
+                                <option key={storeValue} value={storeValue}>
+                                  {storeValue}
+                                </option>
+                              ))}
+                            </select>
+                          </Form.Control>
+                        </Form.Field>
+                      )}
+
+                      <Form.Field className='mb-2 grid w-full' name='source'>
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Source
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter a Source
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a valid Source
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <input
+                            type='text'
+                            placeholder='Source (URL, store id)'
+                            className='input w-full max-w-xs'
+                            defaultValue={app?.source ?? ''}
+                            required
+                          />
+                        </Form.Control>
+                      </Form.Field>
+
+                      {/* <Form.Field className='mb-2 grid w-full' name='runner'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                        Category
+                        Runner
                       </Form.Label>
                       <Form.Message
                         className='text-[13px] text-white opacity-[0.8]'
                         match='valueMissing'
                       >
-                        Please enter a Category
+                        Please enter a Runner
                       </Form.Message>
                       <Form.Message
                         className='text-[13px] text-white opacity-[0.8]'
                         match='typeMismatch'
                       >
-                        Please provide a valid Category
+                        Please provide a valid Runner
                       </Form.Message>
                     </div>
                     <Form.Control asChild>
                       <select
                         className='select w-full max-w-xs'
-                        defaultValue={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        defaultValue={runnerType}
+                        onChange={(e) => setRunnerType(e.target.value)}
                       >
-                        {appCategories.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
+                        {appRunnerTypes.map((runner: AppRunnerType) => (
+                          <option key={runner} value={runner}>
+                            {runner}
                           </option>
                         ))}
                       </select>
                     </Form.Control>
-                  </Form.Field>
+                  </Form.Field> */}
 
-                  <Form.Field className='mb-2 grid w-full' name='url'>
-                    <div className='flex items-baseline justify-between'>
-                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                        Url
-                      </Form.Label>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='valueMissing'
-                      >
-                        Please enter a url
-                      </Form.Message>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='typeMismatch'
-                      >
-                        Please provide a valid url
-                      </Form.Message>
+                      <Form.Field className='mb-2 grid' name='description'>
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Description
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter a Description
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <textarea
+                            className='textarea'
+                            rows={3}
+                            defaultValue={app?.description ?? ''}
+                          ></textarea>
+                        </Form.Control>
+                      </Form.Field>
                     </div>
-                    <Form.Control asChild>
-                      <input
-                        type='text'
-                        placeholder='Source'
-                        className='input w-full max-w-xs'
-                        defaultValue={app?.source ?? ''}
-                        required
-                      />
-                    </Form.Control>
-                  </Form.Field>
-
-                  <Form.Field className='mb-2 grid w-full' name='url'>
-                    <div className='flex items-baseline justify-between'>
-                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                        Category
-                      </Form.Label>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='valueMissing'
+                  )}
+                  {currentTab === 1 && (
+                    /* 
+                    Installer
+                  */
+                    <div className=''>
+                      <Form.Field
+                        className='mb-2 grid w-full'
+                        name='installLocation'
                       >
-                        Please enter a Category
-                      </Form.Message>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='typeMismatch'
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Install Location (path)
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter your Install Location
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a Install Location
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <input
+                            type='text'
+                            placeholder='/home/deck/.local/share/program'
+                            className='input w-full max-w-xs'
+                            defaultValue={app?.installLocation ?? ''}
+                          />
+                        </Form.Control>
+                      </Form.Field>
+                      <Form.Field
+                        className='mb-2 grid w-full'
+                        name='runnerLocation'
                       >
-                        Please provide a valid Category
-                      </Form.Message>
-                    </div>
-                    <Form.Control asChild>
-                      <select
-                        className='select w-full max-w-xs'
-                        defaultValue={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Runner Location (.sh, exe, etc)
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter your Runner Location
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a valid Runner Location
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <input
+                            type='text'
+                            placeholder='/home/deck/.local/share/program/program.sh'
+                            className='input w-full max-w-xs'
+                            defaultValue={app?.runnerLocation ?? ''}
+                          />
+                        </Form.Control>
+                      </Form.Field>
+                      <Form.Field
+                        className='mb-2 grid w-full'
+                        name='uninstallUrl'
                       >
-                        {appCategories.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
-                    </Form.Control>
-                  </Form.Field>
-
-                  <Form.Field className='mb-2 grid w-full' name='url'>
-                    <div className='flex items-baseline justify-between'>
-                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                        Category
-                      </Form.Label>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='valueMissing'
-                      >
-                        Please enter a Category
-                      </Form.Message>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='typeMismatch'
-                      >
-                        Please provide a valid Category
-                      </Form.Message>
-                    </div>
-                    <Form.Control asChild>
-                      <select
-                        className='select w-full max-w-xs'
-                        defaultValue={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                      >
-                        {appCategories.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
-                    </Form.Control>
-                  </Form.Field>
-
-                  <Form.Field className='mb-2 grid' name='description'>
-                    <div className='flex items-baseline justify-between'>
-                      <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                        Description
-                      </Form.Label>
-                      <Form.Message
-                        className='text-[13px] text-white opacity-[0.8]'
-                        match='valueMissing'
-                      >
-                        Please enter a Description
-                      </Form.Message>
-                    </div>
-                    <Form.Control asChild>
-                      <textarea
-                        className='textarea'
-                        defaultValue={app?.description ?? ''}
-                      ></textarea>
-                    </Form.Control>
-                  </Form.Field>
-                  {/* 
+                        <div className='flex items-baseline justify-between'>
+                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                            Uninstall (url, script, etc)
+                          </Form.Label>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='valueMissing'
+                          >
+                            Please enter your Uninstall Script Url
+                          </Form.Message>
+                          <Form.Message
+                            className='text-[13px] text-white opacity-[0.8]'
+                            match='typeMismatch'
+                          >
+                            Please provide a valid Uninstall Script Url
+                          </Form.Message>
+                        </div>
+                        <Form.Control asChild>
+                          <input
+                            type='text'
+                            placeholder='https://example.com/uninstaller.sh'
+                            className='input w-full max-w-xs'
+                            defaultValue={app?.uninstallUrl ?? ''}
+                          />
+                        </Form.Control>
+                      </Form.Field>
+                      {/* 
                   <Form.Field className='mb-[10px] grid' name='coverUrl'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
@@ -424,6 +602,8 @@ export const AddAppModal = ({
                       />
                     </Form.Control>
                   </Form.Field> */}
+                    </div>
+                  )}
 
                   <div className='mt-[25px] flex justify-end'>
                     <Form.Submit>
@@ -443,13 +623,8 @@ export const AddAppModal = ({
                 </Dialog.Close>
               </div>
             </div>
-          )}
-          {currentTab === 1 && (
-            <div className='flex flex-row gap-6'>
-              <div className=' h-full w-full'></div>
-            </div>
-          )}
-        </Dialog.Content>
+          </Dialog.Content>
+        </Dialog.Overlay>
       </Dialog.Portal>
     </Dialog.Root>
   )
