@@ -2,6 +2,15 @@
   "name": "revealed",
   "private": false,
   "license": "GPL-3.0-only",
+  "description": "A app and game manager for Steam Deck, Epic, GOG, and more.",
+  "repository": {
+    "type": "Github",
+    "url": "https://github.com/BunnyStrike/revealed"
+  },
+  "author": {
+    "name": "BunnyStrike",
+    "email": "support@bunnystrike.com"
+  },
   "engines": {
     "node": ">=v18.16.0"
   },

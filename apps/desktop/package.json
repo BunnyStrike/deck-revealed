@@ -2,23 +2,149 @@
   "name": "@revealed/desktop",
   "version": "0.0.0",
   "private": false,
+  "repository": {
+    "type": "Github",
+    "url": "https://github.com/BunnyStrike/revealed"
+  },
+  "author": {
+    "name": "BunnyStrike",
+    "email": "support@bunnystrike.com"
+  },
   "engines": {
     "node": ">=v16.13",
     "npm": ">=8.1"
   },
   "main": "build/electron/main.js",
+  "build": {
+    "appId": "com.bunnystrike.revealed",
+    "productName": "Revealed",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "!build/bin/*",
+      "build/bin/legendary.LICENSE"
+    ],
+    "asarUnpack": [
+      "build/icon.png",
+      "build/icon.icns",
+      "build/win_icon.ico",
+      "build/icon-dark.png",
+      "build/icon-light.png",
+      "build/webviewPreload.js"
+    ],
+    "protocols": [
+      {
+        "name": "revealed",
+        "schemes": [
+          "revealed"
+        ]
+      }
+    ],
+    "win": {
+      "artifactName": "${productName}-${version}-Setup-${arch}.${ext}",
+      "icon": "build/win_icon.ico",
+      "asarUnpack": [
+        "build/bin/win32/legendary.exe",
+        "build/bin/win32/gogdl.exe"
+      ],
+      "files": [
+        "build/bin/win32/*"
+      ]
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-Portable-${arch}.${ext}"
+    },
+    "mac": {
+      "artifactName": "${productName}-${version}-macOS-${arch}.${ext}",
+      "target": "dmg",
+      "category": "public.app-category.games",
+      "icon": "build/icon.icns",
+      "asarUnpack": [
+        "build/bin/darwin/legendary",
+        "build/bin/darwin/gogdl"
+      ],
+      "files": [
+        "build/bin/darwin/*"
+      ]
+    },
+    "dmg": {
+      "background": "public/dmg.png",
+      "window": {
+        "width": "600",
+        "height": "500"
+      },
+      "contents": [
+        {
+          "x": 10,
+          "y": 215,
+          "type": "file"
+        },
+        {
+          "x": 420,
+          "y": 215,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "category": "Game",
+      "icon": "build/icon.icns",
+      "description": "An Open Source Launcher for GOG and Epic Games",
+      "desktop": {
+        "Name": "Revealed Games Launcher",
+        "Comment[de]": "Ein Open Source Spielelauncher for GOG und Epic Games"
+      },
+      "asarUnpack": [
+        "build/bin/linux/legendary",
+        "build/bin/linux/gogdl"
+      ],
+      "files": [
+        "build/bin/linux/*"
+      ]
+    },
+    "deb": {
+      "packageCategory": "games",
+      "depends": [
+        "curl"
+      ]
+    },
+    "pacman": {
+      "packageCategory": "games",
+      "depends": [
+        "curl"
+      ]
+    },
+    "rpm": {
+      "packageCategory": "games",
+      "depends": [
+        "curl"
+      ]
+    }
+  },
   "scripts": {
     "dev": "pnpm with-env vite --host 0.0.0.0 --port 3100 --clearScreen false",
-    "build": "npm run build:main && npm run build:preload",
+    "build": "pnpm build:main && pnpm build:preload",
     "build:main": "cd ./layers/main && vite build",
     "build:preload": "cd ./layers/preload && vite build",
     "build:preload:types": "dts-cb -i \"layers/preload/tsconfig.json\" -o \"layers/preload/exposedInMainWorld.d.ts\"",
-    "compile": "cross-env MODE=production npm run build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
+    "compile": "cross-env MODE=production pnpm build && electron-builder build --config .electron-builder.config.js --dir --config.asar=false",
     "watch": "node scripts/watch.js",
     "lint": "eslint . --ext js,ts",
     "typecheck:main": "tsc --noEmit -p layers/main/tsconfig.json",
     "typecheck:preload": "tsc --noEmit -p layers/preload/tsconfig.json",
-    "typecheck": "npm run typecheck:main && npm run typecheck:preload",
+    "typecheck": "pnpm typecheck:main && pnpm typecheck:preload",
+    "release:linux": "vite build && electron-builder -p always --linux deb AppImage rpm pacman tar.xz",
+    "release:mac": "vite build && electron-builder -p always --mac --x64 --arm64",
+    "release:win": "vite build && electron-builder -p always --win portable --x64 --arm64",
+    "sign:win": "vite build && electron-builder -p never --win nsis --x64 --arm64",
+    "dist:linux": "vite build && electron-builder --linux",
+    "dist:mac": "vite build && electron-builder --mac",
+    "dist:win": "vite build && electron-builder --win",
+    "dist:flatpak": "pnpm dist:linux appimage && pnpm flatpak:prepare && pnpm flatpak:build",
+    "flatpak:build": "cd flatpak-build && flatpak-builder build com.bunnystrike.revealed.yml --install --force-clean --user",
+    "flatpak:prepare": "node ./flatpak/prepareFlatpak.js",
+    "flatpak:prepare-release": "node ./flatpak/prepareFlatpak.js release",
     "lint:fix": "pnpm lint --fix",
     "start": "pnpm with-env next start",
     "type-check": "tsc --noEmit",
@@ -46,15 +172,15 @@
     "autoprefixer": "^10.4.14",
     "cross-env": "7.0.3",
     "dts-for-context-bridge": "0.7.1",
-    "electron": "24.1.2",
-    "electron-builder": "23.6.0",
-    "electron-devtools-installer": "3.2.0",
     "eslint": "8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-vue": "9.11.0",
     "husky": "^8.0.3",
+    "electron": "24.1.2",
+    "electron-builder": "23.6.0",
+    "electron-devtools-installer": "3.2.0",
     "i18next-parser": "^7.7.0",
     "jest": "^29.5.0",
     "postcss": "^8.4.22",
@@ -120,7 +246,6 @@
     "daisyui": "^2.51.5",
     "dayjs": "^1.11.7",
     "discord-rich-presence-typescript": "^0.0.8",
-    "electron": "^24.1.1",
     "electron-store": "^8.1.0",
     "electron-trpc": "0.4.5",
     "electron-updater": "5.3.0",
