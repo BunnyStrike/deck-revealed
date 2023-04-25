@@ -13,7 +13,7 @@ async function main() {
     let placeholder = ""
     let releaseTime = ""
     if (process.argv[2] === "release") {
-        const { data } = await axios.get("https://api.github.com/repos/BunnyStrike/revealed-desktop-app/releases/latest")
+        const { data } = await axios.get("https://api.github.com/repos/BunnyStrike/revealed/releases/latest")
         const appimage = data.assets.find((asset) => asset.browser_download_url.includes(".AppImage"))
         const outputFile = `${os.tmpdir()}/Revealed.AppImage`
         child_process.spawnSync("curl", ["-L", appimage.browser_download_url, "-o", outputFile, "--create-dirs"])
@@ -45,7 +45,7 @@ async function main() {
     // generate manifest
     let templateManifest = fs.readFileSync(`./flatpak/templates/com.bunnystrike.revealed.yml.template`, { encoding: 'utf-8' })
     templateManifest = templateManifest.replace("${revealed-app-image}", placeholder)
-    fs.writeFileSync("./flatpak-build/com.revaledgameslauncher.hgl.yml", templateManifest)
+    fs.writeFileSync("./flatpak-build/com.bunnystrike.revealed.yml", templateManifest)
 
     // generate metainfo
     let templateMetaInfo = fs.readFileSync(`./flatpak/templates/com.bunnystrike.revealed.metainfo.xml.template`, { encoding: 'utf-8' })

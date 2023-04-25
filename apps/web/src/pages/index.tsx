@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { signIn, signOut } from 'next-auth/react'
 
 import { api, type RouterOutputs } from '~/utils/api'
+import { Navbar } from '~/components/Navbar'
 
 const PostCard: React.FC<{
   post: RouterOutputs['app']['all'][number]
@@ -47,6 +47,7 @@ const CreatePostForm: React.FC = () => {
 
   return (
     <div className='flex w-full max-w-2xl flex-col p-4'>
+      <Navbar />
       <input
         className='mb-2 rounded bg-white/10 p-2 text-white'
         value={name}
@@ -114,7 +115,7 @@ const Home: NextPage = () => {
               ) : (
                 <div className='flex h-[40vh] justify-center overflow-y-scroll px-4 text-2xl'>
                   <div className='flex w-full flex-col gap-4'>
-                    {postQuery.data?.map((p) => {
+                    {postQuery.data?.map((p: any) => {
                       return (
                         <PostCard
                           key={p.id}
