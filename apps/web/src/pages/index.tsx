@@ -70,17 +70,6 @@ const CreatePostForm: React.FC = () => {
           {error.data.zodError.fieldErrors.content}
         </span>
       )}
-      <button
-        className='rounded bg-pink-400 p-2 font-bold'
-        onClick={() => {
-          mutate({
-            name,
-            description,
-          })
-        }}
-      >
-        Create
-      </button>
     </div>
   )
 }
