@@ -19,6 +19,7 @@ import { RevealedOfflineMessage } from './components'
 import AddAppModal from './components/AddAppModel'
 import AddGameModal from './components/AddGameModel'
 import RevealedApplicationShell from './components/ApplicationShell'
+import ConfirmDialog from './components/ConfirmDialog'
 import { LoadingBar } from './components/LoadingBar'
 import { AppDetailsScreen } from './screens'
 import { AppsScreen } from './screens/Apps'
@@ -127,6 +128,7 @@ function AppMain() {
                 {/* <ControllerHints /> */}
                 <AddAppModal />
                 <AddGameModal />
+                <ConfirmDialog />
 
                 <div className='simple-keyboard'></div>
               </div>

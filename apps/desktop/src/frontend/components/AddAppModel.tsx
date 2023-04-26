@@ -3,6 +3,7 @@ import { useUser } from '@clerk/clerk-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Form from '@radix-ui/react-form'
 import { Cross2Icon } from '@radix-ui/react-icons'
+import * as Select from '@radix-ui/react-select'
 import { useAtom } from 'jotai'
 
 import { useDebounce } from '../hooks/useDebounce'
@@ -27,6 +28,7 @@ import { uploadAppimage, uploadFile } from '../utils/file'
 import DialogModal from './Dialog'
 import EmptyState from './EmptyState'
 import { FileUploadCard } from './FileUploadCard'
+import { LoadingBar } from './LoadingBar'
 import { UploadButton } from './UploadButton'
 
 interface AddAppModalProps {
@@ -43,21 +45,24 @@ export const AddAppModal = ({
   const { user } = useUser()
   const [modals, setModals] = useAtom(modalsAtom)
   const [currentTab, setCurrentTab] = useState(0)
-  const { data: app } = api.app.byId.useQuery({
+  const { data: app, isLoading: isAppLoading } = api.app.byId.useQuery({
     id: modals.editApp ?? '',
   })
-  console.log(app)
 
-  const { mutateAsync, error, isLoading } = api.app.create.useMutation()
+  const {
+    mutateAsync: createMutate,
+    error,
+    isLoading: isLoadingCreate,
+  } = api.app.create.useMutation()
   const {
     mutateAsync: updateAsync,
     error: errorUpdate,
     isLoading: isLoadingUpdate,
   } = api.app.update.useMutation()
 
-  const [category, setCategory] = useState(app?.category ?? 'Entertainment')
-  const [store, setStore] = useState<AppStore>(app?.store ?? 'OTHER')
-  const [platform, setPlatform] = useState<AppPlatform>(app?.store ?? 'WEB')
+  const [category, setCategory] = useState('Entertainment')
+  const [store, setStore] = useState<AppStore>('OTHER')
+  const [platform, setPlatform] = useState<AppPlatform>('WEB')
   const [runnerType, setRunnerType] = useState<AppRunnerType>(
     app?.runnerType ?? 'UNKNOWN'
   )
@@ -90,6 +95,12 @@ export const AddAppModal = ({
     void handleSearchSteamgridImage(debouncedName)
   }, [debouncedName])
 
+  useEffect(() => {
+    setPlatform(app?.platform || 'WEB')
+    setStore(app?.store || 'OTHER')
+    setCategory(app?.category || 'Entertainment')
+  }, [app])
+
   const handleCancel = () => {
     setModals(modalsAtomDefault)
   }
@@ -101,20 +112,26 @@ export const AddAppModal = ({
     event.preventDefault()
     // if (!isAppOwner) return
     const data = Object.fromEntries(new FormData(event.currentTarget))
-
-    console.log(data?.description ?? app?.description ?? '')
-
-    const appUpdate = await mutateAsync({
+    console.log(data)
+    const createUpdateDoc = {
       name: data?.name ?? app?.name ?? '',
       source: data?.source ?? app?.source ?? '',
       description: data?.description ?? app?.description ?? '',
       userId: isAdmin ? undefined : user?.id,
       coverUrl: app?.coverUrl ?? steamGridImage,
       bannerUrl: app?.bannerUrl,
+      category: data?.category || app?.category || 'Entertainment',
+      store: data?.store || app?.store || 'OTHER',
+      platform: data?.platform || app?.platform || 'WEB',
       iconUrl: app?.iconUrl,
-    } as AppUpsertInput)
+    } as AppUpsertInput
 
-    console.log(appUpdate)
+    let appUpdate
+    if (!!app.id) {
+      appUpdate = await updateAsync({ ...createUpdateDoc, id: app.id })
+    } else {
+      appUpdate = await createMutate(createUpdateDoc)
+    }
 
     // upload image if it exists
     if (!appUpdate?.id) {
@@ -123,6 +140,8 @@ export const AddAppModal = ({
     }
     let updateDoc: any = {
       id: appUpdate?.id,
+      name: appUpdate?.name,
+      source: appUpdate?.source,
     }
     if (selectedCoverFile) {
       const uploadedCover = await uploadAppimage(
@@ -240,200 +259,211 @@ export const AddAppModal = ({
               </div>
             </div>
 
-            <div className='flex flex-row gap-6 '>
-              {currentTab === 0 && (
-                <div className='flex h-full w-full flex-col'>
-                  <div className='grow'>
-                    <FileUploadCard
-                      selectedPreview={steamGridImage}
-                      onSelectedFile={handleImageSelect}
-                      title='Select Cover Image'
-                    />
+            {isAppLoading ? (
+              <LoadingBar />
+            ) : (
+              <div className='flex flex-row gap-6 '>
+                {currentTab === 0 && (
+                  <div className='flex h-full w-full flex-col'>
+                    <div className='grow'>
+                      <FileUploadCard
+                        selectedPreview={steamGridImage ?? app?.coverUrl}
+                        onSelectedFile={handleImageSelect}
+                        title='Select Cover Image'
+                      />
+                    </div>
+                    <div className='h-48'>
+                      <FileUploadCard
+                        selectedPreview={app?.iconUrl}
+                        onSelectedFile={setSelectedIconFile}
+                        title='Select Icon Image'
+                      />
+                    </div>
+                    <div className='h-48'>
+                      <FileUploadCard
+                        selectedPreview={app?.bannerUrl}
+                        onSelectedFile={handleBannerSelect}
+                        title='Select Banner Image'
+                      />
+                    </div>
                   </div>
-                  <div className='h-48'>
-                    <FileUploadCard
-                      onSelectedFile={setSelectedIconFile}
-                      title='Select Icon Image'
-                    />
-                  </div>
-                  <div className='h-48'>
-                    <FileUploadCard
-                      onSelectedFile={handleBannerSelect}
-                      title='Select Banner Image'
-                    />
-                  </div>
-                </div>
-              )}
-              <div className='h-full w-full'>
-                <Form.Root onSubmit={handleSave}>
-                  {currentTab === 0 && (
-                    <div>
-                      <Form.Field className='mb-2 grid w-full' name='name'>
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Name
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter your name
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a valid name
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <input
-                            type='text'
-                            placeholder='Name'
-                            className='input w-full max-w-xs'
-                            defaultValue={app?.name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                          />
-                        </Form.Control>
-                      </Form.Field>
-
-                      <Form.Field className='mb-2 grid w-full' name='category'>
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Category
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter a Category
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a valid Category
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <select
-                            className='select w-full max-w-xs'
-                            defaultValue={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                          >
-                            {appCategories.map((category) => (
-                              <option key={category} value={category}>
-                                {category}
-                              </option>
-                            ))}
-                          </select>
-                        </Form.Control>
-                      </Form.Field>
-
-                      <Form.Field className='mb-2 grid w-full' name='platform'>
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Platform
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter a Platform
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a valid Platform
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <select
-                            className='select w-full max-w-xs'
-                            defaultValue={platform}
-                            onChange={(e) => setPlatform(e.target.value)}
-                          >
-                            {appPlatforms.map(
-                              (platformValue: AppRunnerType) => (
-                                <option
-                                  key={platformValue}
-                                  value={platformValue}
-                                >
-                                  {platformValue}
-                                </option>
-                              )
-                            )}
-                          </select>
-                        </Form.Control>
-                      </Form.Field>
-
-                      {platform !== 'WEB' && (
-                        <Form.Field className='mb-2 grid w-full' name='store'>
+                )}
+                <div className='h-full w-full'>
+                  <Form.Root onSubmit={handleSave}>
+                    {currentTab === 0 && (
+                      <div>
+                        <Form.Field className='mb-2 grid w-full' name='name'>
                           <div className='flex items-baseline justify-between'>
                             <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                              Store
+                              Name
                             </Form.Label>
                             <Form.Message
                               className='text-[13px] text-white opacity-[0.8]'
                               match='valueMissing'
                             >
-                              Please enter a Store
+                              Please enter your name
                             </Form.Message>
                             <Form.Message
                               className='text-[13px] text-white opacity-[0.8]'
                               match='typeMismatch'
                             >
-                              Please provide a valid Store
+                              Please provide a valid name
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <input
+                              type='text'
+                              placeholder='Name'
+                              className='input w-full max-w-xs'
+                              defaultValue={app?.name}
+                              onChange={(e) => setName(e.target.value)}
+                              required
+                            />
+                          </Form.Control>
+                        </Form.Field>
+
+                        <Form.Field
+                          className='mb-2 grid w-full'
+                          name='category'
+                        >
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Category
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter a Category
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a valid Category
                             </Form.Message>
                           </div>
                           <Form.Control asChild>
                             <select
                               className='select w-full max-w-xs'
-                              defaultValue={store}
-                              onChange={(e) => setStore(e.target.value)}
+                              defaultValue={category}
+                              onChange={(e) => setCategory(e.target.value)}
                             >
-                              {appStores.map((storeValue) => (
-                                <option key={storeValue} value={storeValue}>
-                                  {storeValue}
+                              {appCategories.map((category) => (
+                                <option key={category} value={category}>
+                                  {category}
                                 </option>
                               ))}
                             </select>
                           </Form.Control>
                         </Form.Field>
-                      )}
 
-                      <Form.Field className='mb-2 grid w-full' name='source'>
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Source
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter a Source
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a valid Source
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <input
-                            type='text'
-                            placeholder='Source (URL, store id)'
-                            className='input w-full max-w-xs'
-                            defaultValue={app?.source ?? ''}
-                            required
-                          />
-                        </Form.Control>
-                      </Form.Field>
+                        <Form.Field
+                          className='mb-2 grid w-full'
+                          name='platform'
+                        >
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Platform
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter a Platform
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a valid Platform
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <select
+                              className='select w-full max-w-xs'
+                              defaultValue={platform}
+                              onChange={(e) => setPlatform(e.target.value)}
+                            >
+                              {appPlatforms.map(
+                                (platformValue: AppRunnerType) => (
+                                  <option
+                                    key={platformValue}
+                                    value={platformValue}
+                                  >
+                                    {platformValue}
+                                  </option>
+                                )
+                              )}
+                            </select>
+                          </Form.Control>
+                        </Form.Field>
 
-                      {/* <Form.Field className='mb-2 grid w-full' name='runner'>
+                        {platform !== 'WEB' && (
+                          <Form.Field className='mb-2 grid w-full' name='store'>
+                            <div className='flex items-baseline justify-between'>
+                              <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                                Store
+                              </Form.Label>
+                              <Form.Message
+                                className='text-[13px] text-white opacity-[0.8]'
+                                match='valueMissing'
+                              >
+                                Please enter a Store
+                              </Form.Message>
+                              <Form.Message
+                                className='text-[13px] text-white opacity-[0.8]'
+                                match='typeMismatch'
+                              >
+                                Please provide a valid Store
+                              </Form.Message>
+                            </div>
+                            <Form.Control asChild>
+                              <select
+                                className='select w-full max-w-xs'
+                                defaultValue={store}
+                                onChange={(e) => setStore(e.target.value)}
+                              >
+                                {appStores.map((storeValue) => (
+                                  <option key={storeValue} value={storeValue}>
+                                    {storeValue}
+                                  </option>
+                                ))}
+                              </select>
+                            </Form.Control>
+                          </Form.Field>
+                        )}
+
+                        <Form.Field className='mb-2 grid w-full' name='source'>
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Source
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter a Source
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a valid Source
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <input
+                              type='text'
+                              placeholder='Source (URL, store id)'
+                              className='input w-full max-w-xs'
+                              defaultValue={app?.source ?? ''}
+                              required
+                            />
+                          </Form.Control>
+                        </Form.Field>
+
+                        {/* <Form.Field className='mb-2 grid w-full' name='runner'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
                         Runner
@@ -466,124 +496,124 @@ export const AddAppModal = ({
                     </Form.Control>
                   </Form.Field> */}
 
-                      <Form.Field className='mb-2 grid' name='description'>
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Description
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter a Description
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <textarea
-                            className='textarea'
-                            rows={3}
-                            defaultValue={app?.description ?? ''}
-                          ></textarea>
-                        </Form.Control>
-                      </Form.Field>
-                    </div>
-                  )}
-                  {currentTab === 1 && (
-                    /* 
+                        <Form.Field className='mb-2 grid' name='description'>
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Description
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter a Description
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <textarea
+                              className='textarea'
+                              rows={3}
+                              defaultValue={app?.description ?? ''}
+                            ></textarea>
+                          </Form.Control>
+                        </Form.Field>
+                      </div>
+                    )}
+                    {currentTab === 1 && (
+                      /* 
                     Installer
                   */
-                    <div className=''>
-                      <Form.Field
-                        className='mb-2 grid w-full'
-                        name='installLocation'
-                      >
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Install Location (path)
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter your Install Location
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a Install Location
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <input
-                            type='text'
-                            placeholder='/home/deck/.local/share/program'
-                            className='input w-full max-w-xs'
-                            defaultValue={app?.installLocation ?? ''}
-                          />
-                        </Form.Control>
-                      </Form.Field>
-                      <Form.Field
-                        className='mb-2 grid w-full'
-                        name='runnerLocation'
-                      >
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Runner Location (.sh, exe, etc)
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter your Runner Location
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a valid Runner Location
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <input
-                            type='text'
-                            placeholder='/home/deck/.local/share/program/program.sh'
-                            className='input w-full max-w-xs'
-                            defaultValue={app?.runnerLocation ?? ''}
-                          />
-                        </Form.Control>
-                      </Form.Field>
-                      <Form.Field
-                        className='mb-2 grid w-full'
-                        name='uninstallUrl'
-                      >
-                        <div className='flex items-baseline justify-between'>
-                          <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
-                            Uninstall (url, script, etc)
-                          </Form.Label>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='valueMissing'
-                          >
-                            Please enter your Uninstall Script Url
-                          </Form.Message>
-                          <Form.Message
-                            className='text-[13px] text-white opacity-[0.8]'
-                            match='typeMismatch'
-                          >
-                            Please provide a valid Uninstall Script Url
-                          </Form.Message>
-                        </div>
-                        <Form.Control asChild>
-                          <input
-                            type='text'
-                            placeholder='https://example.com/uninstaller.sh'
-                            className='input w-full max-w-xs'
-                            defaultValue={app?.uninstallUrl ?? ''}
-                          />
-                        </Form.Control>
-                      </Form.Field>
-                      {/* 
+                      <div className=''>
+                        <Form.Field
+                          className='mb-2 grid w-full'
+                          name='installLocation'
+                        >
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Install Location (path)
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter your Install Location
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a Install Location
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <input
+                              type='text'
+                              placeholder='/home/deck/.local/share/program'
+                              className='input w-full max-w-xs'
+                              defaultValue={app?.installLocation ?? ''}
+                            />
+                          </Form.Control>
+                        </Form.Field>
+                        <Form.Field
+                          className='mb-2 grid w-full'
+                          name='runnerLocation'
+                        >
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Runner Location (.sh, exe, etc)
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter your Runner Location
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a valid Runner Location
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <input
+                              type='text'
+                              placeholder='/home/deck/.local/share/program/program.sh'
+                              className='input w-full max-w-xs'
+                              defaultValue={app?.runnerLocation ?? ''}
+                            />
+                          </Form.Control>
+                        </Form.Field>
+                        <Form.Field
+                          className='mb-2 grid w-full'
+                          name='uninstallUrl'
+                        >
+                          <div className='flex items-baseline justify-between'>
+                            <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
+                              Uninstall (url, script, etc)
+                            </Form.Label>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='valueMissing'
+                            >
+                              Please enter your Uninstall Script Url
+                            </Form.Message>
+                            <Form.Message
+                              className='text-[13px] text-white opacity-[0.8]'
+                              match='typeMismatch'
+                            >
+                              Please provide a valid Uninstall Script Url
+                            </Form.Message>
+                          </div>
+                          <Form.Control asChild>
+                            <input
+                              type='text'
+                              placeholder='https://example.com/uninstaller.sh'
+                              className='input w-full max-w-xs'
+                              defaultValue={app?.uninstallUrl ?? ''}
+                            />
+                          </Form.Control>
+                        </Form.Field>
+                        {/* 
                   <Form.Field className='mb-[10px] grid' name='coverUrl'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
@@ -602,27 +632,40 @@ export const AddAppModal = ({
                       />
                     </Form.Control>
                   </Form.Field> */}
+                      </div>
+                    )}
+
+                    <div className='mt-[25px] flex justify-end'>
+                      <Form.Submit
+                        className={classNames(
+                          isLoadingUpdate || isLoadingCreate ? 'loading' : '',
+                          'btn tbn-primary'
+                        )}
+                      >
+                        {/* <button
+                          className={classNames(
+                            isLoadingUpdate || isLoadingCreate ? 'loading' : '',
+                            'btn tbn-primary'
+                          )}
+                        > */}
+                        Submit
+                        {/* </button> */}
+                      </Form.Submit>
                     </div>
-                  )}
+                  </Form.Root>
 
-                  <div className='mt-[25px] flex justify-end'>
-                    <Form.Submit>
-                      <button className='btn tbn-primary'>Submit</button>
-                    </Form.Submit>
-                  </div>
-                </Form.Root>
-
-                <Dialog.Close asChild>
-                  <button
-                    onClick={handleCancel}
-                    className='text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none'
-                    aria-label='Close'
-                  >
-                    <Cross2Icon />
-                  </button>
-                </Dialog.Close>
+                  <Dialog.Close asChild>
+                    <button
+                      onClick={handleCancel}
+                      className='text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none'
+                      aria-label='Close'
+                    >
+                      <Cross2Icon />
+                    </button>
+                  </Dialog.Close>
+                </div>
               </div>
-            </div>
+            )}
           </Dialog.Content>
         </Dialog.Overlay>
       </Dialog.Portal>

@@ -60,7 +60,7 @@ export default React.memo(function RevealedVersion() {
 
   return (
     <>
-      <VersionChangelogModel
+      {/* <VersionChangelogModel
         dimissVersionCheck
         version={version}
         isOpen={
@@ -74,7 +74,7 @@ export default React.memo(function RevealedVersion() {
           setShowChangelogModalOnClick(false)
           setLastChangelogShown(version)
         }}
-      />
+      /> */}
 
       <span
         className='revealedVersion flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'

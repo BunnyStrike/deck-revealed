@@ -17,8 +17,8 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { user } = useUser()
   const navigate = useNavigate()
   const { mutate } = api.app.recent.useMutation()
-
-  const installable = app?.platform !== 'WEB' && app?.source
+  console.log(item?.platform)
+  const installable = item?.platform !== 'WEB' && !!item?.source
 
   const handleLaunchClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

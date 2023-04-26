@@ -49,15 +49,15 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
             //     credentials: 'include',
             //   })
             // },
-            // headers() {
-            //   // const sess = await session?.getToken()
-            //   const jwt = localStorage.getItem('clerk-db-jwt')
-            //   // console.log(jwt)
-            //   if (jwt) return {}
-            //   return {
-            //     Authorization: `Bearer ${jwt}`,
-            //   }
-            // },
+            async headers() {
+              // const sess = await session?.getToken()
+              const jwt = localStorage.getItem('clerk-db-jwt')
+              // console.log(jwt)
+              if (!jwt) return {}
+              return {
+                Authorization: `Bearer ${jwt}`,
+              }
+            },
           }),
         }),
       ],

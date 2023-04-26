@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 const appFilterInput = z
   .object({
@@ -114,6 +114,9 @@ const appInput = {
   publisherUrl: z.string().optional(),
   category: z.string().default('Entertainment'),
   ownerId: z.string().optional(),
+  platform: z.any().optional(),
+  store: z.any().optional(),
+  runnerType: z.any().optional(),
   // media: z.array(mediaInput).optional(),
   // versions: z.array(versionInput).optional(),
 }
@@ -220,7 +223,7 @@ export const appRouter = createTRPCRouter({
     .input(
       z.object({
         ...appInput,
-        id: z.string().optional(),
+        id: z.string(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -244,7 +247,6 @@ export const appRouter = createTRPCRouter({
         // versions,
         // media,
       } = input
-      console.log(id)
       return ctx.prisma.app.upsert({
         where: { id },
         update: {
@@ -370,8 +372,11 @@ export const appRouter = createTRPCRouter({
     .input(z.object({ ownerId: z.string(), id: z.string() }))
     .mutation(({ ctx, input }) => {
       const { ownerId, id } = input
+      // console.log(Object.keys(ctx))
       // TODO: only allow delete if user is admin
       // TODO: only allow apps to delete if they are the owner
-      return ctx.prisma.app.deleteMany({ where: { id, ownerId } })
+      return ctx.prisma.app.deleteMany({
+        where: { id }, //, ownerId: ownerId ? ownerId : undefined
+      })
     }),
 })

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import classNames from 'classnames'
 
+import { getMediaUrl } from '../utils/database'
+
 type FileUploadCardProps = {
   selectedPreview?: string | undefined | null
   onSelectedFile: (file?: File) => void
@@ -22,6 +24,12 @@ export const FileUploadCard = ({
     setPreview(URL.createObjectURL(file))
   }
 
+  const imagePreview = () => {
+    if (selectedPreview && !selectedPreview.startsWith('http:'))
+      return getMediaUrl(selectedPreview)
+    return preview ?? selectedPreview ?? 'public/img/steam-pill.jpg'
+  }
+
   return (
     <div className={classNames('overflow-hidden rounded-lg', className)}>
       <div className='px-2 py-3 sm:p-2'>
@@ -29,7 +37,7 @@ export const FileUploadCard = ({
           <div className='bg-grey-lighter flex w-full items-center justify-center'>
             <label className='text-blue border-blue hover:bg-blue flex w-64 cursor-pointer flex-col items-center rounded-lg border bg-white uppercase tracking-wide shadow-lg hover:text-white'>
               <img
-                src={preview ?? selectedPreview ?? 'public/img/steam-pill.jpg'}
+                src={imagePreview()}
                 className='rounded-lg bg-cover bg-center'
                 alt='Cover Image'
               />

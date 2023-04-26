@@ -9,8 +9,9 @@ import {
 import { app } from 'electron'
 import { useAtom } from 'jotai'
 
-import { modalsAtom } from '../states'
+import { confirmModalAtom, modalsAtom } from '../states'
 import { GameListOutput, api, type AppListOutput } from '../utils/api'
+import ConfirmDialog from './ConfirmDialog'
 
 interface AppContextMenuProps {
   appId?: string
@@ -26,9 +27,6 @@ export const AppContextMenu = ({
   app,
 }: AppContextMenuProps) => {
   const { user } = useUser()
-  const isAdmin =
-    user?.primaryEmailAddress?.emailAddress.includes('@bunnystrike.com')
-  const isOwner = user?.id === ownerId
   const { mutateAsync: hideApp } = api.app.hide.useMutation()
   const { mutateAsync: deleteApp } = api.app.delete.useMutation()
   const { mutateAsync: addToSteam } =
@@ -36,12 +34,20 @@ export const AppContextMenu = ({
   const { mutate: openWebviewPage } =
     api.desktop.system.openWebviewPage.useMutation()
   const [modals, setModals] = useAtom(modalsAtom)
+  const [confirm, setConfirm] = useAtom(confirmModalAtom)
 
-  const installable = app?.platform !== 'WEB' && app?.source
+  const isOwner = user?.id === ownerId
+  const isAdmin =
+    user?.primaryEmailAddress?.emailAddress.includes('@bunnystrike.com')
+  const installable = app?.platform !== 'WEB' && !!app?.source
 
   const handleDelete = async () => {
     if (!appId || !user?.id) return
-    await deleteApp({ id: appId, ownerId: user?.id })
+    setConfirm((prev) => ({
+      ...prev,
+      show: true,
+      onConfirm: async () => await deleteApp({ id: appId, ownerId: user?.id }),
+    }))
   }
 
   const handleEdit = () => {
@@ -76,15 +82,6 @@ export const AppContextMenu = ({
           className='bg-secondary z-20 min-w-[220px] overflow-hidden rounded-md p-[5px] text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
           alignOffset={5}
         >
-          {(isOwner || isAdmin) && (
-            <ContextMenu.Item
-              onClick={handleDelete}
-              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
-              disabled
-            >
-              Delete
-            </ContextMenu.Item>
-          )}
           {!!app?.id && (
             <ContextMenu.Item
               onClick={() => handleEdit()}
@@ -116,6 +113,16 @@ export const AppContextMenu = ({
             </ContextMenu.Item>
           )}
 
+          <ContextMenu.Separator className='bg-violet6 m-[5px] h-[1px]' />
+
+          {(isOwner || isAdmin) && (
+            <ContextMenu.Item
+              onClick={() => handleDelete()}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Delete
+            </ContextMenu.Item>
+          )}
           {/* {!!user?.id && (
             <ContextMenu.Item
               onClick={handleHide}
