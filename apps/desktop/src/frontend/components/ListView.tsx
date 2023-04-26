@@ -12,7 +12,8 @@ import RevealedSearchBar from './SearchBar'
 interface RevealedListViewProps {
   title: string
   isLoading?: boolean
-  list: GameListOutput | AppListOutput
+  // list: GameListOutput | AppListOutput
+  list: AppListOutput
 }
 
 export const RevealedListView = ({

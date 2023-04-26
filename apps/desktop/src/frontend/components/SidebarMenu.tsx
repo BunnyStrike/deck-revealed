@@ -81,10 +81,6 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
           <li className=' flex items-center justify-center sm:hidden'>
             <UserButton appearance={{ baseTheme: dark }} />
           </li>
-          {/*
-          <li>
-            <button onClick={() => syncDBs(mutate)}>Create App Seed</button>
-          </li> */}
 
           <li className='-mx-6 mt-auto '>
             {/* <a className='flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'>

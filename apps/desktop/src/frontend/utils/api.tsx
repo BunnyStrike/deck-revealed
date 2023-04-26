@@ -53,6 +53,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
           }),
         }),
       ],
+      // @ts-ignore
       transformer: superjson,
     })
   )

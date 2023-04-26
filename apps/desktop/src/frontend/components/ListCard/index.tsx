@@ -10,7 +10,8 @@ import { getMediaUrl } from '../../utils/database'
 import AppContextMenu from '../ContextMenu'
 
 interface RevealedListCardProps {
-  item: GameListOutput[number] | AppListOutput[number]
+  item: AppListOutput[number]
+  // item: GameListOutput[number] | AppListOutput[number]
 }
 export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { name, coverUrl, id, ownerId } = item
@@ -48,11 +49,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   }
 
   return (
-    <AppContextMenu
-      appId={id}
-      ownerId={ownerId}
-      app={item as AppListOutput[number]}
-    >
+    <AppContextMenu appId={id} ownerId={ownerId} app={item}>
       <div
         onClick={() => handleDetailClick()}
         className='card image-full-color hover-bordered active:outline-offset-3 outline-primary group cursor-pointer pb-0 hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'

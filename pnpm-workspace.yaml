@@ -1,5 +1,4 @@
 packages:
-  - apps/admin
   - apps/mobile
   - apps/web
   - apps/desktop

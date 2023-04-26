@@ -614,7 +614,7 @@ export const AddAppModal = ({
                               type='text'
                               placeholder='https://example.com/uninstaller.sh'
                               className='input w-full max-w-xs'
-                              defaultValue={app?.uninstallUrl ?? ''}
+                              defaultValue={app?.uninstall ?? ''}
                             />
                           </Form.Control>
                         </Form.Field>

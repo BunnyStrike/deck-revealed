@@ -1,9 +1,8 @@
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { useParams } from 'react-router-dom'
 
 import { LoadingBar } from '../components/LoadingBar'
 import AppManageForm from '../components/ManageApp/AppApplication'
-import { api, type AppListOutput } from '../utils/api'
+import { api } from '../utils/api'
 
 interface AppManageScreenProps {
   mode?: 'Add' | 'Edit'
@@ -19,6 +18,10 @@ export default function AppManageScreen({
 
   if (isAppLoading) {
     return <LoadingBar />
+  }
+
+  if (!app) {
+    return <div>App not found</div>
   }
 
   return <AppManageForm mode={mode} app={app} />

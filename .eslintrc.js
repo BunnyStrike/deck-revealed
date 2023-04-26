@@ -1,22 +1,22 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
   root: true,
-  extends: ["@revealed/eslint-config"], // uses the config in `packages/config/eslint`
-  parser: "@typescript-eslint/parser",
+  extends: ['@revealed/eslint-config'], // uses the config in `packages/config/eslint`
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 'latest',
     tsconfigRootDir: __dirname,
     project: [
-      "./tsconfig.json",
-      "./apps/*/tsconfig.json",
-      "./packages/*/tsconfig.json",
+      './tsconfig.json',
+      './apps/*/tsconfig.json',
+      './packages/*/tsconfig.json',
     ],
   },
   settings: {
     next: {
-      rootDir: ["apps/web", "apps/admin"],
+      rootDir: ['apps/web'],
     },
   },
-};
+}
 
-module.exports = config;
+module.exports = config

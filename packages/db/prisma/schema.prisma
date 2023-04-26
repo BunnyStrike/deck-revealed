@@ -308,6 +308,7 @@ model BootVideo {
     imageUrl    String?
     authorName String?
     authorUrl String?
+    type   BootVideoType @default(STEAM_BOOT)
     duration Int @default(0)
     size Int @default(0)
     isBootVideo Boolean @default(true)

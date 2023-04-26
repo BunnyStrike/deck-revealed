@@ -68,70 +68,21 @@ export const getMediaUrl = (filePath?: string | null, bucket = 'apps') => {
   return data.publicUrl
 }
 
-export async function syncDBs(mutate: any) {
-  // const supabaseOldClient = createClient(
-  //   'sgmq.supabase.co',
-  //   'NsZBJw',
-  //   {
-  //     // <Database>
-  //     db: {
-  //       schema: 'public',
-  //     },
-  //     auth: {
-  //       // storage: AsyncStorage,
-  //       autoRefreshToken: true,
-  //       persistSession: true,
-  //       detectSessionInUrl: true,
-  //     },
-  //   }
-  // )
-  // const { data } = await supabaseOldClient.from('steam_deck_app').select('*')
-  // const appMapped = data
-  //   ?.filter((item) => !item.user_id)
-  //   .map((item) => ({
-  //     id: item.id,
-  //     name: item.name,
-  //     description: item.description,
-  //     coverUrl: `images/${item.id}/cover.png`, //item.mediaPath,
-  //     category: item.category,
-  //     source: item.sourceUrl ?? item.url ?? item.link,
-  //     authorName: item.authorName,
-  //     authorUrl: item.authorUrl,
-  //     updatedAt: item.updatedAt,
-  //     createdAt: item.createdAt,
-  //     type: 'PUBLISHED',
-  //   }))
-  // console.log(appMapped)
-  // console.log(data)
-  // const { data: appData = [], error } = await supabaseClient()
-  //   .from('App')
-  //   .upsert(appMapped)
-  // console.log(error)
-  // const dataImagePromises = data
-  //   ?.filter((item) => !item.user_id)
-  //   .map(async (item: any) => {
-  //     if (!item.mediaPath) return
-  //     console.log(item)
-  //     // supabaseClient.storage.from(bucket).getPublicUrl(filePath)
-  //     const res = await supabaseOldClient.storage
-  //       .from('media')
-  //       .download(item?.mediaPath ?? '')
-  //     console.log(res)
-  //     // uploadFile(res.blob, 'apps', '')
-  //     const { data, error } = await supabaseClient()
-  //       .storage.from('apps')
-  //       .upload(`images/${item.id}/cover.png`, res.data as any, {
-  //         cacheControl: '3600',
-  //         upsert: true,
-  //       })
-  //     console.log(data, error)
-  //     return data
-  //   })
-  // await Promise.all(dataImagePromises)
-  // mutate(appMapped)
-  // const { error } = await supabaseClient().from('App').upsert(appMapped)
-  // console.log(error)
-}
+// "Rakuten Viki" "https://www.viki.com/"
+// "NBA" "https://nba.com/games"
+// "deviantart" "https://www.deviantart.com/bpstatic"
+// "Discord" "https://www.Discord.com"
+// "Telia Play" "https://www.teliaplay.se/"
+// "WhatsApp" "https://web.whatsapp.com"
+// "Showtime Anytime" "https://www.showtimeanytime.com/"
+// "9anime" "https://9anime.to/home"
+// "Paramount Plus" "https://www.paramount.com"
+// "Caffeine" "https://www.caffeine.tv/"
+// "Kick" "https://www.kick.com/"
+// "ProtonDB" "https://www.protondb.com/"
+// "HiDive" "https://www.hidive.com/"
+
+// banner, logo, media > cover
 
 // export type Profile = Database['public']['Tables']['profiles']['Row']
 
