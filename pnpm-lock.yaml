@@ -38,88 +38,6 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(vite@4.2.1)
 
-  apps/admin:
-    dependencies:
-      '@clerk/nextjs':
-        specifier: ^4.16.2
-        version: 4.16.2(next@13.3.0)(react-dom@18.2.0)(react@18.2.0)
-      '@revealed/api':
-        specifier: '*'
-        version: link:../../packages/api
-      '@revealed/auth':
-        specifier: '*'
-        version: link:../../packages/auth
-      '@revealed/db':
-        specifier: '*'
-        version: link:../../packages/db
-      '@revealed/tailwind-config':
-        specifier: '*'
-        version: link:../../packages/config/tailwind
-      '@tanstack/react-query':
-        specifier: ^4.29.2
-        version: 4.29.2(react-dom@18.2.0)(react-native@0.71.6)(react@18.2.0)
-      '@trpc/client':
-        specifier: ^10.20.0
-        version: 10.20.0(@trpc/server@10.20.0)
-      '@trpc/next':
-        specifier: ^10.20.0
-        version: 10.20.0(@tanstack/react-query@4.29.2)(@trpc/client@10.20.0)(@trpc/react-query@10.20.0)(@trpc/server@10.20.0)(next@13.3.0)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/react-query':
-        specifier: ^10.20.0
-        version: 10.20.0(@tanstack/react-query@4.29.2)(@trpc/client@10.20.0)(@trpc/server@10.20.0)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server':
-        specifier: ^10.20.0
-        version: 10.20.0
-      next:
-        specifier: ^13.3.0
-        version: 13.3.0(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
-      next-auth:
-        specifier: ^4.22.0
-        version: 4.22.0(next@13.3.0)(react-dom@18.2.0)(react@18.2.0)
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
-      superjson:
-        specifier: 1.9.1
-        version: 1.9.1
-      zod:
-        specifier: ^3.21.4
-        version: 3.21.4
-    devDependencies:
-      '@revealed/eslint-config':
-        specifier: ^0.1.0
-        version: link:../../packages/config/eslint
-      '@types/node':
-        specifier: ^18.15.11
-        version: 18.15.11
-      '@types/react':
-        specifier: ^18.0.35
-        version: 18.0.37
-      '@types/react-dom':
-        specifier: ^18.0.11
-        version: 18.0.11
-      autoprefixer:
-        specifier: ^10.4.14
-        version: 10.4.14(postcss@8.4.22)
-      dotenv-cli:
-        specifier: ^7.2.1
-        version: 7.2.1
-      eslint:
-        specifier: ^8.38.0
-        version: 8.38.0
-      postcss:
-        specifier: ^8.4.22
-        version: 8.4.22
-      tailwindcss:
-        specifier: ^3.3.1
-        version: 3.3.1(postcss@8.4.22)
-      typescript:
-        specifier: ^5.0.4
-        version: 5.0.4
-
   apps/desktop:
     dependencies:
       '@aws-sdk/client-s3':
@@ -332,9 +250,6 @@ importers:
       react-router-dom:
         specifier: ^6.10.0
         version: 6.10.0(react-dom@18.2.0)(react@18.2.0)
-      react-select:
-        specifier: ^5.7.2
-        version: 5.7.2(@babel/core@7.21.4)(@types/react@18.0.37)(react-dom@18.2.0)(react@18.2.0)
       recharts:
         specifier: ^2.5.0
         version: 2.5.0(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
@@ -6669,12 +6584,6 @@ packages:
       '@types/react': 18.0.37
     dev: true
 
-  /@types/react-transition-group@4.4.5:
-    resolution: {integrity: sha512-juKD/eiSM3/xZYzjuzH6ZwpP+/lejltmiS3QEzV/vmb/Q8+HfDmxu+Baga8UEMGBqV88Nbg4l2hY/K2DkyaLLA==}
-    dependencies:
-      '@types/react': 18.0.37
-    dev: false
-
   /@types/react@17.0.37:
     resolution: {integrity: sha512-2FS1oTqBGcH/s0E+CjrCCR9+JMpsu9b69RTFO+40ua43ZqP5MmQ4iUde/dMjWR909KxZwmOQIFq6AV6NjEG5xg==}
     dependencies:
@@ -9362,13 +9271,6 @@ packages:
     resolution: {integrity: sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==}
     dependencies:
       '@babel/runtime': 7.21.0
-    dev: false
-
-  /dom-helpers@5.2.1:
-    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
-    dependencies:
-      '@babel/runtime': 7.21.0
-      csstype: 3.1.2
     dev: false
 
   /dom-serializer@2.0.0:
@@ -16102,28 +16004,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-select@5.7.2(@babel/core@7.21.4)(@types/react@18.0.37)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-cTlJkQ8YjV6T/js8wW0owTzht0hHGABh29vjLscY4HfZGkv7hc3FFTmRp9NzY/Ib1uQ36GieAKEjxpHdpCFpcA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@babel/runtime': 7.21.0
-      '@emotion/cache': 11.10.5
-      '@emotion/react': 11.10.5(@babel/core@7.21.4)(@types/react@18.0.37)(react@18.2.0)
-      '@floating-ui/dom': 1.2.6
-      '@types/react-transition-group': 4.4.5
-      memoize-one: 6.0.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
-      use-isomorphic-layout-effect: 1.1.2(@types/react@18.0.37)(react@18.2.0)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@types/react'
-    dev: false
-
   /react-shallow-renderer@16.15.0(react@18.2.0):
     resolution: {integrity: sha512-oScf2FqQ9LFVQgA73vr86xl2NaOIX73rh+YFqcOp68CWj56tSfgtGKrEbyhCj0rSijyG9M1CYprTh39fBi5hzA==}
     peerDependencies:
@@ -16202,20 +16082,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-lifecycles-compat: 3.0.4
-    dev: false
-
-  /react-transition-group@4.4.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
-    peerDependencies:
-      react: '>=16.6.0'
-      react-dom: '>=16.6.0'
-    dependencies:
-      '@babel/runtime': 7.21.0
-      dom-helpers: 5.2.1
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:

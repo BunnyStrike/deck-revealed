@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom'
 
 import { classNames } from '../utils'
 import { api } from '../utils/api'
-import { syncDBs } from '../utils/database'
 import RevealedVersion from './Version'
 
 export interface SidebarMenuProps {
