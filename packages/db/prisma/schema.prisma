@@ -250,6 +250,7 @@ model App {
     description String?
     iconUrl    String?
     coverUrl    String?
+    bannerUrl    String?
     authorName String?
     authorUrl String?
     publisherName String?
@@ -483,3 +484,26 @@ model Ad {
     sponsor Sponsor? @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
     sponsorId String?
 }
+
+
+// TODO: Finish publisher when apps submition is live
+// model Publisher {
+//     id      String @id @default(cuid())
+//     name    String
+//     content    String
+//     url     String?
+//     imageUrl    String?
+
+//     priority Int @default(0)
+
+//     type AdType @default(OTHER)
+
+//     startAt DateTime?
+//     endAt DateTime?
+
+//     updatedAt DateTime @updatedAt
+//     createdAt DateTime @default(now())
+
+//     user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//     userId  String? 
+// }

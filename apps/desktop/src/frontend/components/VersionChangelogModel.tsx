@@ -29,13 +29,9 @@ export function VersionChangelogModel({
       staleTime: 1000,
     })
 
-  console.log(currentChangelog)
-
   const handleClose = () => {
     onClose()
   }
-
-  console.log(currentChangelog)
 
   if (!currentChangelog) {
     return <></>

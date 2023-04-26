@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAtom } from 'jotai'
+import { useNavigate } from 'react-router-dom'
 
 import { listFilterAtom, modalsAtom } from '../states'
 import { type AppListOutput, type GameListOutput } from '../utils/api'
@@ -21,6 +22,11 @@ export const RevealedListView = ({
 }: RevealedListViewProps) => {
   const [listFilter] = useAtom(listFilterAtom)
   const [modals, setModals] = useAtom(modalsAtom)
+  const navigate = useNavigate()
+
+  const handleAddApp = () => {
+    navigate(`/app/add`)
+  }
 
   return (
     <div className='bg-neutral'>
@@ -28,7 +34,7 @@ export const RevealedListView = ({
 
       {(listFilter.add === 'app' || listFilter.add === 'both') && (
         <button
-          onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}
+          onClick={() => handleAddApp()}
           className='btn btn-primary mr-4 mt-4'
         >
           Add App
@@ -52,7 +58,7 @@ export const RevealedListView = ({
         {!isLoading && !list.length && listFilter.add === 'app' && (
           <EmptyState
             message={`Add a new app`}
-            onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}
+            onClick={() => handleAddApp()}
           />
         )}
         {!isLoading && !list.length && listFilter.add === 'game' && (

@@ -3,8 +3,8 @@ import { useUser } from '@clerk/clerk-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Form from '@radix-ui/react-form'
 import { Cross2Icon } from '@radix-ui/react-icons'
-import * as Select from '@radix-ui/react-select'
 import { useAtom } from 'jotai'
+import Select from 'react-select'
 
 import { useDebounce } from '../hooks/useDebounce'
 import { modalsAtom, modalsAtomDefault } from '../states'
@@ -91,6 +91,11 @@ export const AddAppModal = ({
     true
   const isAppOwner = app?.ownerId === user?.id
 
+  const platformSelectOptions = appPlatforms.map((platformValue) => ({
+    value: platformValue,
+    label: platformValue,
+  }))
+
   useEffect(() => {
     void handleSearchSteamgridImage(debouncedName)
   }, [debouncedName])
@@ -112,7 +117,6 @@ export const AddAppModal = ({
     event.preventDefault()
     // if (!isAppOwner) return
     const data = Object.fromEntries(new FormData(event.currentTarget))
-    console.log(data)
     const createUpdateDoc = {
       name: data?.name ?? app?.name ?? '',
       source: data?.source ?? app?.source ?? '',
@@ -127,7 +131,7 @@ export const AddAppModal = ({
     } as AppUpsertInput
 
     let appUpdate
-    if (!!app.id) {
+    if (!!app?.id) {
       appUpdate = await updateAsync({ ...createUpdateDoc, id: app.id })
     } else {
       appUpdate = await createMutate(createUpdateDoc)
@@ -379,17 +383,18 @@ export const AddAppModal = ({
                               Please provide a valid Platform
                             </Form.Message>
                           </div>
+                          {platform}
                           <Form.Control asChild>
                             <select
                               className='select w-full max-w-xs'
-                              defaultValue={platform}
-                              onChange={(e) => setPlatform(e.target.value)}
+                              value={platform}
                             >
                               {appPlatforms.map(
                                 (platformValue: AppRunnerType) => (
                                   <option
                                     key={platformValue}
                                     value={platformValue}
+                                    onClick={() => console.log(platformValue)}
                                   >
                                     {platformValue}
                                   </option>

@@ -17,7 +17,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { user } = useUser()
   const navigate = useNavigate()
   const { mutate } = api.app.recent.useMutation()
-  console.log(item?.platform)
+  // console.log(item?.platform)
   const installable = item?.platform !== 'WEB' && !!item?.source
 
   const handleLaunchClick = (
@@ -27,7 +27,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     if (user?.id) {
       mutate({ id, userId: user.id })
     }
-    navigate('/app/web/' + id)
+    navigate(`/app/${id}/webview`)
   }
 
   const handleInstall = (
@@ -37,14 +37,14 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     if (user?.id) {
       mutate({ id, userId: user.id })
     }
-    navigate('/app/web/' + id)
+    navigate(`/app/${id}/webview`)
   }
 
   const handleDetailClick = () => {
     if (user?.id) {
       mutate({ id, userId: user.id })
     }
-    navigate('/app/' + id)
+    navigate(`/app/${id}`)
   }
 
   return (

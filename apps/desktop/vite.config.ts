@@ -1,38 +1,38 @@
-import path from "path";
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import electron from "vite-plugin-electron";
-import svgr from "vite-plugin-svgr";
+import path from 'path'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import electron from 'vite-plugin-electron'
+import svgr from 'vite-plugin-svgr'
 
-const srcAliases = ["backend", "frontend", "common"].map((srcFolder) => {
+const srcAliases = ['backend', 'frontend', 'common'].map((srcFolder) => {
   return {
     find: srcFolder,
     replacement: path.resolve(__dirname, `./src/${srcFolder}`),
-  };
-});
+  }
+})
 
 const electronViteConfig = {
-  build: { outDir: "build/electron" },
+  build: { outDir: 'build/electron' },
   resolve: {
     alias: [
       {
-        find: "~@fontsource",
-        replacement: path.resolve(__dirname, "node_modules/@fontsource"),
+        find: '~@fontsource',
+        replacement: path.resolve(__dirname, 'node_modules/@fontsource'),
       },
       ...srcAliases,
     ],
   },
-};
+}
 
 export default defineConfig({
   build: {
-    outDir: "build",
+    outDir: 'build',
   },
   resolve: {
     alias: [
       {
-        find: "~@fontsource",
-        replacement: path.resolve(__dirname, "node_modules/@fontsource"),
+        find: '~@fontsource',
+        replacement: path.resolve(__dirname, 'node_modules/@fontsource'),
       },
       ...srcAliases,
     ],
@@ -41,14 +41,14 @@ export default defineConfig({
     react(),
     electron([
       {
-        entry: "src/backend/main.ts",
+        entry: 'src/backend/main.ts',
         vite: electronViteConfig,
       },
       {
-        entry: "src/backend/preload.ts",
+        entry: 'src/backend/preload.ts',
         vite: electronViteConfig,
       },
     ]),
     svgr(),
   ],
-});
+})

@@ -22,6 +22,7 @@ import RevealedApplicationShell from './components/ApplicationShell'
 import ConfirmDialog from './components/ConfirmDialog'
 import { LoadingBar } from './components/LoadingBar'
 import { AppDetailsScreen } from './screens'
+import AppManageScreen from './screens/AppManage'
 import { AppsScreen } from './screens/Apps'
 import { GamesScreen } from './screens/Games'
 import { HomeScreen } from './screens/Home'
@@ -67,10 +68,19 @@ function AppMain() {
                   <Route path='/' element={<HomeScreen />} />
                   <Route path='/apps' element={<AppsScreen />} />
                   <Route path='/app'>
-                    <Route path='web'>
-                      <Route path=':id' element={<WebAppScreen />} />
+                    <Route path=':id'>
+                      <Route
+                        path='edit'
+                        element={<AppManageScreen mode='Edit' />}
+                      />
+                      <Route path='webview' element={<WebAppScreen />} />
+                      <Route path='' element={<AppDetailsScreen />} />
                     </Route>
-                    <Route path=':id' element={<AppDetailsScreen />} />
+
+                    <Route
+                      path='add'
+                      element={<AppManageScreen mode='Add' />}
+                    />
                   </Route>
                   <Route path='/games' element={<GamesScreen />} />
                   <Route path='/steam-deck' element={<SteamDeckScreen />} />

@@ -5,7 +5,10 @@
     "target": "es2021",
     "lib": ["esnext", "dom", "dom.iterable", "WebWorker"],
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "frontend/*": ["./src/frontend/*"],
+      "backend/*": ["./src/backend/*"],
+      "common/*": ["./src/common/*"]
     },
     "types": [],
     "typeRoots": ["./node-modules/@types"]

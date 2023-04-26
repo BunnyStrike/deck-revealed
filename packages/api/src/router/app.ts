@@ -108,7 +108,9 @@ const appInput = {
   source: z.string().min(1),
   description: z.string().optional(),
   authorName: z.string().optional(),
+  iconUrl: z.string().optional(),
   coverUrl: z.string().optional(),
+  backgroundUrl: z.string().optional(),
   authorUrl: z.string().optional(),
   publisherName: z.string().optional(),
   publisherUrl: z.string().optional(),
@@ -155,7 +157,7 @@ export const appRouter = createTRPCRouter({
     const { showHidden = false, isFavorited, userId } = input
 
     const where = {
-      versions: { none: { platform: 'STEAMOS' } },
+      // versions: { none: { platform: 'STEAMOS' } },
       name: { search: input.search },
       category: input.category,
       ownerId: input.ownerId,

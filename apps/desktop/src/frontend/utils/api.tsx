@@ -43,19 +43,11 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
           true: ipcLink(),
           false: httpBatchLink({
             url: `${getBaseUrl()}/api/trpc`,
-            // fetch(url, options) {
-            //   return fetch(url, {
-            //     ...options,
-            //     credentials: 'include',
-            //   })
-            // },
             async headers() {
-              // const sess = await session?.getToken()
-              const jwt = localStorage.getItem('clerk-db-jwt')
-              // console.log(jwt)
-              if (!jwt) return {}
+              const jwk = await session?.getToken()
+              if (!jwk) return {}
               return {
-                Authorization: `Bearer ${jwt}`,
+                Authorization: `Bearer ${jwk}`,
               }
             },
           }),
