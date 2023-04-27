@@ -1,7 +1,6 @@
 {
   "name": "@revealed/desktop",
-  "version": "0.0.0",
-  "private": false,
+  "version": "2.0.0-alpha.1",
   "repository": {
     "type": "Github",
     "url": "https://github.com/BunnyStrike/revealed"

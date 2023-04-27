@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "./index.ts",
   "types": "./index.ts",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint .",
