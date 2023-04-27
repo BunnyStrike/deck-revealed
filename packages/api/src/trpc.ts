@@ -59,19 +59,21 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   clerk.setClerkApiKey(process.env.CLERK_SECRET_KEY ?? '')
   const authorization = req.headers.authorization
-  // let's remove the Bearer and whitespace part from the header
-  const clerkToken = authorization?.replace('Bearer ', '')
-  // console.log('clerkToken', clerkToken)
-  const decodeInfo = clerk.decodeJwt(clerkToken ?? '')
-  console.log('decodeInfo', decodeInfo)
-  const sessionId = decodeInfo.payload.sid
-  console.log('sessionId', sessionId)
+  if (authorization) {
+    // let's remove the Bearer and whitespace part from the header
+    const clerkToken = authorization?.replace('Bearer ', '')
+    // console.log('clerkToken', clerkToken)
+    const decodeInfo = clerk.decodeJwt(clerkToken ?? '')
+    console.log('decodeInfo', decodeInfo)
+    const sessionId = decodeInfo.payload.sid
+    console.log('sessionId', sessionId)
 
-  const clerkSession = await clerk.sessions.verifySession(
-    sessionId,
-    clerkToken ?? ''
-  )
-  console.log('clerkSession', clerkSession)
+    const clerkSession = await clerk.sessions.verifySession(
+      sessionId,
+      clerkToken ?? ''
+    )
+    console.log('clerkSession', clerkSession)
+  }
 
   // Get the session from the server using the unstable_getServerSession wrapper function
   const session = await getServerSession({ req, res })
