@@ -124,11 +124,11 @@ const wineprefixFAQ = 'https://wiki.winehq.org/FAQ#Wineprefixes'
 const customThemesWikiLink =
   'https://github.com/BunnyStrike/revealed/wiki/Custom-Themes'
 
-const supabaseApiURL = process.env.SUPABASE_URL
+const supabaseApiURL =
+  process.env.SUPABASE_URL || process.env.VITE_PUBLIC_SUPABASE_URL
 const supabaseApiKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  process.env.SUPABASE_API_SECRET_KEY
+  process.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 /**
  * Get shell for different os

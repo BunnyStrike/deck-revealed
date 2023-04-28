@@ -3,10 +3,8 @@ import { createClient } from '@supabase/supabase-js'
 
 import { getEnvVar } from './envVar'
 
-// import { useShallowEffect, useDebouncedState } from '@mantine/hooks'
-console.log(getEnvVar('NEXT_PUBLIC_SUPABASE_URL'))
-const apiSupabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
-const apiKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
+const apiSupabaseURL = getEnvVar('VITE_PUBLIC_SUPABASE_URL')
+const apiKey = getEnvVar('VITE_PUBLIC_SUPABASE_ANON_KEY')
 
 // export const supabaseClient = (supabaseAccessToken?: string) =>
 //   createClient(apiSupabaseURL, apiKey, {

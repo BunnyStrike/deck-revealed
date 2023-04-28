@@ -4,22 +4,8 @@ import { createClient } from '@supabase/supabase-js'
 import { getEnvVar } from './'
 import { uploadFile } from './file'
 
-// import { useShallowEffect, useDebouncedState } from '@mantine/hooks'
-
-// declare const process: any
-// @ts-ignore
-const env = import.meta.env ?? {} //?? process?.env ?? {}
-
-const apiSupabaseURL =
-  env.VITE_PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL || env.SUPABASE_URL
-const apiKey =
-  env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
-  env.VITE_SUPABASE_API_SECRET_KEY ||
-  env.SUPABASE_SERVICE_ROLE_KEY ||
-  env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  env.SUPABASE_API_SECRET_KEY
-
-const apiSupabaseId = getEnvVar('VITE_SUPABASE_ID')
+const apiSupabaseURL = getEnvVar('VITE_PUBLIC_SUPABASE_URL')
+const apiKey = getEnvVar('VITE_PUBLIC_SUPABASE_ANON_KEY')
 
 // export const supabaseClient = (supabaseAccessToken?: string) =>
 //   createClient(apiSupabaseURL, apiKey, {
@@ -70,6 +56,8 @@ export const difference = (arr1: any, arr2: any) =>
   arr1.filter((x: any) => !arr2.includes(x))
 
 export const getFileUrl = (id: string) => {
+  if (!apiSupabaseURL) return
+  const apiSupabaseId = apiSupabaseURL.replace('https://', '').split('.')[0]
   return `https://${apiSupabaseId}.nhost.run/v1/storage/files/${id}`
 }
 
