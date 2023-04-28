@@ -6,7 +6,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 const Context = createContext(undefined)
 
-export function SupabaseProvider({ children }) {
+export function SupabaseProvider({ children }: any) {
   const [supabase] = useState(() => createBrowserSupabaseClient())
   const router = useRouter()
 
@@ -23,7 +23,7 @@ export function SupabaseProvider({ children }) {
   }, [router, supabase])
 
   return (
-    <Context.Provider value={{ supabase }}>
+    <Context.Provider value={{ supabase } as any}>
       <>{children}</>
     </Context.Provider>
   )

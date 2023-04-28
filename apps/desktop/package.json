@@ -123,7 +123,7 @@
   },
   "scripts": {
     "dev": "pnpm with-env vite --host 0.0.0.0 --port 3100 --clearScreen false",
-    "build": "pnpm build:main && pnpm build:preload",
+    "build": "vite build",
     "build:main": "cd ./layers/main && vite build",
     "build:preload": "cd ./layers/preload && vite build",
     "build:preload:types": "dts-cb -i \"layers/preload/tsconfig.json\" -o \"layers/preload/exposedInMainWorld.d.ts\"",
@@ -151,6 +151,7 @@
   },
   "devDependencies": {
     "@revealed/tailwind-config": "*",
+    "@revealed/eslint-config": "*",
     "@testing-library/dom": "^9.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

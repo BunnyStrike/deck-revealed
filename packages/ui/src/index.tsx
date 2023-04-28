@@ -2,5 +2,5 @@
 // export * from './ContextMenu'
 
 export * from './modal'
-export * from './form'
+export * from './forms'
 export * from './auth'

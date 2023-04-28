@@ -9,7 +9,7 @@ import { allowCors } from '~/utils/cors'
 import { env } from '~/env.mjs'
 
 // If you need to enable cors, you can do so like this:
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
   // Let the tRPC handler do its magic
   return createNextApiHandler({
     router: appRouter,

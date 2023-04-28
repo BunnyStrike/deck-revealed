@@ -13,6 +13,12 @@ interface NavLinkProps {
   children?: React.ReactNode
 }
 
+interface MobileNavLinkProps {
+  href: string
+  className?: string
+  children?: React.ReactNode
+}
+
 function MenuIcon(props: NavLinkProps) {
   return (
     <svg viewBox='0 0 24 24' fill='none' aria-hidden='true' {...props}>
@@ -39,7 +45,7 @@ function ChevronUpIcon(props: NavLinkProps) {
   )
 }
 
-function MobileNavLink({ children, ...props }: NavLinkProps) {
+function MobileNavLink({ children, ...props }: MobileNavLinkProps) {
   return (
     <Popover.Button
       as={Link}

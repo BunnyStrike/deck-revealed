@@ -1,23 +1,10 @@
 {
   "name": "@revealed/ui",
   "version": "0.1.0",
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "exports": {
-    ".": "./dist",
-    "./styles.css": "./dist/index.css"
-  },
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
   "scripts": {
-    "build": "tsup",
-    "dts": "tsc --declarationDir temp --declaration --emitDeclarationOnly && tsup --entry.index temp/index.d.ts --dtsOnly",
-    "dev": "tsup --watch",
-    "check-types": "tsc --noEmit"
-  },
-  "license": "GPL-3.0-only",
-  "peerDependencies": {
-    "react": "^18.2.0"
+    "lint": "eslint \"**/*.ts*\""
   },
   "devDependencies": {
     "@revealed/tailwind-config": "*",
@@ -35,7 +22,7 @@
     "react": "^18.2.0",
     "tailwindcss": "^3.3.2",
     "tsconfig": "*",
-    "tsup": "^6.7.0",
+    "tsup": "6.7.0",
     "typescript": "^5.0.4"
   },
   "dependencies": {

@@ -18,7 +18,7 @@ export function MarketingLoginPage() {
 
   useEffect(() => {
     if (user?.id) {
-      router.push('/')
+      void router.push('/')
     }
   }, [user])
 
