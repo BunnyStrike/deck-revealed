@@ -35,12 +35,12 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
       <div className='flex h-16 shrink-0 items-center'>
         <img
           className='hidden h-auto pt-4 sm:block'
-          src='/img/full-logo.png'
+          src='img/full-logo.png'
           alt='Revealed Logo'
         />
         <img
           className='block h-8 w-auto sm:hidden'
-          src='/img/logo.png'
+          src='img/logo.png'
           alt='Revealed Logo'
         />
       </div>

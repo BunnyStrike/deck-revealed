@@ -29,7 +29,7 @@ export function AuthLayout({ title, subtitle, children }: any) {
             className='h-11'
             width={44}
             height={44}
-            src='/images/logo.png'
+            src='images/logo.png'
             alt='Your Company'
           />
         </Link>
