@@ -19,10 +19,10 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Pocket - Invest at the perfect time.</title>
+        <title>Revealed Apps.</title>
         <meta
           name='description'
-          content='By leveraging insights from our network of industry insiders, you’ll know exactly when to buy to maximize profit, and exactly when to sell to avoid painful losses.'
+          content=' The all-in-one tool for your Steam Deck. Enjoy your favorite apps, manage your games, launch Game Mode. Sign up to be notified soon.'
         />
       </Head>
       {/* <Header /> */}
