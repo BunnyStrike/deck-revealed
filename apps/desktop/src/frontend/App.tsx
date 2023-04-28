@@ -46,67 +46,61 @@ function AppMain() {
   const navigate = useNavigate()
 
   return (
-    <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
-      <SessionContextProvider supabaseClient={supabaseClient}>
-        <Provider>
-          <ClerkLoading>
-            <div className='h-full  w-full bg-neutral'>
-              <LoadingBar />
-            </div>
-          </ClerkLoading>
-          <ClerkLoaded>
-            <ApiProvider>
-              <div id='app' className='h-full  w-full bg-neutral'>
-                {/* <HashRouter> */}
-                <RevealedOfflineMessage />
-                <RevealedApplicationShell>
-                  {/* <DialogHandler /> */}
-                  {/* {isSettingsModalOpen.gameInfo && (
+    // <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      <Provider>
+        {/* <ClerkLoading>
+          <div className='h-full  w-full bg-neutral'>
+            <LoadingBar />
+          </div>
+        </ClerkLoading>
+        <ClerkLoaded> */}
+        <ApiProvider>
+          <div id='app' className='h-full  w-full bg-neutral'>
+            {/* <HashRouter> */}
+            <RevealedOfflineMessage />
+            <RevealedApplicationShell>
+              {/* <DialogHandler /> */}
+              {/* {isSettingsModalOpen.gameInfo && (
             <SettingsModal
               gameInfo={isSettingsModalOpen.gameInfo}
               type={isSettingsModalOpen.type}
             />
           )} */}
-                  {/* <ExternalLinkDialog /> */}
-                  <Routes>
-                    {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
-                    <Route path='/' element={<HomeScreen />} />
-                    <Route path='/apps' element={<AppsScreen />} />
-                    <Route path='/app'>
-                      <Route path=':id'>
-                        <Route
-                          path='edit'
-                          element={<AppManageScreen mode='Edit' />}
-                        />
-                        <Route path='webview' element={<WebAppScreen />} />
-                        <Route path='' element={<AppDetailsScreen />} />
-                      </Route>
+              {/* <ExternalLinkDialog /> */}
+              <Routes>
+                {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
+                <Route path='/' element={<HomeScreen />} />
+                <Route path='/apps' element={<AppsScreen />} />
+                <Route path='/app'>
+                  <Route path=':id'>
+                    <Route
+                      path='edit'
+                      element={<AppManageScreen mode='Edit' />}
+                    />
+                    <Route path='webview' element={<WebAppScreen />} />
+                    <Route path='' element={<AppDetailsScreen />} />
+                  </Route>
 
-                      <Route
-                        path='add'
-                        element={<AppManageScreen mode='Add' />}
-                      />
-                    </Route>
-                    <Route path='/games' element={<GamesScreen />} />
-                    <Route path='/steam-deck' element={<SteamDeckScreen />} />
-                    <Route path='/stores' element={<StoresScreen />} />
-                    <Route path='/settings' element={<SettingsScreen />} />
+                  <Route path='add' element={<AppManageScreen mode='Add' />} />
+                </Route>
+                <Route path='/games' element={<GamesScreen />} />
+                <Route path='/steam-deck' element={<SteamDeckScreen />} />
+                <Route path='/stores' element={<StoresScreen />} />
+                <Route path='/settings' element={<SettingsScreen />} />
 
-                    <Route path='login'>
-                      <Route
-                        path='revealed'
-                        element={<RevealedSignupScreen />}
-                      />
-                    </Route>
+                <Route path='login'>
+                  <Route path='revealed' element={<RevealedSignupScreen />} />
+                </Route>
 
-                    <Route path='loginweb'>
-                      <Route path=':runner' element={<WebView />} />
-                    </Route>
+                <Route path='loginweb'>
+                  <Route path=':runner' element={<WebView />} />
+                </Route>
 
-                    {/* <Route path="/" element={<Navigate replace to="/apps" />} />
+                {/* <Route path="/" element={<Navigate replace to="/apps" />} />
             <Route path="/library" element={<Library />} />
             {/* <Route path="/home" element={<Apps />} /> */}
-                    {/* <Route path="/apps" element={<Apps />} />
+                {/* <Route path="/apps" element={<Apps />} />
             <Route path="steam-deck/utilities" element={<Apps filterBy="Utilities" />} />
             <Route path="steam-deck/boot-videos" element={<BootVideos />} />
             <Route path="login" element={<Login />} />
@@ -140,23 +134,23 @@ function AppMain() {
             <Route path="/wine-manager" element={<WineManager />} />
             <Route path="/download-manager" element={<DownloadManager />} />
             <Route path="/accessibility" element={<Accessibility />} /> */}
-                  </Routes>
-                </RevealedApplicationShell>
-                <div className='controller'>
-                  {/* <ControllerHints /> */}
-                  <AddAppModal />
-                  <AddGameModal />
-                  <ConfirmDialog />
+              </Routes>
+            </RevealedApplicationShell>
+            <div className='controller'>
+              {/* <ControllerHints /> */}
+              <AddAppModal />
+              <AddGameModal />
+              <ConfirmDialog />
 
-                  <div className='simple-keyboard'></div>
-                </div>
-                {/* </HashRouter> */}
-              </div>
-            </ApiProvider>
-          </ClerkLoaded>
-        </Provider>
-      </SessionContextProvider>
-    </ClerkProvider>
+              <div className='simple-keyboard'></div>
+            </div>
+            {/* </HashRouter> */}
+          </div>
+        </ApiProvider>
+        {/* </ClerkLoaded> */}
+      </Provider>
+    </SessionContextProvider>
+    // </ClerkProvider>
   )
 }
 

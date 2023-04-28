@@ -1,6 +1,6 @@
 import { useState } from 'react'
 // import { httpBatchLink, loggerLink } from '@trpc/client'
-import { useSession } from '@clerk/clerk-react'
+// import { useSession } from '@clerk/clerk-react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCReact, httpBatchLink, splitLink } from '@trpc/react-query'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
@@ -31,7 +31,7 @@ export type GameListOutput = RouterOutput['game']['all']
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { session } = useSession()
+  // const { session } = useSession()
   const [queryClient] = useState(() => new QueryClient())
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -43,13 +43,13 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
           true: ipcLink(),
           false: httpBatchLink({
             url: `${getBaseUrl()}/api/trpc`,
-            async headers() {
-              const jwk = await session?.getToken()
-              if (!jwk) return {}
-              return {
-                Authorization: `Bearer ${jwk}`,
-              }
-            },
+            // async headers() {
+            //   const jwk = await session?.getToken()
+            //   if (!jwk) return {}
+            //   return {
+            //     Authorization: `Bearer ${jwk}`,
+            //   }
+            // },
           }),
         }),
       ],
