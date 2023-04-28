@@ -38,6 +38,7 @@ import { initOnlineMonitor, runOnceWhenOnline } from './utils/onlineMonitor'
 import { handleProtocol } from './utils/protocol'
 import { getSystemInfo } from './utils/systemInfo'
 import { createMainWindow, getMainWindow } from './windows/mainWindow'
+import './updater'
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
