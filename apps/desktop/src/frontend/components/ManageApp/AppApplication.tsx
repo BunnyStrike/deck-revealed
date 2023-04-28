@@ -1,14 +1,7 @@
 import { useState } from 'react'
-import { useUser } from '@clerk/clerk-react'
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+// import { useUser } from '@clerk/clerk-react'
 import { useQueryClient } from '@tanstack/react-query'
-import {
-  FormFieldset,
-  FormInputField,
-  FormSelectField,
-  FormTextareaField,
-} from 'frontend/components'
-import { useDebounce } from 'frontend/hooks'
+import { useDebounce, useUser } from 'frontend/hooks'
 import {
   classNames,
   searchSteamgridImage,
@@ -17,11 +10,12 @@ import {
 import { useNavigate } from 'react-router-dom'
 
 import {
-  api,
-  type AppListInput,
-  type AppListOutput,
-  type AppUpsertInput,
-} from '../../utils/api'
+  FormInputField,
+  FormSelectField,
+  FormTextareaField,
+} from '@revealed/ui'
+
+import { api, type AppListOutput, type AppUpsertInput } from '../../utils/api'
 import {
   appCategories,
   appPlatforms,
@@ -35,7 +29,7 @@ import { FileUploadCard } from '../FileUploadCard'
 
 interface AppManageFormProps {
   mode?: 'Add' | 'Edit'
-  app?: AppListOutput[number]
+  app?: AppListOutput[number] | null
 }
 
 export default function AppManageForm({
@@ -54,11 +48,17 @@ export default function AppManageForm({
     mutateAsync: updateAsync,
     error: errorUpdate,
     isLoading: isLoadingUpdate,
-  } = api.app.update.useMutation()
+  } = api.app.update.useMutation({
+    // onSettled: () => api.app.all.useQuery().refetch(),
+  })
 
   const [isLoading, setIsLoading] = useState(false)
 
   const [platform, setPlatform] = useState<AppPlatform>(app?.platform ?? 'WEB')
+  const [store, setStore] = useState<AppStore>(app?.store ?? 'OTHER')
+  const [runnerType, setRunnerType] = useState<AppRunnerType>(
+    app?.runnerType ?? 'OTHER'
+  )
 
   const [name, setName] = useState(app?.name)
   const debouncedName = useDebounce(name, 500)
@@ -99,9 +99,14 @@ export default function AppManageForm({
     name: value,
   }))
 
-  const goToApps = () => {
+  const runnerTypesSelectOptions = appRunnerTypes.map((value) => ({
+    id: value,
+    name: value,
+  }))
+
+  const goToApps = async () => {
+    await queryClient.invalidateQueries(api.app.getQueryKey())
     setIsLoading(false)
-    queryClient.invalidateQueries(api.app.getQueryKey())
     navigate('/apps')
   }
 
@@ -111,6 +116,8 @@ export default function AppManageForm({
   }) => {
     event.preventDefault()
     const data = Object.fromEntries(new FormData(event.currentTarget))
+
+    console.log('Saving:', data)
 
     setIsLoading(true)
 
@@ -122,9 +129,14 @@ export default function AppManageForm({
       iconUrl: app?.iconUrl || undefined,
       coverUrl: app?.coverUrl ?? steamGridImage,
       bannerUrl: app?.bannerUrl || undefined,
+      runnerLocation: data.runnerLocation || app?.runnerLocation || undefined,
+      installLocation:
+        data.installLocation || app?.installLocation || undefined,
+      uninstall: data.uninstall || app?.uninstall || undefined,
       category: data['category[id]'] || app?.category || 'Entertainment',
       store: data['store[id]'] || app?.store || 'OTHER',
       platform: data['platform[id]'] || app?.platform || 'WEB',
+      runnerType: data['runnerType[id]'] || app?.runnerType || undefined,
     } as AppUpsertInput
 
     let appUpdate
@@ -250,16 +262,28 @@ export default function AppManageForm({
               value={platform}
               list={platformSelectOptions}
               fieldName='platform'
-              onChange={(value) => setPlatform(value)}
+              onChange={(value: AppPlatform) => setPlatform(value)}
             />
 
             {platform !== 'WEB' && (
               <FormSelectField
                 className='sm:col-span-3'
                 title='Store'
-                value={app?.store ?? 'OTHER'}
+                value={store}
                 list={storeSelectOptions}
                 fieldName='store'
+                onChange={(value: AppStore) => setStore(value)}
+              />
+            )}
+
+            {platform !== 'WEB' && store === 'OTHER' && (
+              <FormSelectField
+                className='sm:col-span-3'
+                title='Runner Type'
+                value={runnerType}
+                list={runnerTypesSelectOptions}
+                fieldName='runnerType'
+                onChange={(value: AppRunnerType) => setRunnerType(value)}
               />
             )}
           </div>
@@ -340,19 +364,22 @@ export default function AppManageForm({
                 className='sm:col-span-3'
                 title='Install Location (path)'
                 placeholder='/home/deck/.local/share/program'
+                value={app?.installLocation ?? ''}
                 fieldName='installLocation'
               />
               <FormInputField
                 className='sm:col-span-3'
                 title='Runner Location (.sh, exe, etc)'
                 placeholder='/home/deck/.local/share/program/program.sh'
+                value={app?.runnerLocation ?? ''}
                 fieldName='runnerLocation'
               />
               <FormInputField
                 className='sm:col-span-3'
                 title='Uninstall (url, script, etc)'
                 placeholder='https://example.com/uninstaller.sh'
-                fieldName='uninstallUrl'
+                value={app?.uninstall ?? ''}
+                fieldName='uninstall'
               />
             </div>
           </div>
@@ -374,7 +401,7 @@ export default function AppManageForm({
         </button>
         <button
           type='submit'
-          className={classNames(isLoading ? 'loading' : '', 'btn btn-primary')}
+          className={classNames(isLoading ? 'loading' : '', 'btn-primary btn')}
         >
           Save
         </button>

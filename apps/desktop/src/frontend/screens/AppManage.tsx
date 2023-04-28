@@ -20,9 +20,5 @@ export default function AppManageScreen({
     return <LoadingBar />
   }
 
-  if (!app) {
-    return <div>App not found</div>
-  }
-
   return <AppManageForm mode={mode} app={app} />
 }

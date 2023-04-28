@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import type { Session } from 'next-auth'
 
 import { api } from '~/utils/api'
+import 'focus-visible'
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

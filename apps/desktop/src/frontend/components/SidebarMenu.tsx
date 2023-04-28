@@ -1,16 +1,18 @@
 import React from 'react'
-import { UserButton, useUser } from '@clerk/clerk-react'
+// import { UserButton, useUser } from '@clerk/clerk-react'
 import { dark } from '@clerk/themes'
 import { Link, useLocation } from 'react-router-dom'
 
+import { useUser } from '../hooks'
 import { classNames } from '../utils'
 import { api } from '../utils/api'
+import { supabaseClient } from '../utils/database'
 import RevealedVersion from './Version'
 
 export interface SidebarMenuProps {
   navigation: {
     name: string
-    link: string
+    link: string | (() => void)
     showWhenLoggedIn?: boolean
     icon:
       | React.FC<React.SVGProps<SVGSVGElement>>
@@ -29,7 +31,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
   const { user } = useUser()
 
   return (
-    <div className='bg-neutral flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-800 px-6'>
+    <div className='flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-800 bg-neutral px-6'>
       <div className='flex h-16 shrink-0 items-center'>
         <img
           className='hidden h-auto pt-4 sm:block'
@@ -50,16 +52,20 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                 .filter(
                   (item) =>
                     item?.showWhenLoggedIn === undefined ||
-                    (item?.showWhenLoggedIn === false && !user)
+                    (item?.showWhenLoggedIn === false && !user) ||
+                    (item?.showWhenLoggedIn === true && !!user?.id)
                 )
                 .map((item) => (
                   <li key={item.name}>
                     <Link
-                      to={item.link}
+                      to={typeof item.link === 'string' ? item.link : ''}
+                      onClick={
+                        typeof item.link === 'string' ? undefined : item.link
+                      }
                       className={classNames(
                         item.link === location.pathname
                           ? 'bg-primary-focus text-white'
-                          : 'hover:bg-primary text-white hover:text-white',
+                          : 'text-white hover:bg-primary hover:text-white',
                         'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
                       )}
                     >
@@ -74,17 +80,14 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
             </ul>
           </li>
 
-          <li className=' hidden items-center justify-center sm:flex'>
+          {/* <li className=' hidden items-center justify-center sm:flex'>
             <UserButton showName appearance={{ baseTheme: dark }} />
           </li>
           <li className=' flex items-center justify-center sm:hidden'>
             <UserButton appearance={{ baseTheme: dark }} />
-          </li>
+          </li> */}
 
           <li className='-mx-6 mt-auto '>
-            {/* <a className='flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'>
-              <span aria-hidden='true'>2.0.0</span>
-            </a> */}
             <RevealedVersion />
           </li>
         </ul>

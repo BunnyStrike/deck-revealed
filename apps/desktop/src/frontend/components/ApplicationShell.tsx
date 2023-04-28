@@ -15,6 +15,7 @@ import {
 } from '@tabler/icons-react'
 import { useLocation } from 'react-router-dom'
 
+import { supabaseClient } from '../utils/database'
 import { SidebarMenu } from './SidebarMenu'
 
 const navigation = [
@@ -29,6 +30,12 @@ const navigation = [
     link: '/login/revealed',
     icon: IconLogin,
     showWhenLoggedIn: false,
+  },
+  {
+    name: 'Logout',
+    link: () => supabaseClient.auth.signOut(),
+    icon: IconLogin,
+    showWhenLoggedIn: true,
   },
 ]
 interface RevealedApplicationShellPros {

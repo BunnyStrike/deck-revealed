@@ -7,6 +7,9 @@ import { z } from 'zod'
 const server = z.object({
   DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
+  NEXT_PUBLIC_SUPABASE_ID: z.string().min(1),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+  NEXT_PUBLIC_SUPABASE_API_SECRET_KEY: z.string().min(1),
 })
 
 /**
@@ -15,6 +18,9 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_SUPABASE_ID: z.string().min(1),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+  NEXT_PUBLIC_SUPABASE_API_SECRET_KEY: z.string().min(1),
 })
 
 /**
@@ -26,6 +32,10 @@ const client = z.object({
 const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
+  NEXT_PUBLIC_SUPABASE_ID: process.env.NEXT_PUBLIC_SUPABASE_ID,
+  NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  NEXT_PUBLIC_SUPABASE_API_SECRET_KEY:
+    process.env.NEXT_PUBLIC_SUPABASE_API_SECRET_KEY,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 }
 
@@ -70,7 +80,7 @@ if (!!process.env.SKIP_ENV_VALIDATION == false) {
         )
       return target[/** @type {keyof typeof target} */ (prop)]
     },
-  }) // eslint-disable-line @typescript-eslint/no-unsafe-return
+  })
 }
 
 export { env }

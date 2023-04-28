@@ -1,8 +1,9 @@
 import './style.css'
 import React from 'react'
-import { useUser } from '@clerk/clerk-react'
+// import { useUser } from '@clerk/clerk-react'
 import { DownloadIcon, PlayIcon } from '@radix-ui/react-icons'
 import { IconDownload } from '@tabler/icons-react'
+import { useUser } from 'frontend/hooks'
 import { useNavigate } from 'react-router-dom'
 
 import { api, type AppListOutput, type GameListOutput } from '../../utils/api'
@@ -52,7 +53,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     <AppContextMenu appId={id} ownerId={ownerId} app={item}>
       <div
         onClick={() => handleDetailClick()}
-        className='card image-full-color hover-bordered active:outline-offset-3 outline-primary group cursor-pointer pb-0 hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+        className='image-full-color active:outline-offset-3 group card hover-bordered cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
       >
         <figure>
           <img
@@ -66,14 +67,14 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
             {installable ? (
               <button
                 onClick={(e) => handleInstall(e)}
-                className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+                className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
               >
                 <DownloadIcon />
               </button>
             ) : (
               <button
                 onClick={(e) => handleLaunchClick(e)}
-                className='btn btn-primary btn-sm outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+                className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
               >
                 <PlayIcon />
               </button>

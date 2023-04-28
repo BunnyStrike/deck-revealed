@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useUser } from '@clerk/clerk-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Form from '@radix-ui/react-form'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { useAtom } from 'jotai'
 import Select from 'react-select'
 
+import { useUser } from '../hooks'
 import { useDebounce } from '../hooks/useDebounce'
 import { modalsAtom, modalsAtomDefault } from '../states'
 import { classNames, searchSteamgridImage } from '../utils'
@@ -220,7 +220,7 @@ export const AddAppModal = ({
         ) : (
           <button
             onClick={() => setModals((prev) => ({ ...prev, showAddApp: true }))}
-            className='btn btn-primary mr-4 mt-4'
+            className='btn-primary btn mr-4 mt-4'
           >
             {type} App
           </button>
@@ -644,7 +644,7 @@ export const AddAppModal = ({
                       <Form.Submit
                         className={classNames(
                           isLoadingUpdate || isLoadingCreate ? 'loading' : '',
-                          'btn tbn-primary'
+                          'tbn-primary btn'
                         )}
                       >
                         {/* <button

@@ -55,7 +55,7 @@ const versionInput = z.object({
   version: z.string().optional(),
   sourceUrl: z.string().min(1),
   name: z.string().optional(),
-  uninstallUrl: z.string().optional(),
+  uninstall: z.string().optional(),
   installLocation: z.string().optional(),
   runnerLocation: z.string().optional(),
   status: z.string().default('PUBLISHED'),
@@ -118,6 +118,9 @@ const appInput = {
   ownerId: z.string().optional(),
   platform: z.any().optional(),
   store: z.any().optional(),
+  uninstall: z.string().optional(),
+  installLocation: z.string().optional(),
+  runnerLocation: z.string().optional(),
   runnerType: z.any().optional(),
   // media: z.array(mediaInput).optional(),
   // versions: z.array(versionInput).optional(),
@@ -154,63 +157,106 @@ export const appRouter = createTRPCRouter({
   apps: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories
-    const { showHidden = false, isFavorited, userId } = input
+    const {
+      showHidden = false,
+      isFavorited,
+      userId,
+      search,
+      category,
+      ownerId,
+    } = input
 
     const where = {
       // versions: { none: { platform: 'STEAMOS' } },
-      name: { search: input.search },
-      category: input.category,
+      NOT: {
+        platform: 'STEAMOS',
+      },
+      name: search ? { search } : undefined,
+      category: input.category ?? 'Entertainment',
       ownerId: input.ownerId,
-      userActions: {},
+      // userActions: {},
     }
-    if (userId) {
-      where.userActions = {
-        // some: {
-        // userId,
-        // favoritedAt: isFavorited ? { not: null } : null,
-        // hideAt: showHidden ? { not: null } : null,
-        // },
-        // none: {
-        //   favoritedAt: isFavorited ? { not: null } : null,
-        //   hideAt: showHidden ? { not: null } : null,
-        // },
-      }
-    }
+    // if (userId) {
+    //   where.userActions = {
+    //     // some: {
+    //     // userId,
+    //     // favoritedAt: isFavorited ? { not: null } : null,
+    //     // hideAt: showHidden ? { not: null } : null,
+    //     // },
+    //     // none: {
+    //     //   favoritedAt: isFavorited ? { not: null } : null,
+    //     //   hideAt: showHidden ? { not: null } : null,
+    //     // },
+    //   }
+    // }
 
     return ctx.prisma.app.findMany({
-      where,
-      // @ts-expect-error
-      orderBy: { createdAt: input.sort },
-      // include: {
-      //   versions: true,
-      //   userActions: {
-      //     where: {
-      //       userId,
-      //     },
-      //   },
-      // },
+      where: {
+        NOT: {
+          platform: 'STEAMOS',
+        },
+        name: search ? { search } : undefined,
+        category: category ?? 'Entertainment',
+        ownerId,
+      },
+      orderBy: {
+        name: input.sort as any,
+      },
+      include: {
+        versions: true,
+        userActions: {
+          where: {
+            userId,
+          },
+        },
+      },
     })
   }),
   steamos: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
-    // TODO: filter list based on categories
+    const {
+      showHidden = false,
+      isFavorited,
+      userId,
+      search,
+      category,
+      ownerId,
+    } = input
+
     return ctx.prisma.app.findMany({
       where: {
-        versions: { some: { platform: 'STEAMOS' } },
-        category: input.category,
-        name: { search: input.search },
-        ownerId: input.ownerId,
+        platform: 'STEAMOS',
+        category: category,
+        name: { search },
+        ownerId: ownerId,
       },
-      // @ts-expect-error
-      orderBy: { createdAt: input.sort },
-      include: { versions: true },
+      orderBy: { createdAt: input.sort as any },
+      include: {
+        versions: true,
+        userActions: {
+          where: {
+            userId,
+          },
+        },
+      },
     })
   }),
   byId: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.string(), userId: z.string().optional() }))
     .query(({ ctx, input }) => {
       // TODO: get wiki data
-      return ctx.prisma.app.findFirst({ where: { id: input.id } })
+      const { id, userId } = input
+      return ctx.prisma.app.findFirst({
+        where: { id: id },
+        include: {
+          versions: true,
+          userActions: {
+            where: {
+              userId,
+            },
+          },
+        },
+      })
     }),
   create: publicProcedure
     .input(

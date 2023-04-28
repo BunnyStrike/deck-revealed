@@ -1,5 +1,4 @@
 import React from 'react'
-import { useUser } from '@clerk/clerk-react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import {
   CheckIcon,
@@ -10,6 +9,7 @@ import { app } from 'electron'
 import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 
+import { useUser } from '../hooks'
 import { confirmModalAtom, modalsAtom } from '../states'
 import { GameListOutput, api, type AppListOutput } from '../utils/api'
 import ConfirmDialog from './ConfirmDialog'
@@ -82,7 +82,7 @@ export const AppContextMenu = ({
       <ContextMenu.Trigger>{children}</ContextMenu.Trigger>
       <ContextMenu.Portal>
         <ContextMenu.Content
-          className='bg-secondary z-20 min-w-[220px] overflow-hidden rounded-md p-[5px] text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
+          className='z-20 min-w-[220px] overflow-hidden rounded-md bg-secondary p-[5px] text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
           alignOffset={5}
         >
           {!!app?.id && (

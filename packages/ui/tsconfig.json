@@ -1,5 +1,12 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "include": [".", "./src/custom.d.ts"],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "lib": ["ES2015"],
+    "module": "ESNext",
+    "target": "ES6",
+    "composite": false,
+    "jsx": "react-jsx"
+  }
 }

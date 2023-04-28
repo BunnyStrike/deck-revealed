@@ -1,7 +1,8 @@
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import classNames from 'classnames'
+
+import { classNames } from '../utils'
 
 export interface FormSelectFieldListItem {
   id: string

@@ -257,6 +257,7 @@
     "i18next": "^22.4.14",
     "i18next-fs-backend": "^2.1.1",
     "i18next-http-backend": "^2.2.0",
+    "framer-motion": "^6.5.1",
     "ini": "^4.1.0",
     "jotai": "^2.0.4",
     "node-gyp-build": "^4.6.0",

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { useUser } from '@clerk/clerk-react'
+// import { useUser } from '@clerk/clerk-react'
 import { useAtom } from 'jotai'
 
 import { RevealedListView } from '../components/ListView'
+import { useUser } from '../hooks'
 import { useDebounce } from '../hooks/useDebounce'
 import { listFilterAtom } from '../states'
 import { api } from '../utils/api'

@@ -7,8 +7,16 @@
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+  experimental: {
+    scrollRestoration: true,
+  },
   /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ['@revealed/api', '@revealed/auth', '@revealed/db'],
+  transpilePackages: [
+    '@revealed/api',
+    '@revealed/auth',
+    '@revealed/db',
+    '@revealed/ui',
+  ],
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   typescript: { ignoreBuildErrors: !!process.env.CI },
