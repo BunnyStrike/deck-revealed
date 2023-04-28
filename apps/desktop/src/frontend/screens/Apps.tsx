@@ -39,7 +39,13 @@ export const AppsScreen = () => {
     }))
   }, [data.length, setListFilter])
 
-  if (error) return <div>{error.message}</div>
+  if (error)
+    return (
+      <div>
+        <p>{error.message}</p>
+        <p>{error?.data?.code || 'Unknown'}</p>
+      </div>
+    )
 
   return <RevealedListView title='Home' list={data} isLoading={isLoading} />
 }
