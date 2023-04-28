@@ -1,11 +1,27 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
+import { AuthPortal } from '@revealed/ui'
+
+// import { supabaseClient } from '~/utils/database'
 import { AuthLayout } from '~/components/AuthLayout'
 import { Button } from '~/components/Button'
 import { SelectField, TextField } from '~/components/Fields'
 
 export function MarketingRegisterPage() {
+  const user = useUser()
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     router.push('/')
+  //   }
+  // }, [user])
+
   return (
     <>
       <Head>
@@ -13,17 +29,17 @@ export function MarketingRegisterPage() {
       </Head>
       <AuthLayout
         title='Sign up for an account'
-        subtitle={
-          <>
-            Already registered?{' '}
-            <Link href='/login' className='text-cyan-600'>
-              Sign in
-            </Link>{' '}
-            to your account.
-          </>
-        }
+        // subtitle={
+        //   <>
+        //     Already registered?{' '}
+        //     <Link href='/login' className='text-cyan-600'>
+        //       Sign in
+        //     </Link>{' '}
+        //     to your account.
+        //   </>
+        // }
       >
-        <form>
+        {/* <form>
           <div className='grid grid-cols-2 gap-6'>
             <TextField
               label='First name'
@@ -74,7 +90,8 @@ export function MarketingRegisterPage() {
           <Button type='submit' color='cyan' className='mt-8 w-full'>
             Get started today
           </Button>
-        </form>
+        </form> */}
+        <AuthPortal supabaseClient={supabaseClient} />
       </AuthLayout>
     </>
   )

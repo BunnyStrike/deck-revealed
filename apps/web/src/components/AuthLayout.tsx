@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 import { Logo } from '~/components/Logo'
 
-function BackgroundIllustration(props) {
+function BackgroundIllustration(props: any) {
   return (
     <svg
       viewBox='0 0 1090 1090'
@@ -19,12 +20,18 @@ function BackgroundIllustration(props) {
   )
 }
 
-export function AuthLayout({ title, subtitle, children }) {
+export function AuthLayout({ title, subtitle, children }: any) {
   return (
     <main className='flex min-h-full overflow-hidden pt-16 sm:py-28'>
-      <div className='mx-auto flex w-full max-w-2xl flex-col px-4 sm:px-6'>
+      <div className='mx-auto flex w-full max-w-2xl flex-col items-center px-4 sm:px-6'>
         <Link href='/' aria-label='Home'>
-          <Logo className='mx-auto h-10 w-auto' />
+          <Image
+            className='h-11'
+            width={44}
+            height={44}
+            src='/images/logo.png'
+            alt='Your Company'
+          />
         </Link>
         <div className='relative mt-12 sm:mt-16'>
           <BackgroundIllustration

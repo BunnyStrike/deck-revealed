@@ -1,18 +1,23 @@
 import '../styles/globals.css'
 import type { AppType } from 'next/app'
 import { ClerkProvider } from '@clerk/nextjs'
-import type { Session } from 'next-auth'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
 
 import { api } from '~/utils/api'
 import 'focus-visible'
+import { useState } from 'react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const MyApp = ({ Component, pageProps }: any) => {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
   return (
     <ClerkProvider {...pageProps}>
-      <Component {...pageProps} />
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
+        <Component {...pageProps} />
+      </SessionContextProvider>
     </ClerkProvider>
   )
 }

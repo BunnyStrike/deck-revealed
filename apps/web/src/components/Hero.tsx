@@ -381,7 +381,7 @@ export function Hero() {
               </PhoneFrame>
             </div>
           </div>
-          <div className='relative -mt-4 lg:col-span-7 lg:mt-0 xl:col-span-6'>
+          {/* <div className='relative -mt-4 lg:col-span-7 lg:mt-0 xl:col-span-6'>
             <p className='text-center text-sm font-semibold text-gray-900 lg:text-left'>
               As featured in
             </p>
@@ -401,8 +401,7 @@ export function Hero() {
               ].map(([name, logo, className], index) => (
                 <li key={index} className={clsx('flex', className)}>
                   <Image
-                    fill
-                    src={logo as any}
+                    src={logo}
                     alt={name as string}
                     className='h-8'
                     unoptimized
@@ -410,7 +409,7 @@ export function Hero() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
         </div>
       </Container>
     </div>

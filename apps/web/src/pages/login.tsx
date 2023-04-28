@@ -1,14 +1,27 @@
+import { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
 import { AuthPortal } from '@revealed/ui'
 
-import { supabaseClient } from '~/utils/database'
+// import { supabaseClient } from '~/utils/database'
 import { AuthLayout } from '~/components/AuthLayout'
 import { Button } from '~/components/Button'
 import { TextField } from '~/components/Fields'
 
 export function MarketingLoginPage() {
+  const user = useUser()
+  const router = useRouter()
+  const supabaseClient = useSupabaseClient()
+
+  useEffect(() => {
+    if (user?.id) {
+      router.push('/')
+    }
+  }, [user])
+
   return (
     <>
       <Head>

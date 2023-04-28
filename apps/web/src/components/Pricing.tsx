@@ -8,7 +8,7 @@ import { Logomark } from '~/components/Logo'
 
 const plans = [
   {
-    name: 'Starter',
+    name: 'Free',
     featured: false,
     price: { Monthly: '$0', Annually: '$0' },
     description:
@@ -26,9 +26,9 @@ const plans = [
     logomarkClassName: 'fill-gray-300',
   },
   {
-    name: 'Investor',
+    name: 'Pro',
     featured: false,
-    price: { Monthly: '$7', Annually: '$70' },
+    price: { Monthly: '$7', Annually: '$7' },
     description:
       'You’ve been investing for a while. Invest more and grow your wealth faster.',
     button: {
@@ -45,9 +45,9 @@ const plans = [
     logomarkClassName: 'fill-gray-500',
   },
   {
-    name: 'VIP',
+    name: 'Pro Plus',
     featured: true,
-    price: { Monthly: '$199', Annually: '$1,990' },
+    price: { Monthly: '$9', Annually: '$99' },
     description:
       'You’ve got a huge amount of assets but it’s not enough. To the moon.',
     button: {

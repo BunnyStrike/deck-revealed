@@ -9,12 +9,20 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 interface AuthPortalProps {
   supabaseClient: SupabaseClient
+  redirectTo?: string
+  view?: string
 }
 
-export const AuthPortal = ({ supabaseClient }: AuthPortalProps) => (
+export const AuthPortal = ({
+  supabaseClient,
+  redirectTo = '/',
+  view = 'sign_up',
+}: AuthPortalProps) => (
   <Auth
     supabaseClient={supabaseClient}
     theme='dark'
+    redirectTo={redirectTo}
+    view={view}
     appearance={{ theme: ThemeSupa }}
     providers={[]}
   />
