@@ -26,9 +26,7 @@ autoUpdater.on('update-available', async () => {
     buttons: [t('box.no'), t('box.yes')],
   })
   if (checkboxChecked) {
-    await shell.openExternal(
-      'https://github.com/BunnyStrike/revealed-desktop-app/releases'
-    )
+    await shell.openExternal('https://github.com/BunnyStrike/revealed/releases')
   }
   if (response === 1) {
     await autoUpdater.downloadUpdate()
