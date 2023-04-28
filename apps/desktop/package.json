@@ -10,7 +10,7 @@
     "email": "support@bunnystrike.com"
   },
   "engines": {
-    "node": ">=v16.13",
+    "node": ">=v18.11",
     "npm": ">=8.1"
   },
   "main": "build/electron/main.js",
@@ -122,7 +122,7 @@
     }
   },
   "scripts": {
-    "dev": "pnpm with-env vite --host 0.0.0.0 --port 3100 --clearScreen false",
+    "dev": "pnpm with-env-local vite --host 0.0.0.0 --port 3100 --clearScreen false",
     "build": "vite build",
     "build:main": "cd ./layers/main && vite build",
     "build:preload": "cd ./layers/preload && vite build",
@@ -145,8 +145,8 @@
     "flatpak:prepare": "node ./flatpak/prepareFlatpak.js",
     "flatpak:prepare-release": "node ./flatpak/prepareFlatpak.js release",
     "lint:fix": "pnpm lint --fix",
-    "start": "pnpm with-env next start",
     "type-check": "tsc --noEmit",
+    "with-env-local": "dotenv -e ../../.env.local --",
     "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
