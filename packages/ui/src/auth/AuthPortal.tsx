@@ -1,5 +1,9 @@
 import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa, type supabase } from '@supabase/auth-ui-shared'
+import {
+  ThemeSupa,
+  type ViewType,
+  type supabase,
+} from '@supabase/auth-ui-shared'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 // const supabase = createClient(
@@ -10,7 +14,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 interface AuthPortalProps {
   supabaseClient: SupabaseClient
   redirectTo?: string
-  view?: string
+  view?: ViewType
 }
 
 export const AuthPortal = ({
