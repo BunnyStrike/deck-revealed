@@ -7,8 +7,8 @@ import { PillTabs } from '@revealed/ui'
 
 import { listFilterAtom, modalsAtom } from '../../states'
 import {
-  BootVideoOutput,
   type AppListOutput,
+  type BootVideoOutput,
   type GameListOutput,
 } from '../../utils/api'
 import EmptyState from '../EmptyState'
@@ -81,7 +81,7 @@ export const BootVideoList = ({
         {!isLoading && !list.length && listFilter.add === 'both' && (
           <EmptyState message={`Empty`} />
         )}
-        <div className='xs:grid-cols-2  mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-4 2xl:grid-cols-8'>
+        <div className='xs:grid-cols-2  mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 2xl:grid-cols-6'>
           {list.map((item) => (
             <BootVideoCard key={item.id} item={item} />
           ))}
