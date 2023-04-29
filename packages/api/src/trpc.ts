@@ -80,11 +80,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   // Get the session from the server using the unstable_getServerSession wrapper function
   const session = await supabaseClient.auth.getSession() // await getServerSession({ req, res })
 
-  console.log({
-    session: session.data?.session?.user,
-    supabase: supabaseClient,
-  })
-
   return createInnerTRPCContext({
     session: session.data?.session,
     supabase: supabaseClient,
