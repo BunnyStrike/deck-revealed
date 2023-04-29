@@ -1,6 +1,6 @@
 /*
   This example requires some changes to your config:
-  
+
   ```
   // tailwind.config.js
   module.exports = {
@@ -13,7 +13,7 @@
   ```
 */
 import { Fragment, useState } from 'react'
-import { SignedIn, SignedOut, UserProfile } from '@clerk/clerk-react'
+// import { SignedIn, SignedOut, UserProfile } from '@clerk/clerk-react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import {
@@ -79,15 +79,15 @@ export function SettingsScreen() {
         </nav>
       </header>
 
-      <SignedIn>
+      {/* <SignedIn>
         <UserProfile />
       </SignedIn>
       <SignedOut>
         <RevealedSignupScreen />
-      </SignedOut>
+      </SignedOut> */}
 
       {/* Settings forms */}
-      {/* <div className='divide-y divide-white/5'>
+      <div className='divide-y divide-white/5'>
         <div className='grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8'>
           <div>
             <h2 className='text-base font-semibold leading-7 text-white'>
@@ -371,7 +371,7 @@ export function SettingsScreen() {
             </button>
           </form>
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }

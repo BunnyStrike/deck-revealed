@@ -32,30 +32,13 @@ export const BootVideoList = ({
   const [modals, setModals] = useAtom(modalsAtom)
   const navigate = useNavigate()
 
-  const handleAddApp = () => {
-    navigate(`/app/add`)
-  }
+  // const handleAddApp = () => {
+  //   navigate(`/app/add`)
+  // }
 
   return (
     <div className='bg-neutral'>
       <RevealedSearchBar />
-
-      {(listFilter.add === 'app' || listFilter.add === 'both') && (
-        <button
-          onClick={() => handleAddApp()}
-          className='btn-primary btn mr-4 mt-4'
-        >
-          Add App
-        </button>
-      )}
-      {(listFilter.add === 'game' || listFilter.add === 'both') && (
-        <button
-          onClick={() => setModals((prev) => ({ ...prev, showAddGame: true }))}
-          className='btn-primary btn mr-4 mt-4'
-        >
-          Add Game
-        </button>
-      )}
 
       <div className=''>
         {isLoading && (
