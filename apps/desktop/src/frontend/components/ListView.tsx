@@ -1,4 +1,5 @@
 import React from 'react'
+import { Tab } from '@headlessui/react'
 import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 
@@ -51,7 +52,10 @@ export const RevealedListView = ({
           Add Game
         </button>
       )}
-      {/* <PillTabs /> */}
+      <PillTabs tabs={['Utils', 'Boot Videos']}>
+        <Tab.Panel>test</Tab.Panel>
+        <Tab.Panel>test2</Tab.Panel>
+      </PillTabs>
       <div className=''>
         {isLoading && (
           <div className='bg-neutral'>
