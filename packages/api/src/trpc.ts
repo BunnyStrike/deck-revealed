@@ -8,12 +8,16 @@
  */
 
 import * as clerk from '@clerk/clerk-sdk-node'
+import {
+  createClient,
+  type Session,
+  type SupabaseClient,
+} from '@supabase/supabase-js'
 import { TRPCError, initTRPC } from '@trpc/server'
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
 
-import { getServerSession, type Session } from '@revealed/auth'
 import { prisma } from '@revealed/db'
 
 /**
@@ -27,6 +31,7 @@ import { prisma } from '@revealed/db'
  */
 type CreateContextOptions = {
   session: Session | null
+  supabase: SupabaseClient | null
 }
 
 /**
@@ -41,6 +46,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+    supabase: opts.supabase,
     prisma,
   }
 }
@@ -52,34 +58,36 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts
-
-  // console.log(opts.req.headers)
-
-  // console.log('process.env.CLERK_SECRET_KEY', process.env.CLERK_SECRET_KEY)
-
-  clerk.setClerkApiKey(process.env.CLERK_SECRET_KEY ?? '')
   const authorization = req.headers.authorization
-  if (authorization) {
-    // let's remove the Bearer and whitespace part from the header
-    const clerkToken = authorization?.replace('Bearer ', '')
-    // console.log('clerkToken', clerkToken)
-    const decodeInfo = clerk.decodeJwt(clerkToken ?? '')
-    console.log('decodeInfo', decodeInfo)
-    const sessionId = decodeInfo.payload.sid
-    console.log('sessionId', sessionId)
 
-    const clerkSession = await clerk.sessions.verifySession(
-      sessionId,
-      clerkToken ?? ''
-    )
-    console.log('clerkSession', clerkSession)
-  }
+  const supabaseClient = createClient(
+    // Supabase API URL - env var exported by default.
+    process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+    // Supabase API ANON KEY - env var exported by default.
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
+    // Create client with Auth context of the user that called the function.
+    // This way your row-level-security (RLS) policies are applied.
+    {
+      global: { headers: { Authorization: authorization ?? '' } },
+    }
+  )
+
+  // if (authorization) {
+  //   // let's remove the Bearer and whitespace part from the header
+  //   const token = authorization?.replace('Bearer ', '')
+  // }
 
   // Get the session from the server using the unstable_getServerSession wrapper function
-  const session = await getServerSession({ req, res })
+  const session = await supabaseClient.auth.getSession() // await getServerSession({ req, res })
+
+  console.log({
+    session: session.data?.session?.user,
+    supabase: supabaseClient,
+  })
 
   return createInnerTRPCContext({
-    session,
+    session: session.data?.session,
+    supabase: supabaseClient,
   })
 }
 

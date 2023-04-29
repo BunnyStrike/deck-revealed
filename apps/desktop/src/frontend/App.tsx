@@ -1,10 +1,4 @@
 import React, { useContext } from 'react'
-import {
-  ClerkLoaded,
-  ClerkLoading,
-  ClerkProvider,
-  SignIn,
-} from '@clerk/clerk-react'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { Provider } from 'jotai'
 // import './App.css'
@@ -39,25 +33,14 @@ import { ApiProvider, api } from './utils/api'
 import { supabaseClient } from './utils/database'
 import { getEnvVar } from './utils/envVar'
 
-const clerkPubKey = getEnvVar('VITE_PUBLIC_CLERK_PUBLISHABLE_KEY')
-
 function AppMain() {
   // const { isSettingsModalOpen } = useContext(ContextProvider)
-  const navigate = useNavigate()
 
   return (
-    // <ClerkProvider publishableKey={clerkPubKey} navigate={(to) => navigate(to)}>
     <SessionContextProvider supabaseClient={supabaseClient}>
       <Provider>
-        {/* <ClerkLoading>
-          <div className='h-full  w-full bg-neutral'>
-            <LoadingBar />
-          </div>
-        </ClerkLoading>
-        <ClerkLoaded> */}
         <ApiProvider>
           <div id='app' className='h-full  w-full bg-neutral'>
-            {/* <HashRouter> */}
             <RevealedOfflineMessage />
             <RevealedApplicationShell>
               {/* <DialogHandler /> */}
@@ -144,13 +127,10 @@ function AppMain() {
 
               <div className='simple-keyboard'></div>
             </div>
-            {/* </HashRouter> */}
           </div>
         </ApiProvider>
-        {/* </ClerkLoaded> */}
       </Provider>
     </SessionContextProvider>
-    // </ClerkProvider>
   )
 }
 

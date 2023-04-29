@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useUser } from '@supabase/auth-helpers-react'
 // import { httpBatchLink, loggerLink } from '@trpc/client'
 // import { useSession } from '@clerk/clerk-react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -10,6 +11,7 @@ import superjson from 'superjson'
 import type { AppRouter } from '@revealed/api'
 
 import type { AppRouter as DesktopAppRouter } from '../../backend/api'
+import { supabaseClient } from './database'
 import { getEnvVar } from './envVar'
 
 const getBaseUrl = () => {
@@ -31,7 +33,7 @@ export type GameListOutput = RouterOutput['game']['all']
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // const { session } = useSession()
+  const user = useUser()
   const [queryClient] = useState(() => new QueryClient())
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -43,13 +45,14 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
           true: ipcLink(),
           false: httpBatchLink({
             url: `${getBaseUrl()}/api/trpc`,
-            // async headers() {
-            //   const jwk = await session?.getToken()
-            //   if (!jwk) return {}
-            //   return {
-            //     Authorization: `Bearer ${jwk}`,
-            //   }
-            // },
+            async headers() {
+              const session = await supabaseClient.auth.getSession()
+              const token = session.data.session?.access_token
+              if (!token) return {}
+              return {
+                Authorization: `Bearer ${token}`,
+              }
+            },
           }),
         }),
       ],

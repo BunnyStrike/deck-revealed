@@ -7,22 +7,6 @@ import { uploadFile } from './file'
 const apiSupabaseURL = getEnvVar('VITE_PUBLIC_SUPABASE_URL')
 const apiKey = getEnvVar('VITE_PUBLIC_SUPABASE_ANON_KEY')
 
-// export const supabaseClient = (supabaseAccessToken?: string) =>
-//   createClient(apiSupabaseURL, apiKey, {
-//     global: supabaseAccessToken
-//       ? { headers: { Authorization: `Bearer ${supabaseAccessToken}` } }
-//       : {},
-//     // <Database>
-//     db: {
-//       schema: 'public',
-//     },
-//     auth: {
-//       // storage: AsyncStorage,
-//       autoRefreshToken: true,
-//       persistSession: true,
-//       detectSessionInUrl: true,
-//     },
-//   })
 export const supabaseClient = createClient(apiSupabaseURL, apiKey, {
   db: {
     schema: 'public',

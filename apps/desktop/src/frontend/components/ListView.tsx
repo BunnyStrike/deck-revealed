@@ -51,7 +51,7 @@ export const RevealedListView = ({
           Add Game
         </button>
       )}
-      <PillTabs />
+      {/* <PillTabs /> */}
       <div className=''>
         {isLoading && (
           <div className='bg-neutral'>

@@ -664,6 +664,9 @@ importers:
       '@revealed/db':
         specifier: ^0.1.0
         version: link:../db
+      '@supabase/supabase-js':
+        specifier: ^2.21.0
+        version: 2.21.0
       '@trpc/client':
         specifier: ^10.20.0
         version: 10.20.0(@trpc/server@10.20.0)
