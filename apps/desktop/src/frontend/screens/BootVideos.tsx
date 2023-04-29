@@ -4,19 +4,20 @@ import { useAtom } from 'jotai'
 
 import { PillTabs } from '@revealed/ui'
 
+import { BootVideoList } from '../components/BootVideo/BootVideoList'
 import { RevealedListView } from '../components/ListView'
 import { useDebounce } from '../hooks/useDebounce'
 import { listFilterAtom } from '../states'
 import { api } from '../utils/api'
 
-export const SteamDeckScreen = () => {
+export const BootVideosScreen = () => {
   const [listFilter, setListFilter] = useAtom(listFilterAtom)
   const debouncedFilter = useDebounce(listFilter.name, 500)
   const {
     data = [],
     error,
     isLoading,
-  } = api.app.steamos.useQuery({
+  } = api.bootVideo.all.useQuery({
     search: debouncedFilter,
   })
 
@@ -31,5 +32,5 @@ export const SteamDeckScreen = () => {
 
   if (error) return <div>{error.message}</div>
 
-  return <RevealedListView title='Home' list={data} isLoading={isLoading} />
+  return <BootVideoList title='Home' list={data} isLoading={isLoading} />
 }

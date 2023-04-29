@@ -5,25 +5,29 @@ import { useNavigate } from 'react-router-dom'
 
 import { PillTabs } from '@revealed/ui'
 
-import { listFilterAtom, modalsAtom } from '../states'
-import { type AppListOutput, type GameListOutput } from '../utils/api'
-import EmptyState from './EmptyState'
-import { RevealedListCard } from './ListCard'
-import { LoadingBar } from './LoadingBar'
-import RevealedSearchBar from './SearchBar'
+import { listFilterAtom, modalsAtom } from '../../states'
+import {
+  BootVideoOutput,
+  type AppListOutput,
+  type GameListOutput,
+} from '../../utils/api'
+import EmptyState from '../EmptyState'
+import { LoadingBar } from '../LoadingBar'
+import RevealedSearchBar from '../SearchBar'
+import { BootVideoCard } from './BootVideoCard'
 
-interface RevealedListViewProps {
+interface BootVideoListProps {
   title: string
   isLoading?: boolean
   // list: GameListOutput | AppListOutput
-  list: AppListOutput
+  list: BootVideoOutput
 }
 
-export const RevealedListView = ({
+export const BootVideoList = ({
   title,
   isLoading = false,
   list = [],
-}: RevealedListViewProps) => {
+}: BootVideoListProps) => {
   const [listFilter] = useAtom(listFilterAtom)
   const [modals, setModals] = useAtom(modalsAtom)
   const navigate = useNavigate()
@@ -79,7 +83,7 @@ export const RevealedListView = ({
         )}
         <div className='xs:grid-cols-2  mt-6 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-4 2xl:grid-cols-8'>
           {list.map((item) => (
-            <RevealedListCard key={item.id} item={item} />
+            <BootVideoCard key={item.id} item={item} />
           ))}
         </div>
       </div>

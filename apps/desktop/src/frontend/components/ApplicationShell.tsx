@@ -12,6 +12,7 @@ import {
   IconBrandSteam,
   IconDeviceGamepad2,
   IconLogin,
+  IconVideo,
 } from '@tabler/icons-react'
 import { useLocation } from 'react-router-dom'
 
@@ -23,6 +24,7 @@ const navigation = [
   { name: 'Apps', link: '/apps', icon: IconApps },
   { name: 'Games', link: '/games', icon: IconDeviceGamepad2 },
   { name: 'Steam Deck', link: '/steam-deck', icon: IconBrandSteam },
+  { name: 'Boot Videos', link: '/boot-videos', icon: IconVideo },
   { name: 'Stores', link: '/stores', icon: BuildingStorefrontIcon },
   { name: 'Settings', link: '/settings', icon: AdjustmentsHorizontalIcon },
   {

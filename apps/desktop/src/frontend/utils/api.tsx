@@ -30,6 +30,9 @@ export type AppListOutput = RouterOutput['app']['apps']
 export type GameListInput = RouterInput['game']['all']
 export type GameListOutput = RouterOutput['game']['all']
 
+export type BootVideoInput = RouterInput['bootVideo']['all']
+export type BootVideoOutput = RouterOutput['bootVideo']['all']
+
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {

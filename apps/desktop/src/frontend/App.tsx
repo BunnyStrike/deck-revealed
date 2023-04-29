@@ -21,6 +21,7 @@ import { SupabaseProvider } from './components/SupabaseProvider'
 import { AppDetailsScreen } from './screens'
 import AppManageScreen from './screens/AppManage'
 import { AppsScreen } from './screens/Apps'
+import { BootVideosScreen } from './screens/BootVideos'
 import { GamesScreen } from './screens/Games'
 import { HomeScreen } from './screens/Home'
 import { SettingsScreen } from './screens/Settings'
@@ -69,6 +70,7 @@ function AppMain() {
                 </Route>
                 <Route path='/games' element={<GamesScreen />} />
                 <Route path='/steam-deck' element={<SteamDeckScreen />} />
+                <Route path='/boot-videos' element={<BootVideosScreen />} />
                 <Route path='/stores' element={<StoresScreen />} />
                 <Route path='/settings' element={<SettingsScreen />} />
 
