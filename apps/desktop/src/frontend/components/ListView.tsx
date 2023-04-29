@@ -2,6 +2,8 @@ import React from 'react'
 import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 
+import { PillTabs } from '@revealed/ui'
+
 import { listFilterAtom, modalsAtom } from '../states'
 import { type AppListOutput, type GameListOutput } from '../utils/api'
 import EmptyState from './EmptyState'
@@ -36,7 +38,7 @@ export const RevealedListView = ({
       {(listFilter.add === 'app' || listFilter.add === 'both') && (
         <button
           onClick={() => handleAddApp()}
-          className='btn btn-primary mr-4 mt-4'
+          className='btn-primary btn mr-4 mt-4'
         >
           Add App
         </button>
@@ -44,11 +46,12 @@ export const RevealedListView = ({
       {(listFilter.add === 'game' || listFilter.add === 'both') && (
         <button
           onClick={() => setModals((prev) => ({ ...prev, showAddGame: true }))}
-          className='btn btn-primary mr-4 mt-4'
+          className='btn-primary btn mr-4 mt-4'
         >
           Add Game
         </button>
       )}
+      <PillTabs />
       <div className=''>
         {isLoading && (
           <div className='bg-neutral'>
