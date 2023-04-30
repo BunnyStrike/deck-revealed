@@ -45,7 +45,7 @@ export default function WebView() {
 
   const epicLoginUrl = 'https://legendary.gl/epiclogin'
 
-  const epicStore = `https://www.epicgames.com/store/${lang}/`
+  const epicStore = `https://www.epicgames.com/store/${lang ?? 'en-US'}/`
   const gogStore = `https://gog.com`
   const steamStore = `https://steampowered.com`
   const fanaticalStore = `https://fanatical.com`

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 
+import { Container } from '../components'
 import { LoadingBar } from '../components/LoadingBar'
 import AppManageForm from '../components/ManageApp/AppApplication'
 import { api } from '../utils/api'
@@ -20,5 +21,10 @@ export default function AppManageScreen({
     return <LoadingBar />
   }
 
-  return <AppManageForm mode={mode} app={app} />
+  return (
+    <Container>
+      {' '}
+      <AppManageForm mode={mode} app={app} />
+    </Container>
+  )
 }

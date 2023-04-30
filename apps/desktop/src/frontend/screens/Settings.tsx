@@ -26,6 +26,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 
+import { Container } from '../components'
 import { RevealedSignupScreen } from './Signup'
 
 const navigation = [
@@ -57,7 +58,7 @@ export function SettingsScreen() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div>
+    <Container>
       <header className='border-b border-white/5'>
         {/* Secondary navigation */}
         <nav className='flex overflow-x-auto py-4'>
@@ -372,6 +373,6 @@ export function SettingsScreen() {
           </form>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }

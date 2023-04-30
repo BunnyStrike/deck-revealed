@@ -63,6 +63,14 @@ const revealedDefaultWinePrefix = join(
 )
 const revealedAnticheatDataPath = join(revealedFolder, 'areweanticheatyet.json')
 const imagesCachePath = join(revealedFolder, 'images-cache')
+const appImagesFolder = app.isPackaged
+  ? join(app.getAppPath(), 'public', 'img')
+  : join(app.getAppPath(), 'public', 'img')
+
+// const appImagesFolder = app.isPackaged
+//   ? join(app.getAppPath(), 'data', 'flutter_assets', 'assets', 'images')
+//   : join(app.getAppPath(), 'assets', 'images')
+
 const cachedUbisoftInstallerPath = join(
   revealedFolder,
   'tools',
@@ -340,4 +348,5 @@ export {
   steamUsersFile,
   steamUsersAvatarFolder,
   steamDeckEmulationFolder,
+  appImagesFolder,
 }

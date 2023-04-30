@@ -7,5 +7,7 @@ export * from './FileUploadCard'
 export * from './Dialog'
 export * from './AddGameModel'
 export * from './Forms'
+export * from './Banners'
+export * from './Container'
 
 export { RevealedVersion }

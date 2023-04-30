@@ -4,6 +4,7 @@ import { useAtom } from 'jotai'
 
 import { PillTabs } from '@revealed/ui'
 
+import { Container } from '../components'
 import { BootVideoList } from '../components/BootVideo/BootVideoList'
 import { RevealedListView } from '../components/ListView'
 import { useDebounce } from '../hooks/useDebounce'
@@ -32,5 +33,9 @@ export const BootVideosScreen = () => {
 
   if (error) return <div>{error.message}</div>
 
-  return <BootVideoList title='Home' list={data} isLoading={isLoading} />
+  return (
+    <Container>
+      <BootVideoList title='Home' list={data} isLoading={isLoading} />
+    </Container>
+  )
 }

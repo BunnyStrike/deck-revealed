@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { addRevealedToSteam } from '../stores/steam/addRevealedToSteam'
 import {
   checkIfSteamIsRunning,
   restartSteam,
@@ -34,6 +35,9 @@ export const steam = createTRPCRouter({
   startSteam: publicProcedure.mutation(({ input }) => startSteam()),
   checkIfSteamIsRunning: publicProcedure.mutation(({ input }) =>
     checkIfSteamIsRunning()
+  ),
+  addRevealedToSteam: publicProcedure.mutation(({ input }) =>
+    addRevealedToSteam()
   ),
   isAddedToSteam: publicProcedure
     .input(

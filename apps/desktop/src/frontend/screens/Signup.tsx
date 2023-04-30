@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { AuthPortal } from '@revealed/ui'
 
+import { Container } from '../components'
 import { api } from '../utils/api'
 import { supabaseClient } from '../utils/database'
 
@@ -41,7 +42,7 @@ export function RevealedSignupScreen() {
   }, [user])
 
   return (
-    <main className='-z-10 flex min-h-full overflow-hidden bg-black pt-16 sm:py-28'>
+    <Container className='-z-10 flex min-h-full overflow-hidden bg-black pt-16 sm:py-28'>
       <div className='mx-auto flex w-full max-w-2xl flex-col items-center px-4 sm:px-6'>
         <Link to='/' aria-label='Home'>
           <img
@@ -69,6 +70,6 @@ export function RevealedSignupScreen() {
           <AuthPortal supabaseClient={supabaseClient} view='sign_in' />
         </div>
       </div>
-    </main>
+    </Container>
   )
 }

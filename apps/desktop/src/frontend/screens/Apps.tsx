@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 // import { useUser } from '@clerk/clerk-react'
 import { useAtom } from 'jotai'
 
+import { Container } from '../components'
 import { RevealedListView } from '../components/ListView'
 import { useUser } from '../hooks'
 import { useDebounce } from '../hooks/useDebounce'
@@ -47,5 +48,9 @@ export const AppsScreen = () => {
       </div>
     )
 
-  return <RevealedListView title='Home' list={data} isLoading={isLoading} />
+  return (
+    <Container>
+      <RevealedListView title='Home' list={data} isLoading={isLoading} />
+    </Container>
+  )
 }

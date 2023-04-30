@@ -4,6 +4,7 @@ import { useAtom } from 'jotai'
 
 import { PillTabs } from '@revealed/ui'
 
+import { Container } from '../components'
 import { RevealedListView } from '../components/ListView'
 import { useDebounce } from '../hooks/useDebounce'
 import { listFilterAtom } from '../states'
@@ -31,5 +32,9 @@ export const SteamDeckScreen = () => {
 
   if (error) return <div>{error.message}</div>
 
-  return <RevealedListView title='Home' list={data} isLoading={isLoading} />
+  return (
+    <Container>
+      <RevealedListView title='Home' list={data} isLoading={isLoading} />
+    </Container>
+  )
 }

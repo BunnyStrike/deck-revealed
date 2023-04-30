@@ -10,7 +10,7 @@ import {
   useNavigate,
 } from 'react-router-dom'
 
-import { RevealedOfflineMessage } from './components'
+import { AddRevealedToSteamBanner, RevealedOfflineMessage } from './components'
 import AddAppModal from './components/AddAppModel'
 import AddGameModal from './components/AddGameModel'
 import RevealedApplicationShell from './components/ApplicationShell'
@@ -42,8 +42,9 @@ function AppMain() {
       <Provider>
         <ApiProvider>
           <div id='app' className='h-full  w-full bg-neutral'>
-            <RevealedOfflineMessage />
             <RevealedApplicationShell>
+              <RevealedOfflineMessage />
+              <AddRevealedToSteamBanner />
               {/* <DialogHandler /> */}
               {/* {isSettingsModalOpen.gameInfo && (
             <SettingsModal

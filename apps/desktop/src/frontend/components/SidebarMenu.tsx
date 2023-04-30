@@ -3,6 +3,7 @@ import React from 'react'
 import { dark } from '@clerk/themes'
 import { Disclosure } from '@headlessui/react'
 import { ChevronRightIcon } from '@radix-ui/react-icons'
+import { IconSteam } from '@tabler/icons-react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { useUser } from '../hooks'
@@ -32,8 +33,13 @@ export interface SidebarMenuProps {
 
 export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
   const { mutate } = api.seed.restoreApps.useMutation()
+  const { data: isAddedToSteam } = api.desktop.steam.isAddedToSteam.useQuery({
+    title: 'Revealed',
+  })
   const location = useLocation()
   const { user } = useUser()
+
+  console.log(isAddedToSteam)
 
   return (
     <div className='flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-800 bg-neutral px-6'>

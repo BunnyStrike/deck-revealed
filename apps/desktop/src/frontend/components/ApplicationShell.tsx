@@ -74,9 +74,7 @@ export default function RevealedApplicationShell({
         </div>
 
         <main className='pl-20 sm:pl-60'>
-          <div className='px-4 pb-10 pt-2 sm:px-6 lg:px-8 lg:py-6'>
-            {children}
-          </div>
+          <div>{children}</div>
         </main>
       </div>
     </>

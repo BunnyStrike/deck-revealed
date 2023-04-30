@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAtom } from 'jotai'
 
+import { Container } from '../components'
 import { RevealedListView } from '../components/ListView'
 import { useDebounce } from '../hooks/useDebounce'
 import { listFilterAtom } from '../states'
@@ -15,5 +16,9 @@ export const StoresScreen = () => {
 
   if (error) return <div>{error.message}</div>
 
-  return <RevealedListView title='Home' list={data} />
+  return (
+    <Container>
+      <RevealedListView title='Home' list={data} />
+    </Container>
+  )
 }
