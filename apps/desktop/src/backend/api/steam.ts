@@ -1,6 +1,12 @@
 import { z } from 'zod'
 
 import {
+  checkIfSteamIsRunning,
+  restartSteam,
+  startSteam,
+  stopSteam,
+} from '../stores/steam/manage'
+import {
   addNonSteamApp,
   isAppAddedToSteam,
   removeNonSteamApp,
@@ -23,6 +29,12 @@ export const steam = createTRPCRouter({
       })
     )
     .mutation(({ input }) => removeNonSteamApp(input.appInfo)),
+  restartSteam: publicProcedure.mutation(({ input }) => restartSteam()),
+  stopSteam: publicProcedure.mutation(({ input }) => stopSteam()),
+  startSteam: publicProcedure.mutation(({ input }) => startSteam()),
+  checkIfSteamIsRunning: publicProcedure.mutation(({ input }) =>
+    checkIfSteamIsRunning()
+  ),
   isAddedToSteam: publicProcedure
     .input(
       z.object({

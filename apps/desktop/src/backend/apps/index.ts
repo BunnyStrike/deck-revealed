@@ -1,11 +1,12 @@
 import { spawn } from 'child_process'
-import { AppInfo } from '~/common/types/app.types'
-import { SteamOSBootVideo } from '~/common/types/steamos'
-import { supabaseClient } from '~/common/database'
 import { existsSync } from 'graceful-fs'
 
+import { supabaseClient } from '~/common/database'
+import { type AppInfo } from '~/common/types/app.types'
+import { type SteamOSBootVideo } from '~/common/types/steamos'
+
 export const uninstallFlatpak = async (app: AppInfo) => {
-  await spawn(`flatpak`, ['uninstall', '-y', 'flathub', app.source])
+  spawn(`flatpak`, ['uninstall', '-y', 'flathub', app.source])
   return true
 }
 
@@ -22,7 +23,7 @@ export const uninstallApp = async (app: AppInfo) => {
 
 export const installFlatpak = async (app: AppInfo): Promise<boolean> => {
   try {
-    const child = await spawn(`flatpak`, ['install', '-y', 'flathub', app.source])
+    const child = spawn(`flatpak`, ['install', '-y', 'flathub', app.source])
     return new Promise(async (resolve, reject) => {
       child.stdout.setEncoding('utf8')
       child.stdout.on('data', (data: string) => {
@@ -54,7 +55,7 @@ export const runFlatpakApp = async (app: AppInfo): Promise<boolean> => {
   if (await isFlatpakInstalled(app.source)) {
     await installFlatpak(app)
   }
-  const child = await spawn(`flatpak`, ['run', app.source])
+  const child = spawn(`flatpak`, ['run', app.source])
   return new Promise(async (resolve, reject) => {
     child.stdout.setEncoding('utf8')
     child.stdout.on('data', (data: string) => {
@@ -78,8 +79,8 @@ export const runFlatpakApp = async (app: AppInfo): Promise<boolean> => {
 
 export const isFlatpakInstalled = async (source: string): Promise<boolean> => {
   const command = 'info'
-  return new Promise(async (resolve, reject) => {
-    const child = await spawn(`flatpak`, [command, source])
+  return new Promise((resolve, reject) => {
+    const child = spawn(`flatpak`, [command, source])
     child.on('close', (code: number) => {
       resolve(code == 0)
     })
@@ -111,14 +112,14 @@ export const runApp = async (app: AppInfo): Promise<boolean> => {
       const platform = app.platforms?.find(
         (plat) => plat.platform === 'steam deck' || plat.platform === 'linux'
       )
-      await spawn(platform?.locationPath ?? '', [])
+      spawn(platform?.locationPath ?? '', [])
       return true
   }
 }
 
 export const installSystemFlatpak = async (app: AppInfo) => {
   const command = 'install'
-  await spawn(`flatpak`, [command, '--system', '-y', app.source])
+  spawn(`flatpak`, [command, '--system', '-y', app.source])
   return true
 }
 
@@ -137,9 +138,9 @@ export const installBootVideo = async (app: SteamOSBootVideo) => {
   //   wget -O deck_startup.webm --show-progress $mediaUrl
   // `;
 
-  await spawn('mkdir', ['-p', '/home/deck/.steam/root/config/uioverrides/movies/'])
+  spawn('mkdir', ['-p', '/home/deck/.steam/root/config/uioverrides/movies/'])
 
-  await spawn('wget', [
+  spawn('wget', [
     '-O',
     '/home/deck/.steam/root/config/uioverrides/movies/deck_startup.webm',
     '--show-progress',
@@ -150,7 +151,7 @@ export const installBootVideo = async (app: SteamOSBootVideo) => {
 
 export const installViaScript = async (app: AppInfo) => {
   const password = 'deckme'
-  await spawn('sh', ['-c', `echo ${password} | sudo -S curl -L ${app.source} | bash`])
+  spawn('sh', ['-c', `echo ${password} | sudo -S curl -L ${app.source} | bash`])
   return true
 }
 
