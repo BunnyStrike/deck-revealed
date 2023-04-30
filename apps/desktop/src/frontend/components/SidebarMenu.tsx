@@ -1,6 +1,8 @@
 import React from 'react'
 // import { UserButton, useUser } from '@clerk/clerk-react'
 import { dark } from '@clerk/themes'
+import { Disclosure } from '@headlessui/react'
+import { ChevronRightIcon } from '@radix-ui/react-icons'
 import { Link, useLocation } from 'react-router-dom'
 
 import { useUser } from '../hooks'
@@ -9,20 +11,23 @@ import { api } from '../utils/api'
 import { supabaseClient } from '../utils/database'
 import RevealedVersion from './Version'
 
+interface SidebarMenuItem {
+  name: string
+  link: string | (() => void)
+  showWhenLoggedIn?: boolean
+  children?: SidebarMenuItem[]
+  icon?:
+    | React.FC<React.SVGProps<SVGSVGElement>>
+    | React.ForwardRefExoticComponent<
+        Omit<React.SVGProps<SVGSVGElement>, 'ref'> & {
+          title?: string | undefined
+          titleId?: string | undefined
+        } & React.RefAttributes<SVGSVGElement>
+      >
+}
+
 export interface SidebarMenuProps {
-  navigation: {
-    name: string
-    link: string | (() => void)
-    showWhenLoggedIn?: boolean
-    icon:
-      | React.FC<React.SVGProps<SVGSVGElement>>
-      | React.ForwardRefExoticComponent<
-          Omit<React.SVGProps<SVGSVGElement>, 'ref'> & {
-            title?: string | undefined
-            titleId?: string | undefined
-          } & React.RefAttributes<SVGSVGElement>
-        >
-  }[]
+  navigation: SidebarMenuItem[]
 }
 
 export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
@@ -57,24 +62,92 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                 )
                 .map((item) => (
                   <li key={item.name}>
-                    <Link
-                      to={typeof item.link === 'string' ? item.link : ''}
-                      onClick={
-                        typeof item.link === 'string' ? undefined : item.link
-                      }
-                      className={classNames(
-                        item.link === location.pathname
-                          ? 'bg-primary-focus text-white'
-                          : 'text-white hover:bg-primary hover:text-white',
-                        'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
-                      )}
-                    >
-                      <item.icon
-                        className={'h-6 w-6 shrink-0'}
-                        aria-hidden='true'
-                      />
-                      <span className='hidden sm:inline'>{item.name}</span>
-                    </Link>
+                    {!item.children ? (
+                      <Link
+                        to={typeof item.link === 'string' ? item.link : ''}
+                        onClick={
+                          typeof item.link === 'string' ? undefined : item.link
+                        }
+                        className={classNames(
+                          item.link === location.pathname
+                            ? 'bg-primary-focus text-white'
+                            : 'text-white hover:bg-primary hover:text-white',
+                          'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
+                        )}
+                      >
+                        {item.icon && (
+                          <item.icon
+                            className={'h-6 w-6 shrink-0'}
+                            aria-hidden='true'
+                          />
+                        )}
+                        <span className='hidden sm:inline'>{item.name}</span>
+                      </Link>
+                    ) : (
+                      <Disclosure as='div'>
+                        {({ open }) => (
+                          <>
+                            <Disclosure.Button
+                              className={classNames(
+                                item.link === location.pathname
+                                  ? 'bg-primary-focus text-white'
+                                  : 'text-white hover:bg-primary hover:text-white',
+                                'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
+                              )}
+                            >
+                              {item.icon && (
+                                <item.icon
+                                  className={'h-6 w-6 shrink-0'}
+                                  aria-hidden='true'
+                                />
+                              )}
+                              <span className='hidden sm:inline'>
+                                {item.name}
+                              </span>
+
+                              <ChevronRightIcon
+                                className={classNames(
+                                  open
+                                    ? 'rotate-90 text-gray-500'
+                                    : 'text-gray-400',
+                                  'ml-auto h-5 w-5 shrink-0'
+                                )}
+                                aria-hidden='true'
+                              />
+                            </Disclosure.Button>
+                            <Disclosure.Panel as='ul' className='mt-1 px-2'>
+                              {item.children?.map((subItem) => (
+                                <li key={subItem.name}>
+                                  {/* 44px */}
+                                  <Disclosure.Button
+                                    as={Link}
+                                    to={
+                                      typeof subItem.link === 'string'
+                                        ? subItem.link
+                                        : ''
+                                    }
+                                    onClick={
+                                      typeof subItem.link === 'string'
+                                        ? undefined
+                                        : subItem.link
+                                    }
+                                    className={classNames(
+                                      subItem.link ===
+                                        item.link + location.pathname
+                                        ? 'bg-gray-50'
+                                        : 'hover:bg-gray-50',
+                                      'block rounded-md py-2 pl-9 pr-2 text-sm leading-6 text-gray-700'
+                                    )}
+                                  >
+                                    {subItem.name}
+                                  </Disclosure.Button>
+                                </li>
+                              ))}
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
+                    )}
                   </li>
                 ))}
             </ul>

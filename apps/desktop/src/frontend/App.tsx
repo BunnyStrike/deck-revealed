@@ -82,6 +82,13 @@ function AppMain() {
                   <Route path=':runner' element={<WebView />} />
                 </Route>
 
+                <Route path='stores'>
+                  <Route path='epicStore' element={<WebView />} />
+                  <Route path='gogStore' element={<WebView />} />
+                  <Route path='steamStore' element={<WebView />} />
+                  <Route path='fanaticalStore' element={<WebView />} />
+                </Route>
+
                 {/* <Route path="/" element={<Navigate replace to="/apps" />} />
             <Route path="/library" element={<Library />} />
             {/* <Route path="/home" element={<Apps />} /> */}
@@ -95,11 +102,6 @@ function AppMain() {
             <Route path="/gamepage">
               <Route path=":runner">
                 <Route path=":appName" element={<GamePage />} />
-              </Route>
-            </Route>
-            <Route path="/app">
-              <Route path=":runner">
-                <Route path=":id" element={<WebApp />} />
               </Route>
             </Route>
             <Route path="/store-page" element={<WebView />} />

@@ -23,9 +23,27 @@ const navigation = [
   { name: 'Home', link: '/', icon: HomeIcon },
   { name: 'Apps', link: '/apps', icon: IconApps },
   { name: 'Games', link: '/games', icon: IconDeviceGamepad2 },
-  { name: 'Steam Deck', link: '/steam-deck', icon: IconBrandSteam },
-  { name: 'Boot Videos', link: '/boot-videos', icon: IconVideo },
-  { name: 'Stores', link: '/stores', icon: BuildingStorefrontIcon },
+  {
+    name: 'Steam Deck',
+    link: '/steam-deck',
+    icon: IconBrandSteam,
+    children: [
+      { name: 'Utilities', href: '/apps' },
+      { name: 'Boot Videos', link: '/boot-videos', icon: IconVideo },
+    ],
+  },
+  // { name: 'Boot Videos', link: '/boot-videos', icon: IconVideo },
+  {
+    name: 'Stores',
+    link: '/stores',
+    icon: BuildingStorefrontIcon,
+    children: [
+      { name: 'Steam', href: '/steamStore' },
+      { name: 'Epic Games', link: '/epicStore' },
+      { name: 'GOG', link: '/gogStore' },
+      { name: 'Fanatical', link: '/fanaticalStore' },
+    ],
+  },
   { name: 'Settings', link: '/settings', icon: AdjustmentsHorizontalIcon },
   {
     name: 'Login',

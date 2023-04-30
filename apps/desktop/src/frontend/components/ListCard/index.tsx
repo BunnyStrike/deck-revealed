@@ -81,7 +81,10 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
         </figure>
         <div className='card-body h-full justify-end p-0'>
           {isAddedToSteam && (
-            <div className='absolute right-2 top-2 rounded-md bg-secondary p-0.5'>
+            <div
+              className='absolute right-2 top-2 rounded-md bg-secondary p-0.5'
+              title='Added to Steam'
+            >
               <IconBrandSteam className='text-white' />
             </div>
           )}

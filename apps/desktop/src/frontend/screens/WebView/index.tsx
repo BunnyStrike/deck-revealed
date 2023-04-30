@@ -47,6 +47,8 @@ export default function WebView() {
 
   const epicStore = `https://www.epicgames.com/store/${lang}/`
   const gogStore = `https://gog.com`
+  const steamStore = `https://steampowered.com`
+  const fanaticalStore = `https://fanatical.com`
   const wikiURL = 'https://github.com/BunnyStrike/revealed/wiki'
   const gogEmbedRegExp = new RegExp('https://embed.gog.com/on_login_success?')
   const gogLoginUrl =
@@ -56,8 +58,10 @@ export default function WebView() {
   const { runner } = useParams() as { runner: Runner }
 
   const urls = {
-    '/epicstore': epicStore,
-    '/gogstore': gogStore,
+    '/epicStore': epicStore,
+    '/gogStore': gogStore,
+    '/steamStore': steamStore,
+    '/fanaticalStore': fanaticalStore,
     '/wiki': wikiURL,
     '/loginEpic': epicLoginUrl,
     '/loginGOG': gogLoginUrl,
@@ -65,7 +69,7 @@ export default function WebView() {
     '/loginweb/gog': gogLoginUrl,
   }
   // @ts-expect-error
-  let startUrl = urls[pathname]
+  let startUrl = urls['/stores' + pathname]
 
   if (pathname.match(/store-page/)) {
     const searchParams = new URLSearchParams(search)
