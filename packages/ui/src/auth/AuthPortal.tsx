@@ -24,17 +24,39 @@ export const AuthPortal = ({
   redirectTo = '/',
   view = 'sign_up',
 }: AuthPortalProps) => (
-  <AuthLayout>
+  <div>
     <Auth
       supabaseClient={supabaseClient}
-      theme='dark'
+      // theme='dark'
       redirectTo={redirectTo}
       view={view}
-      appearance={{ theme: ThemeSupa }}
+      appearance={{
+        theme: ThemeSupa,
+        variables: {
+          default: {
+            colors: {
+              brand: '#BA40D5',
+              brandAccent: '#663DBC',
+            },
+          },
+        },
+      }}
       providers={[]}
     />
-    <i>By Signing Up you agree that you are 13 years or older</i>
-  </AuthLayout>
+    <div className='p-2'>
+      <i>By Signing Up you agree that you are 13 years or older</i>
+    </div>
+    <hr />
+    <div className='p-2 text-center'>
+      <a href='https://www.appsrevealed.com/privacy-policy' target='_blank'>
+        Privacy Policy
+      </a>{' '}
+      |{' '}
+      <a href='https://www.appsrevealed.com/privacy-policy' target='_blank'>
+        Terms & Service
+      </a>
+    </div>
+  </div>
 )
 
 export default AuthPortal

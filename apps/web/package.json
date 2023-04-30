@@ -35,6 +35,7 @@
     "next": "^13.3.0",
     "next-auth": "^4.22.0",
     "postcss-focus-visible": "^6.0.4",
+    "daisyui": "^2.51.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "1.9.1",

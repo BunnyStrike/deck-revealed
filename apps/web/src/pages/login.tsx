@@ -29,15 +29,15 @@ export function MarketingLoginPage() {
       </Head>
       <AuthLayout
         title='Sign in to account'
-        subtitle={
-          <>
-            Don’t have an account?{' '}
-            <Link href='/register' className='text-cyan-600'>
-              Sign up
-            </Link>{' '}
-            for a free trial.
-          </>
-        }
+        // subtitle={
+        //   <>
+        //     Don’t have an account?{' '}
+        //     <Link href='/register' className='text-cyan-600'>
+        //       Sign up
+        //     </Link>{' '}
+        //     for a free trial.
+        //   </>
+        // }
       >
         {/* <form>
           <div className='space-y-6'>

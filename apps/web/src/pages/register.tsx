@@ -25,7 +25,7 @@ export function MarketingRegisterPage() {
   return (
     <>
       <Head>
-        <title>Revealed Apps</title>
+        <title>Revealed</title>
       </Head>
       <AuthLayout
         title='Sign up for an account'
