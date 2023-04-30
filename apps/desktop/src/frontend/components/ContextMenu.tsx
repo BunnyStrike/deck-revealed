@@ -39,12 +39,14 @@ export const AppContextMenu = ({
     api.desktop.steam.removeAppFromSteam.useMutation()
   const { mutate: openWebviewPage } =
     api.desktop.system.openWebviewPage.useMutation()
+  const { mutate: favoriteApp } = api.app.favorite.useMutation()
   const [modals, setModals] = useAtom(modalsAtom)
   const [confirm, setConfirm] = useAtom(confirmModalAtom)
 
   const isOwner = user?.id === ownerId
   const isAdmin =
     user?.primaryEmailAddress?.emailAddress.includes('@bunnystrike.com')
+  const isFavorited = !!app.userActions?.find((item) => !!item.favoritedAt)
   const installable = app?.platform !== 'WEB' && !!app?.source
 
   const handleDelete = async () => {
@@ -65,6 +67,11 @@ export const AppContextMenu = ({
   const handleHide = async () => {
     if (!appId || !user?.id) return
     await hideApp({ id: appId, userId: user?.id })
+  }
+
+  const handleFavorite = async () => {
+    if (!appId || !user?.id) return
+    await favoriteApp({ id: app.id })
   }
 
   const handleAddToSteam = () => {
@@ -101,6 +108,25 @@ export const AppContextMenu = ({
             >
               Edit
             </ContextMenu.Item>
+          )}
+          {user?.id && (
+            <>
+              {isFavorited ? (
+                <ContextMenu.Item
+                  onClick={() => handleFavorite()}
+                  className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+                >
+                  Unfavorite
+                </ContextMenu.Item>
+              ) : (
+                <ContextMenu.Item
+                  onClick={() => handleFavorite()}
+                  className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+                >
+                  Favorite
+                </ContextMenu.Item>
+              )}
+            </>
           )}
           {isAddedToSteam ? (
             <ContextMenu.Item

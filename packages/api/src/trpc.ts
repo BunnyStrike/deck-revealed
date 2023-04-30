@@ -10,8 +10,8 @@
 import * as clerk from '@clerk/clerk-sdk-node'
 import {
   createClient,
-  type Session,
   type SupabaseClient,
+  type User,
 } from '@supabase/supabase-js'
 import { TRPCError, initTRPC } from '@trpc/server'
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
@@ -30,7 +30,7 @@ import { prisma } from '@revealed/db'
  *
  */
 type CreateContextOptions = {
-  session: Session | null
+  user: User | null
   supabase: SupabaseClient | null
 }
 
@@ -45,7 +45,7 @@ type CreateContextOptions = {
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    session: opts.session,
+    user: opts.user,
     supabase: opts.supabase,
     prisma,
   }
@@ -78,10 +78,10 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   // }
 
   // Get the session from the server using the unstable_getServerSession wrapper function
-  const session = await supabaseClient.auth.getSession() // await getServerSession({ req, res })
+  const { data } = await supabaseClient.auth.getUser()
 
   return createInnerTRPCContext({
-    session: session.data?.session,
+    user: data.user,
     supabase: supabaseClient,
   })
 }
@@ -133,13 +133,13 @@ export const publicProcedure = t.procedure
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user) {
+  if (!ctx?.user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      user: ctx.user,
     },
   })
 })

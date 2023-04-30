@@ -30,6 +30,8 @@ export const AppsScreen = () => {
     }
   )
 
+  console.log(data)
+
   useEffect(() => {
     setListFilter((prev) => ({
       ...prev,

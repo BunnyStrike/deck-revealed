@@ -155,19 +155,17 @@ export const appRouter = createTRPCRouter({
     })
   }),
   apps: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
-    // TODO: get only apps that don't have userId and userId that matches current user
-    // TODO: filter list based on categories
+    const userId = ctx.user?.id
     const {
       showHidden = false,
       isFavorited,
-      userId,
+      // userId,
       search,
       category,
       ownerId,
     } = input
 
     const where = {
-      // versions: { none: { platform: 'STEAMOS' } },
       NOT: {
         platform: 'STEAMOS',
       },
@@ -214,10 +212,11 @@ export const appRouter = createTRPCRouter({
   }),
   steamos: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
+    const userId = ctx.user?.id
     const {
       showHidden = false,
       isFavorited,
-      userId,
+      // userId,
       search,
       category,
       ownerId,
@@ -244,8 +243,9 @@ export const appRouter = createTRPCRouter({
   byId: publicProcedure
     .input(z.object({ id: z.string(), userId: z.string().optional() }))
     .query(({ ctx, input }) => {
+      const userId = ctx.user?.id
       // TODO: get wiki data
-      const { id, userId } = input
+      const { id } = input
       return ctx.prisma.app.findFirst({
         where: { id: id },
         include: {
@@ -340,8 +340,9 @@ export const appRouter = createTRPCRouter({
   recent: publicProcedure
     .input(z.object({ userId: z.string(), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id
       // const userId = ctx.session?.user.id
-      const { userId, id } = input
+      const { id } = input
 
       if (!userId) {
         throw new Error('Not logged in')
@@ -382,10 +383,10 @@ export const appRouter = createTRPCRouter({
       })
     }),
   favorite: publicProcedure
-    .input(z.object({ userId: z.string(), id: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      // const userId = ctx.session?.user.id
-      const { userId, id } = input
+      const userId = ctx.user?.id
+      const { id } = input
       if (!userId) {
         throw new Error('Not logged in')
       }

@@ -6,6 +6,8 @@ import { IconBrandSteam, IconDownload, IconSteam } from '@tabler/icons-react'
 import { useUser } from 'frontend/hooks'
 import { useNavigate } from 'react-router-dom'
 
+import { FavoriteButton } from '@revealed/ui'
+
 import { api, type AppListOutput, type GameListOutput } from '../../utils/api'
 import { getMediaUrl } from '../../utils/database'
 import AppContextMenu from '../ContextMenu'
