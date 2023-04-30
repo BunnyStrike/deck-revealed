@@ -3,7 +3,8 @@ import * as Dialog from '@radix-ui/react-dialog'
 import * as Form from '@radix-ui/react-form'
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { useAtom } from 'jotai'
-import Select from 'react-select'
+
+// import Select from 'react-select'
 
 import { useUser } from '../hooks'
 import { useDebounce } from '../hooks/useDebounce'
@@ -524,7 +525,7 @@ export const AddAppModal = ({
                       </div>
                     )}
                     {currentTab === 1 && (
-                      /* 
+                      /*
                     Installer
                   */
                       <div className=''>
@@ -618,7 +619,7 @@ export const AddAppModal = ({
                             />
                           </Form.Control>
                         </Form.Field>
-                        {/* 
+                        {/*
                   <Form.Field className='mb-[10px] grid' name='coverUrl'>
                     <div className='flex items-baseline justify-between'>
                       <Form.Label className='text-[15px] font-medium leading-[35px] text-white'>
