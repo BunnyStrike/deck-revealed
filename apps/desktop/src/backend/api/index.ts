@@ -4,6 +4,7 @@ import { observable } from '@trpc/server/observable'
 import superjson from 'superjson'
 import z from 'zod'
 
+import { apps } from './apps'
 import { connectivity } from './connectivity'
 import { gamepad } from './gamepad'
 import { info } from './info'
@@ -22,6 +23,7 @@ export const desktopRouter = createTRPCRouter({
     steam,
     info,
     logger,
+    apps,
   }),
 })
 
