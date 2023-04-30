@@ -34,29 +34,29 @@ export const apps = createTRPCRouter({
   runScript: publicProcedure
     .input(
       z.object({
-        appInfo: z.any(),
+        app: z.any(),
       })
     )
-    .mutation(({ input }) => runScript(input.appInfo)),
+    .mutation(({ input }) => runScript(input.app)),
   runApp: publicProcedure
     .input(
       z.object({
-        appInfo: z.any(),
+        app: z.any(),
       })
     )
-    .mutation(({ input }) => runApp(input.appInfo)),
+    .mutation(({ input }) => runApp(input.app)),
   isAppInstalled: publicProcedure
     .input(
       z.object({
-        appInfo: z.any(),
+        app: z.any(),
       })
     )
-    .mutation(({ input }) => isAppInstalled(input.appInfo)),
+    .query(({ input }) => isAppInstalled(input.app)),
   uninstallApp: publicProcedure
     .input(
       z.object({
-        appInfo: z.any(),
+        app: z.any(),
       })
     )
-    .mutation(({ input }) => uninstallApp(input.appInfo)),
+    .mutation(({ input }) => uninstallApp(input.app)),
 })

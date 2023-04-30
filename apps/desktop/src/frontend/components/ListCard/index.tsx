@@ -17,6 +17,7 @@ import { FavoriteButton } from '@revealed/ui'
 import { api, type AppListOutput, type GameListOutput } from '../../utils/api'
 import { getMediaUrl } from '../../utils/database'
 import AppContextMenu from '../ContextMenu'
+import { InstallButton } from './InstallButton'
 
 interface RevealedListCardProps {
   item: AppListOutput[number]
@@ -40,24 +41,14 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   ) => {
     e.stopPropagation()
     if (user?.id) {
-      mutate({ id, userId: user.id })
-    }
-    navigate(`/app/${id}/webview`)
-  }
-
-  const handleInstall = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.stopPropagation()
-    if (user?.id) {
-      mutate({ id, userId: user.id })
+      mutate({ id })
     }
     navigate(`/app/${id}/webview`)
   }
 
   const handleDetailClick = () => {
     if (user?.id) {
-      mutate({ id, userId: user.id })
+      mutate({ id })
     }
     navigate(`/app/${id}`)
   }
@@ -102,12 +93,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
               </button>
             )}
             {installable ? (
-              <button
-                onClick={(e) => handleInstall(e)}
-                className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
-              >
-                <DownloadIcon />
-              </button>
+              <InstallButton app={item} />
             ) : (
               <button
                 onClick={(e) => handleLaunchClick(e)}

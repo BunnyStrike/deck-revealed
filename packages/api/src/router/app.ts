@@ -338,7 +338,7 @@ export const appRouter = createTRPCRouter({
   // TODO: ability to add versions
   // TODO: ability to add media
   recent: publicProcedure
-    .input(z.object({ userId: z.string(), id: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user?.id
       // const userId = ctx.session?.user.id
