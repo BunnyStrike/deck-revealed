@@ -5,6 +5,7 @@ import {
   ChevronRightIcon,
   DotFilledIcon,
 } from '@radix-ui/react-icons'
+import { useQueryClient } from '@tanstack/react-query'
 import { app } from 'electron'
 import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
@@ -40,8 +41,8 @@ export const AppContextMenu = ({
   const { mutate: openWebviewPage } =
     api.desktop.system.openWebviewPage.useMutation()
   const { mutate: favoriteApp } = api.app.favorite.useMutation()
-  const [modals, setModals] = useAtom(modalsAtom)
   const [confirm, setConfirm] = useAtom(confirmModalAtom)
+  const queryClient = useQueryClient()
 
   const isOwner = user?.id === ownerId
   const isAdmin =
@@ -72,16 +73,19 @@ export const AppContextMenu = ({
   const handleFavorite = async () => {
     if (!appId || !user?.id) return
     await favoriteApp({ id: app.id })
+    await queryClient.invalidateQueries(api.app.getQueryKey())
   }
 
-  const handleAddToSteam = () => {
+  const handleAddToSteam = async () => {
     if (!app?.id) return
     addToSteam({ appInfo: app })
+    await queryClient.invalidateQueries(api.app.getQueryKey())
   }
 
-  const handleRemoveToSteam = () => {
+  const handleRemoveToSteam = async () => {
     if (!app?.id) return
     removeAppFromSteam({ appInfo: app })
+    await queryClient.invalidateQueries(api.app.getQueryKey())
   }
 
   const handleLaunchInBrowser = () => {

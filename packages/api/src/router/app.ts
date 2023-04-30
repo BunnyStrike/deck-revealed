@@ -395,27 +395,15 @@ export const appRouter = createTRPCRouter({
         where: { appId: id, userId },
       })
 
-      if (!!userAppAction?.favoritedAt) {
-        return ctx.prisma.userActionApp.create({
-          data: {
-            appId: id,
-            userId,
-            favoritedAt: new Date(),
-          },
-        })
-      } else {
-        return ctx.prisma.userActionApp.upsert({
-          where: { userId_appId: { appId: id, userId } },
-          update: {
-            favoritedAt: null,
-          },
-          create: {
-            appId: id,
-            userId,
-            favoritedAt: new Date(),
-          },
-        })
-      }
+      return ctx.prisma.userActionApp.upsert({
+        where: { userId_appId: { appId: id, userId } },
+        update: { favoritedAt: userAppAction?.favoritedAt ? null : new Date() },
+        create: {
+          appId: id,
+          userId,
+          favoritedAt: new Date(),
+        },
+      })
     }),
   delete: publicProcedure
     .input(z.object({ ownerId: z.string(), id: z.string() }))

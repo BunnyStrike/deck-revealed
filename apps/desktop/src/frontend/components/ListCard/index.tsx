@@ -2,7 +2,13 @@ import './style.css'
 import React from 'react'
 // import { useUser } from '@clerk/clerk-react'
 import { DownloadIcon, PlayIcon } from '@radix-ui/react-icons'
-import { IconBrandSteam, IconDownload, IconSteam } from '@tabler/icons-react'
+import {
+  IconBrandSteam,
+  IconDownload,
+  IconHeart,
+  IconHeartFilled,
+  IconSteam,
+} from '@tabler/icons-react'
 import { useUser } from 'frontend/hooks'
 import { useNavigate } from 'react-router-dom'
 
@@ -23,6 +29,8 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { mutate } = api.app.recent.useMutation()
   const { data: isAddedToSteam = false } =
     api.desktop.steam.isAddedToSteam.useQuery({ title: name })
+
+  const userActions = item.userActions[0]
 
   // console.log(item?.platform)
   const installable = item?.platform !== 'WEB' && !!item?.source
@@ -77,8 +85,19 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
               <IconBrandSteam className='text-white' />
             </div>
           )}
+
           <h2 className='card-title p-2 group-hover:text-white '>{name}</h2>
-          <div className='flex justify-end rounded-b-2xl bg-gray-800 p-2'>
+          <div className='flex justify-end gap-2 rounded-b-2xl bg-gray-800 p-2'>
+            {!!userActions?.favoritedAt && (
+              <button className=''>
+                <IconHeartFilled className=' text-red-500' />
+              </button>
+            )}
+            {!!user?.id && !userActions?.favoritedAt && (
+              <button className=''>
+                {/* <IconHeart className='text-white' /> */}
+              </button>
+            )}
             {installable ? (
               <button
                 onClick={(e) => handleInstall(e)}

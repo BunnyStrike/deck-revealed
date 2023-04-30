@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react'
-import { SignIn } from '@clerk/clerk-react'
+import { useUser } from '@supabase/auth-helpers-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useNavigate } from 'react-router-dom'
 
 import { AuthPortal } from '@revealed/ui'
 
-import { useUser } from '../hooks'
 import { api } from '../utils/api'
 import { supabaseClient } from '../utils/database'
 
 export function RevealedSignupScreen() {
-  const { user } = useUser()
+  const user = useUser()
   const navigate = useNavigate()
+  const { mutate: userUpsert } = api.user.upsert.useMutation()
 
   useEffect(() => {
     if (user?.id) {
+      userUpsert({
+        id: user.id,
+        email: user.email,
+      })
       navigate('/')
     }
   }, [user])
