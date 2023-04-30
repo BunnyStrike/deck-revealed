@@ -150,7 +150,7 @@ export default function WebAppScreen() {
   console.log(startUrl)
 
   if (isLoading) {
-    ;<div>Loading</div>
+    return <div>Loading</div>
   }
 
   return (

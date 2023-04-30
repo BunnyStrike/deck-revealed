@@ -48,10 +48,7 @@ export const BootVideoList = ({
           </div>
         )}
         {!isLoading && !list.length && listFilter.add === 'app' && (
-          <EmptyState
-            message={`Add a new app`}
-            onClick={() => handleAddApp()}
-          />
+          <EmptyState message={`Empty`} />
         )}
         {!isLoading && !list.length && listFilter.add === 'game' && (
           <EmptyState

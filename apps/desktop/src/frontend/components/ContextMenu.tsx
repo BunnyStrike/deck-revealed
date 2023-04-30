@@ -17,6 +17,7 @@ import ConfirmDialog from './ConfirmDialog'
 interface AppContextMenuProps {
   appId?: string
   ownerId?: string | null
+  isAddedToSteam?: boolean
   children: React.ReactNode
   app: AppListOutput[number]
 }
@@ -26,6 +27,7 @@ export const AppContextMenu = ({
   ownerId,
   children,
   app,
+  isAddedToSteam = false,
 }: AppContextMenuProps) => {
   const { user } = useUser()
   const navigate = useNavigate()
@@ -33,6 +35,8 @@ export const AppContextMenu = ({
   const { mutateAsync: deleteApp } = api.app.delete.useMutation()
   const { mutateAsync: addToSteam } =
     api.desktop.steam.addAppToSteam.useMutation()
+  const { mutateAsync: removeAppFromSteam } =
+    api.desktop.steam.removeAppFromSteam.useMutation()
   const { mutate: openWebviewPage } =
     api.desktop.system.openWebviewPage.useMutation()
   const [modals, setModals] = useAtom(modalsAtom)
@@ -68,6 +72,11 @@ export const AppContextMenu = ({
     addToSteam({ appInfo: app })
   }
 
+  const handleRemoveToSteam = () => {
+    if (!app?.id) return
+    removeAppFromSteam({ appInfo: app })
+  }
+
   const handleLaunchInBrowser = () => {
     if (!app.source || app.platform !== 'WEB') return
     openWebviewPage({ url: app.source })
@@ -85,7 +94,7 @@ export const AppContextMenu = ({
           className='z-20 min-w-[220px] overflow-hidden rounded-md bg-secondary p-[5px] text-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
           alignOffset={5}
         >
-          {!!app?.id && (
+          {!!app?.id && (isOwner || isAdmin) && (
             <ContextMenu.Item
               onClick={() => handleEdit()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
@@ -93,12 +102,21 @@ export const AppContextMenu = ({
               Edit
             </ContextMenu.Item>
           )}
-          <ContextMenu.Item
-            onClick={() => handleAddToSteam()}
-            className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
-          >
-            Add To Steam
-          </ContextMenu.Item>
+          {isAddedToSteam ? (
+            <ContextMenu.Item
+              onClick={() => handleRemoveToSteam()}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Remove To Steam
+            </ContextMenu.Item>
+          ) : (
+            <ContextMenu.Item
+              onClick={() => handleAddToSteam()}
+              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            >
+              Add To Steam
+            </ContextMenu.Item>
+          )}
 
           {installable ? (
             <ContextMenu.Item
@@ -116,15 +134,17 @@ export const AppContextMenu = ({
             </ContextMenu.Item>
           )}
 
-          <ContextMenu.Separator className='bg-violet6 m-[5px] h-[1px]' />
-
           {(isOwner || isAdmin) && (
-            <ContextMenu.Item
-              onClick={() => handleDelete()}
-              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
-            >
-              Delete
-            </ContextMenu.Item>
+            <>
+              <ContextMenu.Separator className='bg-violet6 m-[5px] h-[1px]' />
+
+              <ContextMenu.Item
+                onClick={() => handleDelete()}
+                className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+              >
+                Delete
+              </ContextMenu.Item>
+            </>
           )}
           {/* {!!user?.id && (
             <ContextMenu.Item

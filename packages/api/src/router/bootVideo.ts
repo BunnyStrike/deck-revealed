@@ -17,16 +17,18 @@ const appInput = z
   .default({ search: undefined, sort: 'desc' })
 
 export const bootVideoRouter = createTRPCRouter({
-  all: publicProcedure.input(appInput).query(({ ctx }) => {
-    return ctx.prisma.bootVideo.findMany({ orderBy: { name: 'desc' } })
+  all: publicProcedure.input(appInput).query(({ ctx, input }) => {
+    const { search } = input
+    return ctx.prisma.bootVideo.findMany({
+      where: {
+        name: search ? { search } : undefined,
+      },
+      orderBy: { name: 'desc' },
+    })
   }),
   byId: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ ctx, input }) => {
-      // TODO: get how long to beat data
-      // TODO: cache how long to beat data
-      // TODO: get steam data
-      // TODO: cache steam data
       return ctx.prisma.bootVideo.findFirst({ where: { id: input.id } })
     }),
   create: publicProcedure
