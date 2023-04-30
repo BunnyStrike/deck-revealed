@@ -119,8 +119,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                               {item.children?.map((subItem) => (
                                 <li key={subItem.name}>
                                   {/* 44px */}
-                                  <Disclosure.Button
-                                    as={Link}
+                                  <Link
                                     to={
                                       typeof subItem.link === 'string'
                                         ? subItem.link
@@ -132,15 +131,14 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                                         : subItem.link
                                     }
                                     className={classNames(
-                                      subItem.link ===
-                                        item.link + location.pathname
-                                        ? 'bg-gray-50'
-                                        : 'hover:bg-gray-50',
+                                      subItem.link === location.pathname
+                                        ? 'bg-primary-focus text-white'
+                                        : 'text-white hover:bg-primary hover:text-white',
                                       'block rounded-md py-2 pl-9 pr-2 text-sm leading-6 text-gray-700'
                                     )}
                                   >
                                     {subItem.name}
-                                  </Disclosure.Button>
+                                  </Link>
                                 </li>
                               ))}
                             </Disclosure.Panel>

@@ -58,10 +58,10 @@ export default function WebView() {
   const { runner } = useParams() as { runner: Runner }
 
   const urls = {
-    '/epicStore': epicStore,
-    '/gogStore': gogStore,
-    '/steamStore': steamStore,
-    '/fanaticalStore': fanaticalStore,
+    '/stores/epicStore': epicStore,
+    '/stores/gogStore': gogStore,
+    '/stores/steamStore': steamStore,
+    '/stores/fanaticalStore': fanaticalStore,
     '/wiki': wikiURL,
     '/loginEpic': epicLoginUrl,
     '/loginGOG': gogLoginUrl,
@@ -69,7 +69,7 @@ export default function WebView() {
     '/loginweb/gog': gogLoginUrl,
   }
   // @ts-expect-error
-  let startUrl = urls['/stores' + pathname]
+  let startUrl = urls[pathname]
 
   if (pathname.match(/store-page/)) {
     const searchParams = new URLSearchParams(search)

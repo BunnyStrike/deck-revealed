@@ -69,8 +69,12 @@ function AppMain() {
                   <Route path='add' element={<AppManageScreen mode='Add' />} />
                 </Route>
                 <Route path='/games' element={<GamesScreen />} />
-                <Route path='/steam-deck' element={<SteamDeckScreen />} />
-                <Route path='/boot-videos' element={<BootVideosScreen />} />
+
+                <Route path='/steam-deck'>
+                  <Route path='apps' element={<SteamDeckScreen />} />
+                  <Route path='boot-videos' element={<BootVideosScreen />} />
+                </Route>
+
                 <Route path='/stores' element={<StoresScreen />} />
                 <Route path='/settings' element={<SettingsScreen />} />
 
@@ -82,7 +86,7 @@ function AppMain() {
                   <Route path=':runner' element={<WebView />} />
                 </Route>
 
-                <Route path='stores'>
+                <Route path='/stores'>
                   <Route path='epicStore' element={<WebView />} />
                   <Route path='gogStore' element={<WebView />} />
                   <Route path='steamStore' element={<WebView />} />
