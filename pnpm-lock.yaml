@@ -195,7 +195,7 @@ importers:
         version: 8.1.0
       electron-trpc:
         specifier: 0.4.5
-        version: 0.4.5(@trpc/client@10.20.0)(@trpc/server@10.20.0)(electron@24.1.2)
+        version: 0.4.5(@trpc/client@10.20.0)(@trpc/server@10.20.0)(electron@23.3.0)
       electron-updater:
         specifier: 5.3.0
         version: 5.3.0
@@ -369,8 +369,8 @@ importers:
         specifier: 0.7.1
         version: 0.7.1
       electron:
-        specifier: 24.1.2
-        version: 24.1.2
+        specifier: 23.3.0
+        version: 23.3.0
       electron-builder:
         specifier: 23.6.0
         version: 23.6.0
@@ -6772,7 +6772,6 @@ packages:
 
   /@types/node@16.18.6:
     resolution: {integrity: sha512-vmYJF0REqDyyU0gviezF/KHq/fYaUbFhkcNbQCuPGFQj6VTbXuHZoxs/Y7mutWe73C8AC6l9fFu8mSYiBAqkGA==}
-    dev: false
 
   /@types/node@18.15.11:
     resolution: {integrity: sha512-E5Kwq2n4SbMzQOn6wnmBjuK9ouqlURrcZDVfbo9ftDDTFt3nk7ZKK4GMOzoYgnpQJKcxwQw+lGaBvvlMo0qN/Q==}
@@ -9792,7 +9791,7 @@ packages:
   /electron-to-chromium@1.4.369:
     resolution: {integrity: sha512-LfxbHXdA/S+qyoTEA4EbhxGjrxx7WK2h6yb5K2v0UCOufUKX+VZaHbl3svlzZfv9sGseym/g3Ne4DpsgRULmqg==}
 
-  /electron-trpc@0.4.5(@trpc/client@10.20.0)(@trpc/server@10.20.0)(electron@24.1.2):
+  /electron-trpc@0.4.5(@trpc/client@10.20.0)(@trpc/server@10.20.0)(electron@23.3.0):
     resolution: {integrity: sha512-QKKZjIhLNRY1AciFd5FAUTYClz63tN+8spWBcJsDAqBFDjOR15+tnPOuaB6t0guNxgkYyYKVBsKvP1s0MiZiAg==}
     peerDependencies:
       '@trpc/client': '>10.0.0'
@@ -9801,7 +9800,7 @@ packages:
     dependencies:
       '@trpc/client': 10.20.0(@trpc/server@10.20.0)
       '@trpc/server': 10.20.0
-      electron: 24.1.2
+      electron: 23.3.0
     dev: false
 
   /electron-updater@5.3.0:
@@ -9820,14 +9819,14 @@ packages:
       - supports-color
     dev: false
 
-  /electron@24.1.2:
-    resolution: {integrity: sha512-V0isWbyLYiXrSCcB4lrSVhS/U56NFGfuqHyc+yEPkyhhvY+h4F85cYGdEiZlXp6XjHT+/CLHmw0ltK54g9lvDw==}
+  /electron@23.3.0:
+    resolution: {integrity: sha512-DVAtptpOSxM7ycgriphSxzlkb3R92d28sFKG1hMtmPkAwHl/e87reaHXhGwyj8Xu4GY69e6yUoAJqma20w0Vgw==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
     requiresBuild: true
     dependencies:
       '@electron/get': 2.0.2
-      '@types/node': 18.15.11
+      '@types/node': 16.18.6
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
