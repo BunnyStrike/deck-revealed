@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
+import { supabaseClient } from 'common/database'
 import { existsSync } from 'graceful-fs'
 
-import { supabaseClient } from '~/common/database'
 import { type AppInfo } from '~/common/types/app.types'
 import { type SteamOSBootVideo } from '~/common/types/steamos'
 
