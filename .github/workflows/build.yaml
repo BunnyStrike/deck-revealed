@@ -44,7 +44,7 @@ jobs:
       #   env:
       #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_ID_EDGE }}
       - name: Build artifacts.
-        run: pnpm dist:linux appimage --publish=never
+        run: pnpm dist:linux
       - name: Upload AppImage.
         uses: actions/upload-artifact@v3
         with:
