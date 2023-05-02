@@ -32,6 +32,8 @@ jobs:
         with:
           node-version: '18'
 
+      - run: pnpm install
+
       - run: pnpm release:linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
