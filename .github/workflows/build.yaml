@@ -49,5 +49,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: linux-appimage
-          path: dist/Revealed-*.AppImage
+          path: apps/desktop/dist/Revealed-*.AppImage
           retention-days: 14

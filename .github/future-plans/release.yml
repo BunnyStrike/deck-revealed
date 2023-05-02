@@ -1,0 +1,176 @@
+#Sources
+# - https://github.com/flathub/flathub/wiki/App-Submission
+# - https://github.com/subosito/flutter-action
+
+on:
+  push:
+    # branches:
+    #   - "main"
+    tags: ["*"]
+
+jobs:
+  build:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v3
+     - uses: subosito/flutter-action@v2.8.0
+       with:
+        channel: 'stable'
+        # cache: true
+        # cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
+        # cache-path: ${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch # optional, change this to specify the cache path
+        # architecture: x64 # optional, x64 or arm64
+     - run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ninja-build libgtk-3-dev
+      # sudo apt-get install -y flatpak flatpak-builder
+      # sudo flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+      # sudo flatpak install -y flathub org.freedesktop.Platform//21.08
+      # sudo flatpak install flathub org.flatpak.Builder
+    #  flatpak-builder
+     - run: flutter config --enable-linux-desktop
+     - name: Run build script
+       run: ./build.sh
+       shell: bash
+
+     - uses: svenstaro/upload-release-action@v2
+       with:
+        repo_name: 'BunnyStrike/deck_revealed'
+        repo_token: ${{ secrets.DECK_REVEALED_PERSONAL_ACCESS_TOKEN }}
+        file: DeckRevealed.AppImage
+        asset_name: DeckRevealed.AppImage
+        tag: ${{ github.ref }}
+        overwrite: true
+        # github.event.description # release.body 
+        body: ${{ github.event.description }}
+     
+     - uses: actions/upload-artifact@v3
+       with:
+        name: deck-revealed-app-artifact
+        path: FlutterApp-Linux-Portable.tar.gz
+
+      
+                
+    #  - run: sudo flatpak install -y flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
+    #  - run: sudo flatpak-builder --force-clean build-dir com.bunnystrike.DeckRevealed.json
+    #  - run: sudo flatpak build-export export build-dir
+    #  - run: sudo flatpak build-bundle export deck-revealed.flatpak com.bunnystrike.DeckRevealed
+
+  # flatpak:
+  #   name: "Flatpak"
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: bilelmoussaoui/flatpak-github-actions:gnome-40
+  #     options: --privileged
+  #   steps:
+  #    - name: Download all workflow run artifacts
+  #      uses: actions/download-artifact@v3
+
+  #    - uses: actions/checkout@v2
+  #    - uses: flatpak/flatpak-github-actions/flatpak-builder@v4 
+  #      with:
+  #       bundle: deck-revealed-app.flatpak
+  #       manifest-path: com.bunnystrike.DeckRevealed.json
+  #       cache-key: flatpak-builder-${{ github.sha }}
+
+  #    - uses: actions/upload-artifact@v3
+  #      with:
+  #       name: deck-revealed-app-artifact
+  #       path: deck-revealed.flatpak
+      
+
+
+
+
+
+
+
+      # - name: Read release.md and use it as a body of new release
+      #   id: read_release
+      #   shell: bash
+      #   run: |
+      #     r=$(cat path/to/release.md)                       # <--- Read release.md (Provide correct path as per your repo)
+      #     r="${r//'%'/'%25'}"                               # Multiline escape sequences for %
+      #     r="${r//$'\n'/'%0A'}"                             # Multiline escape sequences for '\n'
+      #     r="${r//$'\r'/'%0D'}"                             # Multiline escape sequences for '\r'
+      #     echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT          # <--- Set environment variable
+
+      # - name: Upload Binaries to Release
+      #   uses: svenstaro/upload-release-action@v2
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     tag: ${{ github.ref }}
+      #     body: |
+      #       ${{ steps.read_release.outputs.RELEASE_BODY }}  # <--- Use environment variables that was created earlier
+
+
+
+
+
+
+#       #Sources
+# # - https://github.com/flathub/flathub/wiki/App-Submission
+# # - https://github.com/subosito/flutter-action
+
+# on:
+#   push:
+#     # branches:
+#     #   - "main"
+#     tags: ["*"]
+
+# jobs:
+#   build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: subosito/flutter-action@v2.8.0
+#        with:
+#         channel: 'stable'
+#         # cache: true
+#         # cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
+#         # cache-path: ${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch # optional, change this to specify the cache path
+#         # architecture: x64 # optional, x64 or arm64
+#      - run: |
+#         sudo apt-get update -y
+#         sudo apt-get install -y ninja-build libgtk-3-dev
+#       # sudo apt-get install -y flatpak flatpak-builder
+#       # sudo flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+#       # sudo flatpak install -y flathub org.freedesktop.Platform//21.08
+#       # sudo flatpak install flathub org.flatpak.Builder
+#     #  flatpak-builder
+#      - run: flutter config --enable-linux-desktop
+#      - run: flutter build linux
+#      - run: tar -C build/linux/x64/release/bundle -acvf FlutterApp-Linux-Portable.tar.gz .
+     
+#      - uses: actions/upload-artifact@v3
+#        with:
+#         name: deck-revealed-app-artifact
+#         path: FlutterApp-Linux-Portable.tar.gz
+                
+#     #  - run: sudo flatpak install -y flathub org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08
+#     #  - run: sudo flatpak-builder --force-clean build-dir com.bunnystrike.DeckRevealed.json
+#     #  - run: sudo flatpak build-export export build-dir
+#     #  - run: sudo flatpak build-bundle export deck-revealed.flatpak com.bunnystrike.DeckRevealed
+
+#   flatpak:
+#     name: "Flatpak"
+#     runs-on: ubuntu-latest
+#     container:
+#       image: bilelmoussaoui/flatpak-github-actions:gnome-40
+#       options: --privileged
+#     steps:
+#      - name: Download all workflow run artifacts
+#        uses: actions/download-artifact@v3
+
+#      - uses: actions/checkout@v2
+#      - uses: flatpak/flatpak-github-actions/flatpak-builder@v4 
+#        with:
+#         bundle: deck-revealed-app.flatpak
+#         manifest-path: com.bunnystrike.DeckRevealed.json
+#         cache-key: flatpak-builder-${{ github.sha }}
+
+#      - uses: actions/upload-artifact@v3
+#        with:
+#         name: deck-revealed-app-artifact
+#         path: deck-revealed.flatpak
+      
