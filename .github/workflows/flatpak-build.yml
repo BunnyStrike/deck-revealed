@@ -1,0 +1,43 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, stable]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Build Flatpak Files'
+        required: false
+name: Flatpak-CI
+jobs:
+  flatpak:
+    name: 'Flatpak Build'
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-22.08
+      options: --privileged
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install modules.
+        run: pnpm i --legacy-peer-deps
+      - name: Build artifacts.
+        run: pnpm run dist:linux appimage --publish=never
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare Flatpak
+        run: pnpm run flatpak:prepare
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v4
+        with:
+          bundle: revealed.flatpak
+          manifest-path: flatpak-build/com.bunnystrike.revealed.yml
+          cache-key: flatpak-builder-${{ github.sha }}
