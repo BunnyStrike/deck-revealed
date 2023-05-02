@@ -1,6 +1,6 @@
-import React from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
-import { Cross2Icon } from '@radix-ui/react-icons'
+import { Fragment, useRef, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useAtom } from 'jotai'
 
 import { confirmModalAtom, confirmModalAtomDefault } from '../states'
@@ -27,6 +27,8 @@ export const ConfirmDialog = ({
 }: ConfirmDialogProps) => {
   const [confirm, setConfirm] = useAtom(confirmModalAtom)
 
+  const cancelButtonRef = useRef(null)
+
   const handleConfirm = async () => {
     await confirm?.onConfirm?.()
     setConfirm(confirmModalAtomDefault)
@@ -36,53 +38,81 @@ export const ConfirmDialog = ({
     await confirm?.onCancel?.()
     setConfirm(confirmModalAtomDefault)
   }
-  //  onClick={() => setConfirm((prev) => ({...prev, show: true}))}
-  return (
-    <Dialog.Root open={confirm.show}>
-      <Dialog.Portal>
-        <Dialog.Overlay className='bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0' />
-        <Dialog.Content className='data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-40 max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-slate-600 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none'>
-          {title && (
-            <Dialog.Title className='text-mauve12 m-0 text-[17px] font-medium'>
-              {confirm?.title || title}
-            </Dialog.Title>
-          )}
-          {(confirm?.message || message) && (
-            <Dialog.Description className='text-mauve11 mb-5 mt-[10px] text-[15px] leading-normal'>
-              {confirm?.message || message}
-            </Dialog.Description>
-          )}
 
-          <div className='mt-[25px] flex justify-end'>
-            <Dialog.Close asChild>
-              <button
-                onClick={handleCancel}
-                className='bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none'
-              >
-                {confirm?.cancelText || cancelText}
-              </button>
-            </Dialog.Close>
-            <Dialog.Close asChild>
-              <button
-                onClick={handleConfirm}
-                className='bg-green4 text-green11 hover:bg-green5 focus:shadow-green7 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none focus:shadow-[0_0_0_2px] focus:outline-none'
-              >
-                {confirm?.confirmText || confirmText}
-              </button>
-            </Dialog.Close>
-          </div>
-          <Dialog.Close asChild>
-            <button
-              onClick={handleCancel}
-              className='text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute right-[10px] top-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none'
-              aria-label='Close'
+  return (
+    <Transition.Root show={confirm.show} as={Fragment}>
+      <Dialog
+        as='div'
+        className='relative z-10'
+        initialFocus={cancelButtonRef}
+        onClose={() => handleCancel()}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter='ease-out duration-300'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'
+        >
+          <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
+        </Transition.Child>
+
+        <div className='fixed inset-0 z-10 overflow-y-auto'>
+          <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
+            <Transition.Child
+              as={Fragment}
+              enter='ease-out duration-300'
+              enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+              enterTo='opacity-100 translate-y-0 sm:scale-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100 translate-y-0 sm:scale-100'
+              leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Cross2Icon />
-            </button>
-          </Dialog.Close>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+              <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
+                <div className='sm:flex sm:items-start'>
+                  <div className='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10'>
+                    <ExclamationTriangleIcon
+                      className='h-6 w-6 text-red-600'
+                      aria-hidden='true'
+                    />
+                  </div>
+                  <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
+                    <Dialog.Title
+                      as='h3'
+                      className='text-base font-semibold leading-6 text-gray-900'
+                    >
+                      {title}
+                    </Dialog.Title>
+                    <div className='mt-2'>
+                      <p className='text-sm text-gray-500'>{message}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
+                  <button
+                    type='button'
+                    className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'
+                    onClick={() => handleCancel()}
+                  >
+                    {confirmText}
+                  </button>
+                  <button
+                    type='button'
+                    className='mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto'
+                    onClick={() => handleConfirm()}
+                    ref={cancelButtonRef}
+                  >
+                    {cancelText}
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
   )
 }
 

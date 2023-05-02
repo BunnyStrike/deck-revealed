@@ -22,6 +22,8 @@
     "db:generate": "turbo db:generate",
     "db:push": "turbo db:push db:generate",
     "dist:flatpak": "turbo dist:flatpak",
+    "release:linux": "turbo release:linux",
+    "dist:linux": "turbo dist:linux",
     "dev": "turbo dev --parallel --concurrency=20",
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore",
     "lint": "turbo lint && manypkg check",

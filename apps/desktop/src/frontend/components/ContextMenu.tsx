@@ -78,13 +78,13 @@ export const AppContextMenu = ({
 
   const handleAddToSteam = async () => {
     if (!app?.id) return
-    addToSteam({ appInfo: app })
+    await addToSteam({ appInfo: app })
     await queryClient.invalidateQueries(api.app.getQueryKey())
   }
 
   const handleRemoveToSteam = async () => {
     if (!app?.id) return
-    removeAppFromSteam({ appInfo: app })
+    await removeAppFromSteam({ appInfo: app })
     await queryClient.invalidateQueries(api.app.getQueryKey())
   }
 

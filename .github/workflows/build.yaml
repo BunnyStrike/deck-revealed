@@ -1,0 +1,53 @@
+name: Build
+
+on:
+  push:
+    branches: [main, stable]
+    tags:
+      - '!v*'
+  workflow_dispatch:
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DIRECT_URL: ${{ secrets.DIRECT_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  VITE_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.VITE_PUBLIC_SUPABASE_ANON_KEY }}
+  VITE_PUBLIC_SUPABASE_URL: ${{ secrets.VITE_PUBLIC_SUPABASE_URL }}
+  VITE_VERCEL_URL: ${{ secrets.VITE_VERCEL_URL }}
+  NEXT_PUBLIC_STRIPE_PU: ${{ secrets.NEXT_PUBLIC_STRIPE_PU }}
+  VITE_PUBLIC_STRIPE_PU: ${{ secrets.VITE_PUBLIC_STRIPE_PU }}
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install --no-install-recommends -y snapcraft
+
+      - name: Checkout repository.
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install modules.
+        run: pnpm install
+      # - name: Upload Snap to Edge Channel.
+      #   run: yarn dist:linux snap --publish=always
+      #   env:
+      #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_ID_EDGE }}
+      - name: Build artifacts.
+        run: pnpm dist:linux appimage --publish=never
+      - name: Upload AppImage.
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-appimage
+          path: dist/Revealed-*.AppImage
+          retention-days: 14
