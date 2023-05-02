@@ -8,7 +8,22 @@ on:
       version:
         description: 'Build Flatpak Files'
         required: false
+
 name: Flatpak-CI
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DIRECT_URL: ${{ secrets.DIRECT_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  VITE_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.VITE_PUBLIC_SUPABASE_ANON_KEY }}
+  VITE_PUBLIC_SUPABASE_URL: ${{ secrets.VITE_PUBLIC_SUPABASE_URL }}
+  VITE_VERCEL_URL: ${{ secrets.VITE_VERCEL_URL }}
+  NEXT_PUBLIC_STRIPE_PU: ${{ secrets.NEXT_PUBLIC_STRIPE_PU }}
+  VITE_PUBLIC_STRIPE_PU: ${{ secrets.VITE_PUBLIC_STRIPE_PU }}
+
 jobs:
   flatpak:
     name: 'Flatpak Build'
@@ -19,10 +34,15 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+
       - name: Setup NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
       - name: Install modules.
         run: pnpm i --legacy-peer-deps
       - name: Build artifacts.
