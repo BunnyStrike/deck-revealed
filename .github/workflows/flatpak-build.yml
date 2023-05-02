@@ -59,6 +59,12 @@ jobs:
       - name: Install deps (with cache)
         run: pnpm install
 
+      - name: Install org.electronjs.Electron2.BaseApp
+        run: flatpak install flathub org.electronjs.Electron2.BaseApp//22.08
+
+      - name: Install org.freedesktop.Sdk.Extension.node18
+        run: flatpak install flathub org.freedesktop.Sdk.Extension.node18//22.08
+
       - name: Build artifacts.
         run: pnpm dist:flatpak
         env:

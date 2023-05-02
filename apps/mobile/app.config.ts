@@ -1,8 +1,8 @@
 import type { ExpoConfig } from '@expo/config'
 
 const defineConfig = (): ExpoConfig => ({
-  name: 'mobile',
-  slug: 'mobile',
+  name: 'Revealed',
+  slug: 'revealed',
   scheme: 'expo',
   version: '1.0.0',
   orientation: 'portrait',
@@ -29,7 +29,7 @@ const defineConfig = (): ExpoConfig => ({
   },
   extra: {
     eas: {
-      projectId: 'your-project-id',
+      projectId: 'e96122dc-a31a-4857-b312-b0b29fbce42f',
     },
     // nextPublicClerkPublishableKey:
     //   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
