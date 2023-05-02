@@ -52,7 +52,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
@@ -76,6 +76,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload AppImage.
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-appimage
+          path: apps/desktop/dist/Revealed-*.AppImage
+          retention-days: 14
 
       # - name: Build Flatpak
       #   uses: flatpak/flatpak-github-actions/flatpak-builder@v6.1
