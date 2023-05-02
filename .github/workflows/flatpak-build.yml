@@ -65,8 +65,11 @@ jobs:
       - name: Install org.freedesktop.Sdk.Extension.node18
         run: flatpak install --noninteractive flathub org.freedesktop.Sdk.Extension.node18//22.08
 
-      - name: Install org.freedesktop.Sdk.Extension.node18
+      - name: Install org.freedesktop.Sdk.Compat.i386/x86_64/22.08
         run: flatpak install --noninteractive flathub org.freedesktop.Sdk.Compat.i386/x86_64/22.08
+
+      - name: Install org.freedesktop.Sdk.Extension.toolchain-i386/x86_64/22.08
+        run: flatpak install --noninteractive flathub org.freedesktop.Sdk.Extension.toolchain-i386/x86_64/22.08
 
       - name: Build artifacts.
         run: pnpm dist:flatpak
