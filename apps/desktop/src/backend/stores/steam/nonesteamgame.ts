@@ -1,4 +1,4 @@
-import { dirname, join } from 'path'
+import { dirname, extname, join } from 'path'
 import { app } from 'electron'
 import { readFileSync } from 'fs-extra'
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'graceful-fs'
@@ -13,7 +13,13 @@ import {
 import { type GameInfo, type SideloadGame } from '~/common/types'
 import { AppInfo } from '~/common/types/app.types'
 import { GlobalConfig } from '../../configs/config'
-import { isFlatpak, isLinux, isWindows, tsStore } from '../../constants'
+import {
+  getSteamLibraries,
+  isFlatpak,
+  isLinux,
+  isWindows,
+  tsStore,
+} from '../../constants'
 import { notify, showDialogBoxModalAuto } from '../../dialog/dialog'
 import { getWikiGameInfo } from '../../info/wikiGameInfo'
 import { LogPrefix, logError, logInfo, logWarning } from '../../logger/logger'
@@ -113,12 +119,107 @@ function checkSteamUserDataDir(steamUserdataDir: string): {
  */
 function readShortcutFile(file: string): Partial<ShortcutObject> {
   const content = readFileSync(file)
+  console.log('content', content)
 
   return parseBuffer(content, {
     autoConvertArrays: true,
     autoConvertBooleans: true,
     dateProperties: ['LastPlayTime'],
   })
+}
+
+async function getSteamShortcuts() {
+  const steamUserdataDir = await getSteamUserdataDir()
+
+  const { folders, error } = checkSteamUserDataDir(steamUserdataDir)
+
+  const games = []
+
+  for (const folder of folders) {
+    const configDir = join(steamUserdataDir, folder, 'config')
+    const shortcutsFile = join(configDir, 'shortcuts.vdf')
+
+    if (!existsSync(configDir)) {
+      mkdirSync(configDir)
+    }
+
+    if (!existsSync(shortcutsFile)) {
+      writeShortcutFile(shortcutsFile, { shortcuts: [] })
+    }
+
+    // read file
+    const content = readShortcutFile(shortcutsFile)
+    content.shortcuts = content.shortcuts ?? []
+
+    games.push(...content.shortcuts)
+  }
+
+  return games
+}
+
+/* 
+
+class SteamGame with _$SteamGame {
+  factory SteamGame({
+    // required String id,
+    @JsonKey(name: 'appid') required int appid,
+    required String name,
+    String? installedDir,
+    @JsonKey(name: 'LauncherPath') String? launcherPath,
+    @JsonKey(name: 'StateFlags') int? stateFlag,
+    @JsonKey(name: 'LastUpdated') int? lastUpdated,
+    @JsonKey(name: 'SizeOnDisk') int? sizeOnDisk,
+    String? bannerImage,
+    String? iconImage,
+    String? pillImage,
+  }) = _SteamGame;
+
+  factory SteamGame.fromJson(Map<String, dynamic> json) =>
+      _$SteamGameFromJson(json);
+}
+
+*/
+
+async function getSteamGames() {
+  console.log('------------------', 'test', '------------------')
+  const installedFolders = await getSteamLibraries()
+  const games = []
+
+  for (const folder of installedFolders) {
+    console.log('------------------', folder, '------------------')
+    const configDir = join(folder, 'steamapps')
+    const folders = readdirSync(configDir, {
+      withFileTypes: true,
+    }).filter((dirent) => !dirent.isDirectory() && dirent.name.endsWith('.acf'))
+
+    for (const gameFolder of folders ?? []) {
+      // if (readFileSync(join(configDir, gameFolder?.name ?? ''))
+      const content = readFileSync(join(configDir, gameFolder?.name ?? ''))
+      const fileContents = parseBuffer(content, {
+        autoConvertArrays: true,
+        autoConvertBooleans: true,
+        dateProperties: ['LastPlayTime'],
+      })
+      console.log('fileContents', fileContents)
+
+      games.push(...(fileContents?.shortcuts ?? []))
+    }
+    // const shortcutsFile = join(configDir, 'shortcuts.vdf')
+
+    // if (!existsSync(configDir)) {
+    //   mkdirSync(configDir)
+    // }
+
+    // if (!existsSync(shortcutsFile)) {
+    //   writeShortcutFile(shortcutsFile, { shortcuts: [] })
+    // }
+
+    // // read file
+    // const content = readShortcutFile(shortcutsFile)
+    // content.shortcuts = content.shortcuts ?? []
+  }
+
+  return games
 }
 
 /**
@@ -524,4 +625,10 @@ async function isAddedToSteam(props: {
   return added
 }
 
-export { addNonSteamGame, removeNonSteamGame, isAddedToSteam }
+export {
+  addNonSteamGame,
+  removeNonSteamGame,
+  isAddedToSteam,
+  getSteamShortcuts,
+  getSteamGames,
+}

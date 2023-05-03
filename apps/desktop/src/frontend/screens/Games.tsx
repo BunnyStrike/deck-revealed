@@ -17,6 +17,9 @@ export const GamesScreen = () => {
   } = api.game.all.useQuery({
     search: debouncedFilter,
   })
+  const { data: games = [] } = api.desktop.games.steam.useQuery()
+
+  console.log(games)
 
   useEffect(() => {
     setListFilter((prev) => ({

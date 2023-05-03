@@ -14,7 +14,7 @@ export const HomeScreen = () => {
     data = [],
     error,
     isLoading,
-  } = api.app.apps.useQuery({
+  } = api.home.recentAndFavorites.useQuery({
     search: debouncedFilter,
     category: listFilter.category === 'All' ? undefined : listFilter.category,
     sort: listFilter.sort,

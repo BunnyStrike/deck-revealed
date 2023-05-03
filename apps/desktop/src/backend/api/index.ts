@@ -7,6 +7,7 @@ import z from 'zod'
 import { apps } from './apps'
 import { connectivity } from './connectivity'
 import { gamepad } from './gamepad'
+import { games } from './games'
 import { info } from './info'
 import { logger } from './logger'
 import { steam } from './steam'
@@ -24,6 +25,7 @@ export const desktopRouter = createTRPCRouter({
     info,
     logger,
     apps,
+    games,
   }),
 })
 

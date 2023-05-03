@@ -44,14 +44,14 @@ export const RevealedListView = ({
           Add App
         </button>
       )}
-      {(listFilter.add === 'game' || listFilter.add === 'both') && (
+      {/* {(listFilter.add === 'game' || listFilter.add === 'both') && (
         <button
           onClick={() => setModals((prev) => ({ ...prev, showAddGame: true }))}
           className='btn-primary btn mr-4 mt-4'
         >
           Add Game
         </button>
-      )}
+      )} */}
 
       <div className=''>
         {isLoading && (

@@ -23,21 +23,7 @@ const mediaInput = z.object({
   source: z.string().min(1),
   description: z.string().optional(),
   type: z
-    .string()
-    .includes('IMAGE')
-    .or(
-      z
-        .string()
-        .includes('VIDEO')
-        .or(
-          z
-            .string()
-            .includes('AUDIO')
-            .or(
-              z.string().includes('DOCUMENT').or(z.string().includes('OTHER'))
-            )
-        )
-    )
+    .enum(['IMAGE', 'VIDEO', 'AUDIO', 'DOCUMENT', 'OTHER'])
     .default('OTHER'),
   steamType: z
     .string()
@@ -60,46 +46,19 @@ const versionInput = z.object({
   runnerLocation: z.string().optional(),
   status: z.string().default('PUBLISHED'),
   platform: z
-    .string()
-    .includes('WINDOWS')
-    .or(
-      z
-        .string()
-        .includes('LINUX')
-        .or(
-          z
-            .string()
-            .includes('STEAMOS')
-            .or(z.string().includes('MAC').or(z.string().includes('WEB')))
-        )
-    )
+    .enum(['WINDOWS', 'LINUX', 'STEAMOS', 'MAC', 'WEB', 'OTHER'])
     .default('OTHER'),
   runnerType: z
-    .string()
-    .includes('FLATPAK')
-    .or(
-      z
-        .string()
-        .includes('APPIMAGE')
-        .or(
-          z
-            .string()
-            .includes('BASH')
-            .or(
-              z
-                .string()
-                .includes('EXE')
-                .or(
-                  z
-                    .string()
-                    .includes('WEB')
-                    .or(
-                      z.string().includes('MSI').or(z.string().includes('DMG'))
-                    )
-                )
-            )
-        )
-    )
+    .enum([
+      'FLATPAK',
+      'APPIMAGE',
+      'BASH',
+      'EXE',
+      'WEB',
+      'MSI',
+      'DMG',
+      'UNKNOWN',
+    ])
     .default('UNKNOWN'),
 })
 
