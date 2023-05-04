@@ -10,7 +10,7 @@ import superjson from 'superjson'
 
 import type { AppRouter } from '@revealed/api'
 
-import type { AppRouter as DesktopAppRouter } from '../../backend/api'
+import type { DesktopRouter } from '../../backend/api'
 import { supabaseClient } from './database'
 import { getEnvVar } from './envVar'
 
@@ -18,10 +18,13 @@ const getBaseUrl = () => {
   return getEnvVar('VITE_VERCEL_URL') || 'https://revealed-tau.vercel.app' // ?? `http://localhost:3002` // dev SSR should use localhost
 }
 
-export const api = createTRPCReact<AppRouter & DesktopAppRouter>()
+export const api = createTRPCReact<AppRouter & DesktopRouter>()
 
 type RouterInput = inferRouterInputs<AppRouter>
 type RouterOutput = inferRouterOutputs<AppRouter>
+
+type DesktopRouterInput = inferRouterInputs<DesktopRouter>
+type DesktopRouterOutput = inferRouterOutputs<DesktopRouter>
 
 export type AppListInput = RouterInput['app']['all']
 export type AppUpsertInput = RouterInput['app']['upsert']
@@ -29,6 +32,9 @@ export type AppListOutput = RouterOutput['app']['apps']
 
 export type GameListInput = RouterInput['game']['all']
 export type GameListOutput = RouterOutput['game']['all']
+
+export type SteamGameListOutput =
+  DesktopRouterOutput['desktop']['games']['steam']
 
 export type BootVideoInput = RouterInput['bootVideo']['all']
 export type BootVideoOutput = RouterOutput['bootVideo']['all']

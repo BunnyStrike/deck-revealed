@@ -29,4 +29,4 @@ export const desktopRouter = createTRPCRouter({
   }),
 })
 
-export type AppRouter = typeof desktopRouter
+export type DesktopRouter = typeof desktopRouter

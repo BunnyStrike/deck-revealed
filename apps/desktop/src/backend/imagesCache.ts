@@ -1,9 +1,11 @@
-import { existsSync, createWriteStream, mkdirSync } from 'graceful-fs'
 import { createHash } from 'crypto'
-import { imagesCachePath } from './constants'
 import { join } from 'path'
+import url from 'url'
 import axios from 'axios'
 import { protocol } from 'electron'
+import { createWriteStream, existsSync, mkdirSync } from 'graceful-fs'
+
+import { imagesCachePath } from './constants'
 
 export const initImagesCache = () => {
   // make sure we have a folder to store the cache
@@ -14,6 +16,13 @@ export const initImagesCache = () => {
   // use a fake protocol for images we want to cache
   protocol.registerFileProtocol('imagecache', (request, callback) => {
     callback({ path: getImageFromCache(request.url) })
+  })
+
+  protocol.registerFileProtocol('atom', (request, callback) => {
+    const filePath = url.fileURLToPath(
+      'file://' + request.url.slice('atom://'.length)
+    )
+    callback(filePath)
   })
 }
 
