@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { getSteamGames } from '../stores/steam/nonesteamgame'
 import { createTRPCRouter, publicProcedure } from './trpc'
 
+const sourceEnum = z.enum(['steam', 'nonsteam', 'epic', 'origin', 'uplay'])
+
 // Simulate keyboard and mouse actions as if the real input device is used
 export const games = createTRPCRouter({
   steam: publicProcedure
@@ -10,24 +12,26 @@ export const games = createTRPCRouter({
       z.array(
         z.object({
           name: z.string(),
-          installdir: z.string(),
-          buildid: z.number(),
           appid: z.number(),
-          userConfig: z.object({ language: z.string() }),
+          installdir: z.string().nullable(),
+          buildid: z.number().nullable(),
+          userConfig: z.any(), // z.object({ language: z.string() }),
           images: z.object({
             cover: z.string().nullable(),
             banner: z.string().nullable(),
             icon: z.string().nullable(),
           }),
-          sizeOnDisk: z.number(),
-          lastUpdated: z.number(),
-          stateFlags: z.number(),
-          launcherPath: z.string(),
+          sizeOnDisk: z.number().default(0),
+          lastUpdated: z.number().nullable(),
+          stateFlags: z.number().nullable(),
+          launcherPath: z.string().nullable(),
+          source: sourceEnum,
         })
       )
     )
     .query(async () => {
       const games = await getSteamGames()
+
       return games ?? []
     }),
 })

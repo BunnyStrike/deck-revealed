@@ -28,11 +28,12 @@ interface RevealedListCardProps {
   // item: GameListOutput[number] | AppListOutput[number]
 }
 export const GameListCard = ({ item }: RevealedListCardProps) => {
-  const { name, images, appid } = item
+  const { name, images, appid, source, launcherPath } = item
   const { cover } = images
   const user = useUser()
   const navigate = useNavigate()
-  const { mutate } = api.app.recent.useMutation()
+  // const { mutate } = api.app.recent.useMutation()
+  const { mutate } = api.desktop.steam.runGame.useMutation()
   const { data: isAddedToSteam = false } =
     api.desktop.steam.isAddedToSteam.useQuery({ title: name })
 
@@ -41,6 +42,8 @@ export const GameListCard = ({ item }: RevealedListCardProps) => {
   const handleLaunchClick = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>
   ) => {
+    if (!launcherPath || !appid) return
+    mutate({ path: launcherPath, steamAppId: appid })
     //   e.stopPropagation()
     //   if (user?.id) {
     //     mutate({ id })
@@ -54,8 +57,6 @@ export const GameListCard = ({ item }: RevealedListCardProps) => {
   //   }
   //   navigate(`/app/${id}`)
   // }
-
-  console.log(`atom://${cover}`)
 
   return (
     // <AppContextMenu
@@ -75,17 +76,24 @@ export const GameListCard = ({ item }: RevealedListCardProps) => {
         />
       </figure>
       <div className='card-body h-full justify-end p-0'>
-        {isAddedToSteam && (
+        {source === 'steam' && (
           <div
             className='absolute right-2 top-2 rounded-md bg-secondary p-0.5'
-            title='Added to Steam'
+            title='Steam Game'
           >
             <IconBrandSteam className='text-white' />
           </div>
         )}
 
         <h2 className='card-title p-2 group-hover:text-white '>{name}</h2>
-        <div className='flex justify-end gap-2 rounded-b-2xl bg-gray-800 p-2'></div>
+        <div className='flex justify-end gap-2 rounded-b-2xl bg-gray-800 p-2'>
+          <button
+            onClick={(e) => handleLaunchClick(e)}
+            className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+          >
+            <PlayIcon />
+          </button>
+        </div>
       </div>
     </div>
     // </AppContextMenu>

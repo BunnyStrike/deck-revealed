@@ -4,6 +4,7 @@ import { addRevealedToSteam } from '../stores/steam/addRevealedToSteam'
 import {
   checkIfSteamIsRunning,
   restartSteam,
+  runSteamGame,
   startSteam,
   stopSteam,
 } from '../stores/steam/manage'
@@ -33,6 +34,9 @@ export const steam = createTRPCRouter({
   restartSteam: publicProcedure.mutation(({ input }) => restartSteam()),
   stopSteam: publicProcedure.mutation(({ input }) => stopSteam()),
   startSteam: publicProcedure.mutation(({ input }) => startSteam()),
+  runGame: publicProcedure
+    .input(z.object({ path: z.string(), steamAppId: z.number() }))
+    .mutation(({ input }) => runSteamGame(input.path, input.steamAppId)),
   checkIfSteamIsRunning: publicProcedure.mutation(({ input }) =>
     checkIfSteamIsRunning()
   ),
