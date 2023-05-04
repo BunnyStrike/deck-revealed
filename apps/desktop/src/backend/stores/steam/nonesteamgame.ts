@@ -1,4 +1,5 @@
 import { dirname, extname, join } from 'path'
+import { parse } from '@node-steam/vdf'
 import { app } from 'electron'
 import { readFileSync } from 'fs-extra'
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'graceful-fs'
@@ -14,6 +15,7 @@ import { type GameInfo, type SideloadGame } from '~/common/types'
 import { AppInfo } from '~/common/types/app.types'
 import { GlobalConfig } from '../../configs/config'
 import {
+  getSteamCompatFolder,
   getSteamLibraries,
   isFlatpak,
   isLinux,
@@ -180,43 +182,90 @@ class SteamGame with _$SteamGame {
 
 */
 
+function getSteamGameImages(id: string) {
+  const mainFolder = getSteamCompatFolder()
+
+  const path = join(mainFolder, 'appcache', 'librarycache')
+
+  const gameImages = readdirSync(path)
+
+  if (!gameImages) {
+    return {
+      icon: null,
+      cover: null,
+      banner: null,
+    }
+  }
+
+  const iconPath = gameImages.find(
+    (element) =>
+      element.split('\\').includes(`${id}_icon.jpg`) ||
+      element.split('/').includes(`${id}_icon.jpg`),
+    () => ''
+  )
+
+  const coverPath = gameImages.find(
+    (element) =>
+      element.split('\\').includes(`${id}_library_600x900.jpg`) ||
+      element.split('/').includes(`${id}_library_600x900.jpg`),
+    () => ''
+  )
+
+  const bannerPath = gameImages.find(
+    (element) =>
+      element.split('\\').includes(`${id}_library_hero.jpg`) ||
+      element.split('/').includes(`${id}_library_hero.jpg`),
+    () => ''
+  )
+
+  return {
+    icon: iconPath ? join(path, iconPath) : null,
+    cover: coverPath ? join(path, coverPath) : null,
+    banner: bannerPath ? join(path, bannerPath) : null,
+  }
+}
+
 async function getSteamGames() {
-  console.log('------------------', 'test', '------------------')
   const installedFolders = await getSteamLibraries()
   const games = []
 
   for (const folder of installedFolders) {
-    console.log('------------------', folder, '------------------')
     const configDir = join(folder, 'steamapps')
     const folders = readdirSync(configDir, {
       withFileTypes: true,
     }).filter((dirent) => !dirent.isDirectory() && dirent.name.endsWith('.acf'))
 
     for (const gameFolder of folders ?? []) {
-      // if (readFileSync(join(configDir, gameFolder?.name ?? ''))
-      const content = readFileSync(join(configDir, gameFolder?.name ?? ''))
-      const fileContents = parseBuffer(content, {
-        autoConvertArrays: true,
-        autoConvertBooleans: true,
-        dateProperties: ['LastPlayTime'],
+      const content = readFileSync(
+        join(configDir, gameFolder?.name ?? '')
+      ).toString()
+      const fileContents = parse(content)
+
+      const {
+        name,
+        installdir,
+        buildid,
+        appid,
+        UserConfig: userConfig,
+        SizeOnDisk: sizeOnDisk,
+        LastUpdated: lastUpdated,
+        StateFlags: stateFlags,
+        LauncherPath: launcherPath,
+      } = fileContents['AppState'] ?? {}
+
+      games.push({
+        name,
+        installdir,
+        buildid,
+        appid,
+        userConfig,
+        sizeOnDisk,
+        lastUpdated,
+        stateFlags,
+        launcherPath,
+        images: getSteamGameImages(appid),
       })
-      console.log('fileContents', fileContents)
-
-      games.push(...(fileContents?.shortcuts ?? []))
     }
-    // const shortcutsFile = join(configDir, 'shortcuts.vdf')
-
-    // if (!existsSync(configDir)) {
-    //   mkdirSync(configDir)
-    // }
-
-    // if (!existsSync(shortcutsFile)) {
-    //   writeShortcutFile(shortcutsFile, { shortcuts: [] })
-    // }
-
-    // // read file
-    // const content = readShortcutFile(shortcutsFile)
-    // content.shortcuts = content.shortcuts ?? []
   }
 
   return games
