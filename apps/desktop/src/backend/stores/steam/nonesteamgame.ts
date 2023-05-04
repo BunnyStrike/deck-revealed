@@ -263,7 +263,7 @@ async function getSteamGames() {
         lastUpdated,
         stateFlags,
         launcherPath,
-        source: 'steam',
+        source: 'steam' as any,
         images: getSteamGameImages(appid),
       })
     }

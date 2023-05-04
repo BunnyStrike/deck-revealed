@@ -16,22 +16,28 @@ export const GamesScreen = () => {
     error,
   } = api.desktop.games.steam.useQuery()
 
-  console.log(error)
+  useEffect(() => {
+    setListFilter((prev) => ({
+      ...prev,
+      listCounter: games.length ?? 0,
+      title: 'Games',
+      add: 'game',
+    }))
+  }, [games.length, setListFilter])
 
-  // useEffect(() => {
-  //   setListFilter((prev) => ({
-  //     ...prev,
-  //     listCounter: data.length ?? 0,
-  //     title: 'Games',
-  //     add: 'game',
-  //   }))
-  // }, [data.length, setListFilter])
-
-  // if (error) return <div>{error.message}</div>
+  if (error) return <div>{error.message}</div>
 
   return (
     <Container>
-      <GamesListView title='Home' list={games} isLoading={isLoading} />
+      <GamesListView
+        title='Home'
+        list={games.filter(
+          (game) =>
+            !debouncedFilter ||
+            game.name.toLowerCase().includes(debouncedFilter.toLowerCase())
+        )}
+        isLoading={isLoading}
+      />
     </Container>
   )
 }
