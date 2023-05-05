@@ -98,7 +98,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                                 item.link === location.pathname
                                   ? 'bg-primary-focus text-white'
                                   : 'text-white hover:bg-primary hover:text-white',
-                                'group flex content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
+                                'group flex w-full content-center justify-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 sm:justify-start'
                               )}
                             >
                               {item.icon && (

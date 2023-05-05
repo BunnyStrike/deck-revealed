@@ -6,7 +6,7 @@ import { addNonSteamApp } from './nonesteamapp'
 
 export const addRevealedToSteam = async (): Promise<boolean> => {
   const newEntry = {
-    appName: 'DeckRevealed',
+    name: 'Revealed',
     exe: '',
     startDir: '',
     art_cover: '',
@@ -28,5 +28,6 @@ export const addRevealedToSteam = async (): Promise<boolean> => {
   newEntry.art_cover = join(appImagesFolder, 'steam-banner.jpg')
   newEntry.art_square = join(appImagesFolder, 'steam-pill.jpg')
   newEntry.art_logo = join(appImagesFolder, 'logo.jpg')
+
   return addNonSteamApp(newEntry as any)
 }

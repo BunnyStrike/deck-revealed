@@ -13,7 +13,13 @@ import {
 import { GameInfo, SideloadGame } from '~/common/types'
 import { type AppInfo } from '~/common/types/app.types'
 import { GlobalConfig } from '../../configs/config'
-import { isFlatpak, isLinux, isWindows, tsStore } from '../../constants'
+import {
+  appImagesFolder,
+  isFlatpak,
+  isLinux,
+  isWindows,
+  tsStore,
+} from '../../constants'
 import { notify, showDialogBoxModalAuto } from '../../dialog/dialog'
 import { getWikiGameInfo } from '../../info/wikiGameInfo'
 import { LogPrefix, logError, logInfo, logWarning } from '../../logger/logger'
@@ -261,24 +267,31 @@ async function addNonSteamApp(appInfo: AppInfo): Promise<boolean> {
 
     newEntry.appid = generateShortcutId(newEntry.Exe, newEntry.AppName)
 
-    await getIcon(appName, appInfo)
-      .then((path) => (newEntry.icon = path))
-      .catch((error) =>
-        logWarning(
-          [`Couldn't find a icon for ${appName} with:`, error],
-          LogPrefix.Shortcuts
+    if (appName === 'Revealed') {
+      newEntry.art_cover = join(appImagesFolder, 'steam-banner.jpg')
+      newEntry.art_square = join(appImagesFolder, 'steam-pill.jpg')
+      newEntry.art_logo = join(appImagesFolder, 'logo.jpg')
+      newEntry.icon = join(appImagesFolder, 'logo.jpg')
+    } else {
+      await getIcon(appName, appInfo)
+        .then((path) => (newEntry.icon = path))
+        .catch((error) =>
+          logWarning(
+            [`Couldn't find a icon for ${appName} with:`, error],
+            LogPrefix.Shortcuts
+          )
         )
-      )
 
-    await prepareImagesForSteam({
-      steamUserConfigDir: configDir,
-      appID: {
-        bigPictureAppID: generateAppId(newEntry.Exe, newEntry.AppName),
-        otherGridAppID: generateShortAppId(newEntry.Exe, newEntry.AppName),
-      },
-      gameInfo: appInfo,
-      steamID: steamID,
-    })
+      await prepareImagesForSteam({
+        steamUserConfigDir: configDir,
+        appID: {
+          bigPictureAppID: generateAppId(newEntry.Exe, newEntry.AppName),
+          otherGridAppID: generateShortAppId(newEntry.Exe, newEntry.AppName),
+        },
+        gameInfo: appInfo,
+        steamID: steamID,
+      })
+    }
 
     const args = []
     args.push('--no-gui')
@@ -288,8 +301,8 @@ async function addNonSteamApp(appInfo: AppInfo): Promise<boolean> {
     }
     args.push(`"revealed://launch/${appName}"`)
     newEntry.LaunchOptions = args.join(' ')
-    if (appName === 'DeckRevealed') {
-      newEntry.LaunchOptions = `--no-sandbox ${newEntry.LaunchOptions}`
+    if (appName === 'Revealed') {
+      newEntry.LaunchOptions = `--no-sandbox`
     } else if (appInfo.type === 'web') {
       // args.push(appInfo.source)
       if (isWindows) {

@@ -137,7 +137,7 @@ export const AppContextMenu = ({
               onClick={() => handleRemoveToSteam()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
             >
-              Remove To Steam
+              Remove From Steam
             </ContextMenu.Item>
           ) : (
             <ContextMenu.Item

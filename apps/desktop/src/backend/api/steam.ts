@@ -37,7 +37,7 @@ export const steam = createTRPCRouter({
   runGame: publicProcedure
     .input(z.object({ path: z.string(), steamAppId: z.number() }))
     .mutation(({ input }) => runSteamGame(input.path, input.steamAppId)),
-  checkIfSteamIsRunning: publicProcedure.mutation(({ input }) =>
+  checkIfSteamIsRunning: publicProcedure.query(({ input }) =>
     checkIfSteamIsRunning()
   ),
   addRevealedToSteam: publicProcedure.mutation(({ input }) =>

@@ -68,7 +68,7 @@ export default function RevealedSearchBar({
             </li> */}
             <div className='w-38 border-r-2 text-secondary'>
               <select
-                className='select w-full max-w-xs'
+                className='select w-full max-w-xs rounded-none'
                 onChange={(e) => handleCategory(e.target.value)}
               >
                 <option value='All'>All</option>

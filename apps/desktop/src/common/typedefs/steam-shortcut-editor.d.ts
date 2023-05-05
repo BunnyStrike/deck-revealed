@@ -27,6 +27,9 @@ declare module 'steam-shortcut-editor' {
     Exe: string
     StartDir: string
     icon: string
+    art_cover: string
+    art_square: string
+    art_logo: string
     ShortcutPath: string
     LaunchOptions: string
     IsHidden: boolean

@@ -3,6 +3,7 @@ export { execAsync } from './execAsync'
 export { removeSpecialcharacters } from './specialCharacters'
 export * from './images'
 export * from './cache'
+export * from './sleep'
 
 export {
   isOnline,

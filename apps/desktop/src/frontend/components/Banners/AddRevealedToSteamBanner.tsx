@@ -28,8 +28,6 @@ export function AddRevealedToSteamBanner() {
     setShowAdd(false)
   }
 
-  console.log(showAdd)
-
   if (isAddedToSteam || !showAdd) {
     return null
   }

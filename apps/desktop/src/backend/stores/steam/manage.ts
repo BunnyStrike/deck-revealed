@@ -6,6 +6,7 @@ import {
   isMac,
   isWindows,
 } from 'backend/constants'
+import { sleep } from 'backend/utils'
 
 export const getSteamName = (): string => {
   let steamName = 'steam.exe'
@@ -35,7 +36,7 @@ export const getSteamPath = async () => {
 
 export const restartSteam = async () => {
   await stopSteam()
-  // TODO: wait 5 seconds in typescript
+  await sleep(5000)
   await startSteam()
 }
 
