@@ -60,7 +60,7 @@ export default React.memo(function RevealedVersion() {
 
   return (
     <>
-      {/* <VersionChangelogModel
+      <VersionChangelogModel
         dimissVersionCheck
         version={version}
         isOpen={
@@ -74,10 +74,9 @@ export default React.memo(function RevealedVersion() {
           setShowChangelogModalOnClick(false)
           setLastChangelogShown(version)
         }}
-      /> */}
-
+      />
       <span
-        className='revealedVersion flex cursor-pointer items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'
+        className='revealedVersion flex cursor-pointer items-center justify-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-300 hover:text-gray-600'
         role='link'
         // title={t(
         //   'info.revealed.click-to-see-changelog',
@@ -85,9 +84,9 @@ export default React.memo(function RevealedVersion() {
         // )}
         onClick={() => setShowChangelogModalOnClick((current) => !current)}
       >
-        <span className='revealedVersion__title hidden sm:inline'>
+        {/* <span className='revealedVersion__title hidden sm:inline'>
           <span>{t('info.revealed.version', 'Version')}: </span>
-        </span>
+        </span> */}
         <strong>{version}</strong>
       </span>
       {shouldShowUpdates && (

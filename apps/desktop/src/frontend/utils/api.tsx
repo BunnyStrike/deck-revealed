@@ -15,7 +15,7 @@ import { supabaseClient } from './database'
 import { getEnvVar } from './envVar'
 
 const getBaseUrl = () => {
-  return getEnvVar('VITE_VERCEL_URL') || 'https://revealed-tau.vercel.app' // ?? `http://localhost:3002` // dev SSR should use localhost
+  return getEnvVar('VITE_VERCEL_URL') || 'https://revealed-tau.vercel.app' // ?? `http://localhost:3000` // dev SSR should use localhost
 }
 
 export const api = createTRPCReact<AppRouter & DesktopRouter>()

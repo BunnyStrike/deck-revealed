@@ -4,7 +4,7 @@
   "scripts": {
     "build": "pnpm with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules",
-    "dev": "pnpm with-env-local next dev -p 3002",
+    "dev": "pnpm with-env-local next dev -p 3000",
     "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
     "lint:fix": "pnpm lint --fix",
     "start": "pnpm with-env-local next start",

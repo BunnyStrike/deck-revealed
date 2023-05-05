@@ -7,7 +7,7 @@ import type { AppRouter } from '@revealed/api'
 import { getEnvVar } from '~/common/envVar'
 
 const getBaseUrl = () => {
-  return getEnvVar('VITE_VERCEL_URL') ?? `http://localhost:3002` // dev SSR should use localhost
+  return getEnvVar('VITE_VERCEL_URL') ?? `http://localhost:3000` // dev SSR should use localhost
 }
 
 export const serverClient = createTRPCProxyClient<AppRouter>({

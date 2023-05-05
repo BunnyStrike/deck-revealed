@@ -7,9 +7,16 @@ import {
 import { useAtom } from 'jotai'
 
 import { listFilterAtom } from '../states'
+import { classNames } from '../utils'
 import { appCategories } from '../utils/app'
 
-export default function RevealedSearchBar() {
+interface RevealedSearchBarProps {
+  handleAdd?: () => void
+}
+
+export default function RevealedSearchBar({
+  handleAdd,
+}: RevealedSearchBarProps) {
   const [listFilter, setListFilter] = useAtom(listFilterAtom)
 
   const handleSearch = (search: string) => {
@@ -33,7 +40,7 @@ export default function RevealedSearchBar() {
   return (
     <div className='sticky top-0 z-40'>
       <div className='mt-2 flex h-12 rounded-md shadow-sm'>
-        <div className='bg-secondary text-secondary-content  flex items-center justify-center rounded-l-md px-4'>
+        <div className='flex items-center  justify-center rounded-l-md bg-secondary px-4 text-secondary-content'>
           {listFilter.listCounter}
         </div>
         <div className='relative flex flex-grow items-stretch focus-within:z-10'>
@@ -47,7 +54,7 @@ export default function RevealedSearchBar() {
             type='search'
             name='search'
             id='search'
-            className='focus:primary-focus primary bg-primary-content block w-full rounded-none border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset placeholder:text-black focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
+            className='focus:primary-focus primary block w-full rounded-none border-0 bg-primary-content py-1.5 pl-10 text-gray-900 ring-1 ring-inset placeholder:text-black focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6'
             placeholder='Search'
             defaultValue={listFilter.name}
             onChange={(e) => handleSearch(e.target.value)}
@@ -59,7 +66,7 @@ export default function RevealedSearchBar() {
             {/* <li className='text-secondary border-r-2'>
               <a onClick={handleSort}>Add</a>
             </li> */}
-            <div className='text-secondary w-38 border-r-2'>
+            <div className='w-38 border-r-2 text-secondary'>
               <select
                 className='select w-full max-w-xs'
                 onChange={(e) => handleCategory(e.target.value)}
@@ -72,21 +79,42 @@ export default function RevealedSearchBar() {
                 ))}
               </select>
             </div>
-            <li className='text-secondary gb-secondary-content'>
-              <a onClick={handleSort}>
+            <li
+              className={classNames(
+                !handleAdd ? 'rounded-r' : '',
+                'bg-secondary-content text-secondary'
+              )}
+            >
+              <button
+                className={classNames(
+                  !handleAdd ? 'rounded-r' : '',
+                  'btn rounded-none border-none bg-secondary-content text-secondary'
+                )}
+                onClick={handleSort}
+              >
                 {listFilter.sort === 'desc' ? (
                   <BarsArrowDownIcon
-                    className='text-secondary -ml-0.5 h-5 w-5'
+                    className='-ml-0.5 h-5 w-5 text-secondary'
                     aria-hidden='true'
                   />
                 ) : (
                   <BarsArrowUpIcon
-                    className='text-secondary -ml-0.5 h-5 w-5'
+                    className='-ml-0.5 h-5 w-5 text-secondary'
                     aria-hidden='true'
                   />
                 )}
-              </a>
+              </button>
             </li>
+            {handleAdd && (
+              <li className='rounded-r'>
+                <button
+                  className='btn-primary btn text-white'
+                  onClick={handleAdd}
+                >
+                  Add
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

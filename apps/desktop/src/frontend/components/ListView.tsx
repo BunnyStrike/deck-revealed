@@ -34,8 +34,8 @@ export const RevealedListView = ({
 
   return (
     <div className='bg-neutral'>
-      <RevealedSearchBar />
-
+      <RevealedSearchBar handleAdd={handleAddApp} />
+      {/* 
       {(listFilter.add === 'app' || listFilter.add === 'both') && (
         <button
           onClick={() => handleAddApp()}
@@ -43,7 +43,7 @@ export const RevealedListView = ({
         >
           Add App
         </button>
-      )}
+      )} */}
       {/* {(listFilter.add === 'game' || listFilter.add === 'both') && (
         <button
           onClick={() => setModals((prev) => ({ ...prev, showAddGame: true }))}
