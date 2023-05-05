@@ -21,7 +21,7 @@ export default function FormToggle({
       <span className='flex flex-grow flex-col'>
         <Switch.Label
           as='span'
-          className='text-sm font-medium leading-6 text-gray-200'
+          className='text-md font-medium leading-6 text-gray-200'
           passive
         >
           {title}

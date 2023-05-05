@@ -26,16 +26,20 @@ export interface ConfirmModalsAtom {
   show: boolean
   title?: string
   message?: string
+  type?: 'primary' | 'error' | 'warning' | 'secondary'
   cancelText?: string
   confirmText?: string
-  onConfirm?: () => Promise<void>
-  onCancel?: () => Promise<void>
+  isLoading: boolean
+  onConfirm?: () => Promise<void> | void
+  onCancel?: () => Promise<void> | void
 }
 
-export const confirmModalAtomDefault = {
+export const confirmModalAtomDefault: ConfirmModalsAtom = {
   show: false,
   title: undefined,
   message: undefined,
+  isLoading: false,
+  type: 'primary',
   cancelText: undefined,
   confirmText: undefined,
   onConfirm: undefined,

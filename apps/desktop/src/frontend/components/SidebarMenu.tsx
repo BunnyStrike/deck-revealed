@@ -164,9 +164,9 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
             <UserButton appearance={{ baseTheme: dark }} />
           </li> */}
 
-          {/* <li className='-mx-6 mt-auto '>
+          <li className='-mx-6 mt-auto '>
             <RevealedVersion />
-          </li> */}
+          </li>
         </ul>
       </nav>
     </div>

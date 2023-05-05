@@ -41,6 +41,8 @@ export const AppContextMenu = ({
   const { mutate: openWebviewPage } =
     api.desktop.system.openWebviewPage.useMutation()
   const { mutate: favoriteApp } = api.app.favorite.useMutation()
+  const { mutateAsync: restartSteam } =
+    api.desktop.steam.restartSteam.useMutation()
   const [confirm, setConfirm] = useAtom(confirmModalAtom)
   const queryClient = useQueryClient()
 
@@ -79,7 +81,20 @@ export const AppContextMenu = ({
   const handleAddToSteam = async () => {
     if (!app?.id) return
     await addToSteam({ appInfo: app })
-    await queryClient.invalidateQueries(api.app.getQueryKey())
+    setConfirm((prev) => ({
+      ...prev,
+      show: true,
+      title: 'Do you want to restart Steam?',
+      message:
+        'You will need to restart Steam in order to see the new content there.',
+      onConfirm: async () => {
+        await restartSteam()
+        await queryClient.invalidateQueries(api.app.getQueryKey())
+      },
+      onCancel: async () => {
+        await queryClient.invalidateQueries(api.app.getQueryKey())
+      },
+    }))
   }
 
   const handleRemoveToSteam = async () => {

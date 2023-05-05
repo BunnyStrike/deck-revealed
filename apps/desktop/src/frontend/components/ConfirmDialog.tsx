@@ -4,6 +4,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { useAtom } from 'jotai'
 
 import { confirmModalAtom, confirmModalAtomDefault } from '../states'
+import { classNames } from '../utils'
 
 interface ConfirmDialogProps {
   title?: string
@@ -30,12 +31,15 @@ export const ConfirmDialog = ({
   const cancelButtonRef = useRef(null)
 
   const handleConfirm = async () => {
+    setConfirm((prev) => ({ ...prev, isLoading: true }))
     await confirm?.onConfirm?.()
+    await onConfirm?.()
     setConfirm(confirmModalAtomDefault)
   }
 
   const handleCancel = async () => {
     await confirm?.onCancel?.()
+    await onCancel?.()
     setConfirm(confirmModalAtomDefault)
   }
 
@@ -43,7 +47,7 @@ export const ConfirmDialog = ({
     <Transition.Root show={confirm.show} as={Fragment}>
       <Dialog
         as='div'
-        className='relative z-10'
+        className='relative z-50'
         initialFocus={cancelButtonRef}
         onClose={() => handleCancel()}
       >
@@ -59,7 +63,7 @@ export const ConfirmDialog = ({
           <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' />
         </Transition.Child>
 
-        <div className='fixed inset-0 z-10 overflow-y-auto'>
+        <div className='fixed inset-0 z-50 overflow-y-auto'>
           <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
             <Transition.Child
               as={Fragment}
@@ -72,9 +76,14 @@ export const ConfirmDialog = ({
             >
               <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
                 <div className='sm:flex sm:items-start'>
-                  <div className='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10'>
+                  <div
+                    className={classNames(
+                      'mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full  sm:mx-0 sm:h-10 sm:w-10',
+                      `bg-${confirm?.type}`
+                    )}
+                  >
                     <ExclamationTriangleIcon
-                      className='h-6 w-6 text-red-600'
+                      className={classNames(`h-6 w-6 text-${confirm?.type}`)}
                       aria-hidden='true'
                     />
                   </div>
@@ -83,25 +92,31 @@ export const ConfirmDialog = ({
                       as='h3'
                       className='text-base font-semibold leading-6 text-gray-900'
                     >
-                      {title}
+                      {confirm?.title ?? title}
                     </Dialog.Title>
                     <div className='mt-2'>
-                      <p className='text-sm text-gray-500'>{message}</p>
+                      <p className='text-sm text-gray-500'>
+                        {confirm?.message ?? message}
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
                   <button
                     type='button'
-                    className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'
-                    onClick={() => handleCancel()}
+                    className={classNames(
+                      `btn-md btn btn-${confirm?.type || 'primary'}`,
+                      confirm.isLoading ? 'loading' : ''
+                    )}
+                    onClick={() => handleConfirm()}
                   >
                     {confirmText}
                   </button>
                   <button
                     type='button'
-                    className='mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto'
-                    onClick={() => handleConfirm()}
+                    disabled={confirm.isLoading}
+                    className='btn-ghost btn-md btn'
+                    onClick={() => handleCancel()}
                     ref={cancelButtonRef}
                   >
                     {cancelText}

@@ -20,8 +20,8 @@ import {
 import { RevealedSignupScreen } from './Signup'
 
 const sections = [
-  { name: 'App', section: SettingsAppSection },
-  { name: 'Account', section: SettingsAccountSection },
+  { name: 'App' },
+  // { name: 'Account' },
   // { name: 'Account', href: '#', current: false },
   // { name: 'Notifications', href: '#', current: false },
   // { name: 'Billing', href: '#', current: false },
@@ -54,13 +54,6 @@ export function SettingsScreen() {
           </ul>
         </nav>
       </header>
-
-      {/* <SignedIn>
-        <UserProfile />
-      </SignedIn>
-      <SignedOut>
-        <RevealedSignupScreen />
-      </SignedOut> */}
 
       {/* Settings forms */}
       <div className='divide-y divide-white/5'>

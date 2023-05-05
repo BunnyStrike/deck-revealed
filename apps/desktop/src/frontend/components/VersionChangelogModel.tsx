@@ -103,17 +103,17 @@ export function VersionChangelogModel({
                     </div>
                   </div>
                 </div>
-                <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
+                <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse '>
                   <button
                     type='button'
-                    className='btn-primary btn'
+                    className='btn-primary btn-md btn'
                     onClick={() => handleClose()}
                   >
                     Update
                   </button>
                   <button
                     type='button'
-                    className='btn-link btn-sm btn'
+                    className='btn-ghost btn-md btn'
                     onClick={() => handleClose()}
                   >
                     Ignore

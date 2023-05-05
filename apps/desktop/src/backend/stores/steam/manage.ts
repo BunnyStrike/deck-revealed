@@ -60,7 +60,7 @@ export const startSteam = async () => {
 
 export const checkIfSteamIsRunning = async () => {
   if (isWindows) {
-    const results = spawn('tasklist', ['/fi', 'imagename eq ${getSteamName()}'])
+    const results = spawn('tasklist', ['/fi', `imagename eq ${getSteamName()}`])
 
     return results.stdout.toString().includes(getSteamName())
   } else {
