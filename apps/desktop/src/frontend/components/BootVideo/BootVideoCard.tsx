@@ -18,6 +18,8 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
   const { user } = useUser()
   const navigate = useNavigate()
   const { mutate } = api.app.recent.useMutation()
+  const { mutate: installBootVideo } =
+    api.desktop.apps.installBootVideo.useMutation()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [cardActive, setCardActive] = useState(false)
   const installable = false
@@ -35,9 +37,11 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
   ) => {
     e.stopPropagation()
     if (user?.id) {
-      mutate({ id, userId: user.id })
+      mutate({ id })
     }
-    navigate(`/app/${id}/webview`)
+    item.url = getMediaUrl(url, 'bootVideos')
+    installBootVideo({ bootVideo: item })
+    // navigate(`/app/${id}/webview`)
   }
 
   const handleInstall = (
@@ -45,16 +49,20 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
   ) => {
     e.stopPropagation()
     if (user?.id) {
-      mutate({ id, userId: user.id })
+      mutate({ id })
     }
-    navigate(`/app/${id}/webview`)
+    item.url = getMediaUrl(url, 'bootVideos')
+    installBootVideo({ bootVideo: item })
+    // navigate(`/app/${id}/webview`)
   }
 
   const handleDetailClick = () => {
     if (user?.id) {
-      mutate({ id, userId: user.id })
+      mutate({ id })
     }
-    navigate(`/app/${id}`)
+    item.url = getMediaUrl(url, 'bootVideos')
+    installBootVideo({ bootVideo: item })
+    // navigate(`/app/${id}`)
   }
 
   return (
@@ -87,7 +95,7 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
               }
             }}
           >
-            <source src={getMediaUrl(url)} />
+            <source src={getMediaUrl(url, 'bootVideos')} />
           </video>
         )}
       </figure>
@@ -106,7 +114,8 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
               onClick={(e) => handleLaunchClick(e)}
               className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
             >
-              <PlayIcon />
+              <DownloadIcon />
+              {/* <PlayIcon /> */}
             </button>
           )}
         </div>
