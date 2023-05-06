@@ -62,7 +62,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     >
       <div
         onClick={(e) => handleLaunchClick(e)}
-        className='image-full-color active:outline-offset-3 group card hover-bordered cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+        className='image-full-color active:outline-offset-3 hover-bordered group card cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
       >
         <figure>
           <img

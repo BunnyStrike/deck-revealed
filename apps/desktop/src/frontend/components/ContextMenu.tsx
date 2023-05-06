@@ -40,7 +40,7 @@ export const AppContextMenu = ({
     api.desktop.steam.removeAppFromSteam.useMutation()
   const { mutate: openWebviewPage } =
     api.desktop.system.openWebviewPage.useMutation()
-  const { mutate: favoriteApp } = api.app.favorite.useMutation()
+  const { mutateAsync: favoriteApp } = api.app.favorite.useMutation()
   const { mutateAsync: restartSteam } =
     api.desktop.steam.restartSteam.useMutation()
   const [confirm, setConfirm] = useAtom(confirmModalAtom)
@@ -164,13 +164,14 @@ export const AppContextMenu = ({
           )}
 
           {installable ? (
-            <ContextMenu.Item
-              onClick={() => handleInstall()}
-              className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
-            >
-              Install
-            </ContextMenu.Item>
+            <></>
           ) : (
+            // <ContextMenu.Item
+            //   onClick={() => handleInstall()}
+            //   className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
+            // >
+            //   Install
+            // </ContextMenu.Item>
             <ContextMenu.Item
               onClick={() => handleLaunchInBrowser()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
