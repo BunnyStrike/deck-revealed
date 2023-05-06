@@ -4,13 +4,21 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "license": "GPL-3.0-only",
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "db:generate": "pnpm with-env prisma generate",
+    "db:stage:generate": "pnpm with-staging-env prisma generate",
     "db:push": "pnpm with-env prisma db push --skip-generate",
+    "db:stage:push": "pnpm with-staging-env prisma db push --skip-generate",
     "db:migrate": "pnpm with-env prisma migrate dev --name init",
+    "db:seed": "ts-node prisma/seed.ts",
+    "db:backupToLocal": "ts-node prisma/backup.ts",
     "dev": "pnpm db:generate && pnpm with-env prisma studio --port 5556",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "with-staging-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {
     "@prisma/client": "^4.12.0"

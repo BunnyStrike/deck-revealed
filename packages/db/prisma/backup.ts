@@ -11,3 +11,20 @@
 
 // //insert data to current db
 // await prismaClient.artist.createMany({ data: artistData });
+
+import fs from 'fs'
+
+import { prisma } from '..'
+
+const backupApps = async () => {
+  const apps = await prisma.app.findMany()
+  fs.writeFileSync('./apps.json', JSON.stringify(apps))
+}
+
+const backupBootVideos = async () => {
+  const bootVideos = await prisma.bootVideo.findMany()
+  fs.writeFileSync('./bootVideos.json', JSON.stringify(bootVideos))
+}
+
+backupApps()
+backupBootVideos()

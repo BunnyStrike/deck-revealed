@@ -33,7 +33,12 @@ const config = {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
   },
-  ignorePatterns: ['**/*.config.js', '**/*.config.cjs', 'packages/config/**'],
+  ignorePatterns: [
+    '**/*.config.js',
+    '**/*.config.cjs',
+    'packages/config/**',
+    'node_modules/**',
+  ],
   reportUnusedDisableDirectives: true,
 }
 

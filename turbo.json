@@ -10,6 +10,14 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
+    "db:stage:generate": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:stage:push": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
     "dist:flatpak": {
       "dependsOn": ["^db:generate"],
       "cache": false

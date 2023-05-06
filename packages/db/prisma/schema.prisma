@@ -6,24 +6,26 @@ generator client {
     previewFeatures = ["fullTextSearch", "fullTextIndex", "jsonProtocol"]
 }
 
-datasource db {
-//   provider = "postgresql"
-    // provider = "mysql"
-//   provider = "cockroachdb"
-//   url = env("DATABASE_URL")
-//   relationMode = "prisma"
-
-
-    // Supabase with prisma
-    provider          = "postgresql"
-    url               = env("DATABASE_URL")
-    directUrl         = env("DIRECT_URL")
-}
-
 // datasource db {
-    // provider = "postgresql"
-    // url      = env("DATABASE_URL")
+// //   provider = "postgresql"
+//     // provider = "mysql"
+// //   provider = "cockroachdb"
+// //   url = env("DATABASE_URL")
+// //   relationMode = "prisma"
+
+
+//     // Supabase with prisma
+//     provider          = "postgresql"
+//     url               = env("DATABASE_URL")
+//     directUrl         = env("DIRECT_URL")
 // }
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
 
 enum Role {
   USER
@@ -318,12 +320,6 @@ model BootVideo {
 
     // @@fulltext([name])
 }
-
-// model Post {
-//     id      String @id @default(cuid())
-//     title   String
-//     content String
-// }
 
 model GameMedia {
     media    Media   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
