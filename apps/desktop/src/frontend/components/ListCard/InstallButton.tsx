@@ -15,6 +15,8 @@ export const InstallButton = ({ app }: InstallButtonProps) => {
   const { mutate } = api.app.recent.useMutation()
   const { data: isInstalled = false } =
     api.desktop.apps.isAppInstalled.useQuery({ app })
+  const { mutate: runApp } = api.desktop.apps.runApp.useMutation()
+  const { mutate: runScript } = api.desktop.apps.runScript.useMutation()
 
   const handleInstall = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -23,6 +25,7 @@ export const InstallButton = ({ app }: InstallButtonProps) => {
     if (user?.id) {
       mutate({ id })
     }
+    runScript({ app })
     // navigate(`/app/${id}/webview`)
   }
 
@@ -31,10 +34,11 @@ export const InstallButton = ({ app }: InstallButtonProps) => {
     if (user?.id) {
       mutate({ id })
     }
+    runApp({ app })
     // navigate(`/app/${id}/webview`)
   }
 
-  return isInstalled ? (
+  return !isInstalled ? (
     <button
       onClick={(e) => handleInstall(e)}
       className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'

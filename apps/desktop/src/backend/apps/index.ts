@@ -4,26 +4,32 @@ import { existsSync } from 'graceful-fs'
 
 import { type AppInfo } from '~/common/types/app.types'
 import { type SteamOSBootVideo } from '~/common/types/steamos'
+import { type AppDoc } from '../api/apps'
 
-export const uninstallFlatpak = async (app: AppInfo) => {
-  spawn(`flatpak`, ['uninstall', '-y', 'flathub', app.source])
+export const uninstallFlatpak = async (app: AppDoc) => {
+  spawn(`flatpak`, ['uninstall', '-y', 'flathub', app.source || ''])
   return true
 }
 
-export const uninstallApp = async (app: AppInfo) => {
+export const uninstallApp = async (app: AppDoc) => {
   // TODO: Add direct app uninstall
-  switch (app.type) {
-    case 'flatpak':
-    case 'flathub':
+  switch (app.runnerType) {
+    case 'FLATPAK':
+    case 'FLATHUB':
       return uninstallFlatpak(app)
     default:
       return false
   }
 }
 
-export const installFlatpak = async (app: AppInfo): Promise<boolean> => {
+export const installFlatpak = async (app: AppDoc): Promise<boolean> => {
   try {
-    const child = spawn(`flatpak`, ['install', '-y', 'flathub', app.source])
+    const child = spawn(`flatpak`, [
+      'install',
+      '-y',
+      'flathub',
+      app.source || '',
+    ])
     return new Promise(async (resolve, reject) => {
       child.stdout.setEncoding('utf8')
       child.stdout.on('data', (data: string) => {
@@ -49,7 +55,7 @@ export const installFlatpak = async (app: AppInfo): Promise<boolean> => {
   }
 }
 
-export const runFlatpakApp = async (app: AppInfo): Promise<boolean> => {
+export const runFlatpakApp = async (app: AppDoc): Promise<boolean> => {
   if (!app.source) return false
   // 'flatpak', ['run', item.installerUrl ?? '']
   if (await isFlatpakInstalled(app.source)) {
@@ -90,36 +96,38 @@ export const isFlatpakInstalled = async (source: string): Promise<boolean> => {
   })
 }
 
-export const isAppInstalled = async (app: AppInfo): Promise<boolean> => {
-  switch (app.type) {
-    case 'flatpak':
-    case 'flathub':
-      return await isFlatpakInstalled(app.source)
+export const isAppInstalled = async (app: AppDoc): Promise<boolean> => {
+  switch (app.runnerType) {
+    case 'FLATPAK':
+    case 'FLATHUB':
+      return await isFlatpakInstalled(app.source || '')
     default:
-      const platform = app.platforms?.find(
-        (plat) => plat.platform === 'steam deck' || plat.platform === 'linux'
-      )
-      return existsSync(platform?.locationPath ?? '')
+      // const platform = app.platforms?.find(
+      //   (plat) => plat.platform === 'steam deck' || plat.platform === 'linux'
+      // )
+      // return existsSync(platform?.locationPath ?? '')
+      return existsSync(app?.installLocation ?? '')
   }
 }
 
-export const runApp = async (app: AppInfo): Promise<boolean> => {
-  switch (app.type) {
-    case 'flatpak':
-    case 'flathub':
+export const runApp = async (app: AppDoc): Promise<boolean> => {
+  switch (app.runnerType) {
+    case 'FLATPAK':
+    case 'FLATHUB':
       return await runFlatpakApp(app)
     default:
-      const platform = app.platforms?.find(
-        (plat) => plat.platform === 'steam deck' || plat.platform === 'linux'
-      )
-      spawn(platform?.locationPath ?? '', [])
+      // const platform = app.platform === 'STEAMOS' || app.platform === 'LINUX'
+      // ?.find(
+      //   (plat) => plat.platform === 'steam deck' || plat.platform === 'linux'
+      // )
+      spawn(app?.installLocation ?? '', [])
       return true
   }
 }
 
-export const installSystemFlatpak = async (app: AppInfo) => {
+export const installSystemFlatpak = async (app: AppDoc) => {
   const command = 'install'
-  spawn(`flatpak`, [command, '--system', '-y', app.source])
+  spawn(`flatpak`, [command, '--system', '-y', app.source || ''])
   return true
 }
 
@@ -149,17 +157,17 @@ export const installBootVideo = async (app: SteamOSBootVideo) => {
   return true
 }
 
-export const installViaScript = async (app: AppInfo) => {
+export const installViaScript = async (app: AppDoc) => {
   const password = 'deckme'
   spawn('sh', ['-c', `echo ${password} | sudo -S curl -L ${app.source} | bash`])
   return true
 }
 
-export const runScript = async (app: AppInfo): Promise<boolean> => {
+export const runScript = async (app: AppDoc): Promise<boolean> => {
   const isInstalled = await isAppInstalled(app)
-  switch (app.type) {
-    case 'flatpak':
-    case 'flathub':
+  switch (app.runnerType) {
+    case 'FLATPAK':
+    case 'FLATHUB':
       if (isInstalled) {
         return await runFlatpakApp(app)
       }

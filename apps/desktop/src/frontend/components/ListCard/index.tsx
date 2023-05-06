@@ -28,6 +28,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { user } = useUser()
   const navigate = useNavigate()
   const { mutate } = api.app.recent.useMutation()
+  const { mutate: runApp } = api.desktop.apps.runApp.useMutation()
   const { data: isAddedToSteam = false } =
     api.desktop.steam.isAddedToSteam.useQuery({ title: name })
 
@@ -43,7 +44,12 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     if (user?.id) {
       mutate({ id })
     }
-    navigate(`/app/${id}/webview`)
+    if (item?.platform === 'WEB') {
+      navigate(`/app/${id}/webview`)
+    } else {
+      console.log(item)
+      runApp({ app: item })
+    }
   }
 
   const handleDetailClick = () => {
@@ -62,7 +68,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     >
       <div
         onClick={(e) => handleLaunchClick(e)}
-        className='image-full-color active:outline-offset-3 hover-bordered group card cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+        className='image-full-color active:outline-offset-3 group card hover-bordered cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
       >
         <figure>
           <img

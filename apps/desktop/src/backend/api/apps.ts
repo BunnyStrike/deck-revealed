@@ -66,14 +66,14 @@ export const apps = createTRPCRouter({
   runScript: publicProcedure
     .input(
       z.object({
-        app: z.any(),
+        app: appType,
       })
     )
     .mutation(({ input }) => runScript(input.app)),
   runApp: publicProcedure
     .input(
       z.object({
-        app: z.any(),
+        app: appType,
       })
     )
     .mutation(({ input }) => runApp(input.app)),
