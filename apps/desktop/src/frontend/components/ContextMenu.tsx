@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from '../hooks'
 import { confirmModalAtom, modalsAtom } from '../states'
 import { GameListOutput, api, type AppListOutput } from '../utils/api'
+import { getMediaUrl } from '../utils/database'
 import ConfirmDialog from './ConfirmDialog'
 
 interface AppContextMenuProps {
@@ -80,6 +81,12 @@ export const AppContextMenu = ({
 
   const handleAddToSteam = async () => {
     if (!app?.id) return
+    app = {
+      ...app,
+      coverUrl: getMediaUrl(app.coverUrl),
+      bannerUrl: getMediaUrl(app.bannerUrl),
+      iconUrl: getMediaUrl(app.iconUrl),
+    }
     await addToSteam({ appInfo: app })
     setConfirm((prev) => ({
       ...prev,

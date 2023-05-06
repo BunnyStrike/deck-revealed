@@ -1,10 +1,10 @@
 import { join } from 'path'
+import { type AppDoc } from 'backend/api/apps'
 import { crc32 } from 'crc'
 import { nativeImage } from 'electron'
 import { existsSync, mkdirSync } from 'graceful-fs'
 
 import { type GameInfo, type SideloadGame } from '~/common/types'
-import { type AppInfo } from '~/common/types/app.types'
 import { LogPrefix, logError, logInfo } from '../../logger/logger'
 import {
   checkImageExistsAlready,
@@ -45,7 +45,7 @@ async function prepareImagesForSteam(props: {
     otherGridAppID: string
   }
   steamID: string | undefined
-  gameInfo: GameInfo | SideloadGame | AppInfo
+  gameInfo: GameInfo | SideloadGame | AppDoc
 }) {
   const gridFolder = join(props.steamUserConfigDir, 'grid')
   const coverArt = join(gridFolder, props.appID.otherGridAppID + coverArtSufix)
@@ -70,13 +70,15 @@ async function prepareImagesForSteam(props: {
     squareImage,
     backgroundImage,
     logoImage,
+    coverUrl,
+    bannerUrl,
   } = props.gameInfo as any
 
   logInfo(`Prepare Steam images for ${title || name}`, LogPrefix.Shortcuts)
 
   let bkgDataUrl = ''
   if (!props.steamID) {
-    await generateImage(art_cover || coverImage, 1920, 620)
+    await generateImage(bannerUrl || art_cover || coverImage, 1920, 620)
       .then((img) => (bkgDataUrl = img))
       .catch((error) =>
         errors.push(`Failed to generate background image with ${error}`)
@@ -87,21 +89,27 @@ async function prepareImagesForSteam(props: {
   const images = new Map<string, string>([
     [
       coverArt,
-      props.steamID
+      coverUrl
+        ? coverUrl
+        : props.steamID
         ? `${steamDBBaseURL}/${props.steamID}/library_600x900_2x.jpg`
-        : art_square || squareImage,
+        : coverUrl || art_square || squareImage,
     ],
     [
       headerArt,
-      props.steamID
+      bannerUrl
+        ? bannerUrl
+        : props.steamID
         ? `${steamDBBaseURL}/${props.steamID}/library_hero.jpg`
-        : art_cover || coverImage,
+        : bannerUrl || art_cover || coverImage,
     ],
     [
       backGroundArt,
-      props.steamID
+      bannerUrl
+        ? bannerUrl
+        : props.steamID
         ? `${steamDBBaseURL}/${props.steamID}/library_hero.jpg`
-        : bkgDataUrl,
+        : bannerUrl || bkgDataUrl,
     ],
   ])
 
@@ -110,7 +118,7 @@ async function prepareImagesForSteam(props: {
   if (props.steamID) {
     images.set(logoArt, `${steamDBBaseURL}/${props.steamID}/logo.png`)
   } else if ('art_logo' in props.gameInfo && (art_logo || logoImage)) {
-    images.set(logoArt, art_logo || logoImage)
+    images.set(logoArt, coverUrl || art_logo || logoImage)
   } else {
     const error = createImage(
       Buffer.from(transparentSteamLogoHex, 'hex'),
@@ -122,6 +130,8 @@ async function prepareImagesForSteam(props: {
   }
 
   for (const [key, imgUrl] of images) {
+    console.log(key)
+    console.log(imgUrl)
     if (!checkImageExistsAlready(key) && imgUrl) {
       if (imgUrl.startsWith('http')) {
         const error = downloadImage(imgUrl, key)
@@ -157,7 +167,7 @@ function removeImagesFromSteam(props: {
     bigPictureAppID: string
     otherGridAppID: string
   }
-  gameInfo: GameInfo | SideloadGame | AppInfo
+  gameInfo: GameInfo | SideloadGame | AppDoc
 }) {
   const gridFolder = join(props.steamUserConfigDir, 'grid')
   const coverArt = join(gridFolder, props.appID.otherGridAppID + coverArtSufix)

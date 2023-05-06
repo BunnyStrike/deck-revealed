@@ -1,4 +1,5 @@
 import { dirname, join } from 'path'
+import { type AppDoc } from 'backend/api/apps'
 import { app } from 'electron'
 import { readFileSync } from 'fs-extra'
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'graceful-fs'
@@ -199,7 +200,7 @@ function checkIfAlreadyAdded(object: Partial<ShortcutObject>, title: string) {
   return shortcuts.findIndex((entry: any) => entry.AppName === title)
 }
 
-async function addNonSteamApp(appInfo: AppInfo): Promise<boolean> {
+async function addNonSteamApp(appInfo: AppDoc): Promise<boolean> {
   const steamUserdataDir = await getSteamUserdataDir()
   const appName = appInfo.name
 
@@ -303,7 +304,7 @@ async function addNonSteamApp(appInfo: AppInfo): Promise<boolean> {
     newEntry.LaunchOptions = args.join(' ')
     if (appName === 'Revealed') {
       newEntry.LaunchOptions = `--no-sandbox`
-    } else if (appInfo.type === 'web') {
+    } else if (appInfo.platform === 'WEB') {
       // args.push(appInfo.source)
       if (isWindows) {
         const explorerPath = join(
@@ -393,7 +394,7 @@ async function addNonSteamApp(appInfo: AppInfo): Promise<boolean> {
  * @param steamUserdataDir Path to steam userdata directory, optional
  * @returns none
  */
-async function removeNonSteamApp(appInfo: AppInfo): Promise<void> {
+async function removeNonSteamApp(appInfo: AppDoc): Promise<void> {
   const steamUserdataDir = await getSteamUserdataDir()
   const { folders, error } = checkSteamUserDataDir(steamUserdataDir)
 

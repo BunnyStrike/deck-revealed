@@ -70,7 +70,11 @@ export const checkIfSteamIsRunning = async () => {
   }
 }
 
-export const runSteamGame = async (path: string, steamAppId: number) => {
+export const runSteamGame = async (
+  steamAppId: number,
+  path?: string | null
+) => {
   // spawn('steam', ['-applaunch', gameId])
+  path ??= await getSteamPath()
   spawn(path, [`steam://rungameid/${steamAppId}`])
 }

@@ -1,9 +1,9 @@
 import { spawnSync } from 'child_process'
 import { basename, dirname, extname, join } from 'path'
+import { type AppDoc } from 'backend/api/apps'
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'graceful-fs'
 
 import { type GameInfo, type SideloadGame } from '~/common/types'
-import { type AppInfo } from '~/common/types/app.types'
 import { revealedIconFolder } from '../constants'
 
 function createImage(
@@ -56,15 +56,15 @@ function checkImageExistsAlready(image: string): boolean {
 
 async function getIcon(
   appName: string,
-  gameInfo: GameInfo | SideloadGame | AppInfo
+  gameInfo: GameInfo | SideloadGame | AppDoc
 ) {
   if (!existsSync(revealedIconFolder)) {
     mkdirSync(revealedIconFolder)
   }
 
-  const { art_square, squareImage, coverImage } = gameInfo as any
+  const { art_square, squareImage, coverImage, iconUrl } = gameInfo as any
 
-  const image = (art_square || squareImage || coverImage)
+  const image = (iconUrl || art_square || squareImage || coverImage)
     .replaceAll(' ', '%20')
     .replace('{ext}', 'jpg')
 

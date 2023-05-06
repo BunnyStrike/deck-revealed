@@ -42,7 +42,7 @@ export const GameListCard = ({ item }: RevealedListCardProps) => {
   const handleLaunchClick = (
     e: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>
   ) => {
-    if (!launcherPath || !appid) return
+    if (!appid) return
     mutate({ path: launcherPath, steamAppId: appid })
     //   e.stopPropagation()
     //   if (user?.id) {

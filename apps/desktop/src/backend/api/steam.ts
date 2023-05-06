@@ -13,16 +13,13 @@ import {
   isAppAddedToSteam,
   removeNonSteamApp,
 } from '../stores/steam/nonesteamapp'
+import { appType } from './apps'
 import { createTRPCRouter, publicProcedure } from './trpc'
 
 // Simulate keyboard and mouse actions as if the real input device is used
 export const steam = createTRPCRouter({
   addAppToSteam: publicProcedure
-    .input(
-      z.object({
-        appInfo: z.any(),
-      })
-    )
+    .input(z.object({ appInfo: appType }))
     .mutation(({ input }) => addNonSteamApp(input.appInfo)),
   removeAppFromSteam: publicProcedure
     .input(
@@ -35,8 +32,13 @@ export const steam = createTRPCRouter({
   stopSteam: publicProcedure.mutation(({ input }) => stopSteam()),
   startSteam: publicProcedure.mutation(({ input }) => startSteam()),
   runGame: publicProcedure
-    .input(z.object({ path: z.string(), steamAppId: z.number() }))
-    .mutation(({ input }) => runSteamGame(input.path, input.steamAppId)),
+    .input(
+      z.object({
+        path: z.string().nullable().optional(),
+        steamAppId: z.number(),
+      })
+    )
+    .mutation(({ input }) => runSteamGame(input.steamAppId, input.path)),
   checkIfSteamIsRunning: publicProcedure.query(({ input }) =>
     checkIfSteamIsRunning()
   ),

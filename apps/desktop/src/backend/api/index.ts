@@ -1,5 +1,9 @@
 import { EventEmitter } from 'events'
-import { initTRPC } from '@trpc/server'
+import {
+  initTRPC,
+  type inferRouterInputs,
+  type inferRouterOutputs,
+} from '@trpc/server'
 import { observable } from '@trpc/server/observable'
 import superjson from 'superjson'
 import z from 'zod'

@@ -24,7 +24,7 @@ export const games = createTRPCRouter({
           sizeOnDisk: z.number().default(0),
           lastUpdated: z.number().nullable(),
           stateFlags: z.number().nullable(),
-          launcherPath: z.string().nullable(),
+          launcherPath: z.string().nullable().default(null),
           source: sourceEnum,
         })
       )
