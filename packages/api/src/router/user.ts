@@ -44,6 +44,46 @@ export const userRouter = createTRPCRouter({
         update: { email },
       })
     }),
+  changeRole: protectedProcedure
+    .input(
+      z.object({
+        role: z.enum(['ADMIN', 'PRO', 'PRO_PLUS', 'EDITOR', 'USER']),
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { supabase, isAdmin = false, user } = ctx
+      const { id } = user!
+      const { role, userId } = input
+
+      if (!isAdmin) {
+        throw new Error('Unauthorized')
+      }
+
+      await supabase?.auth.admin.updateUserById(userId, {
+        app_metadata: { role },
+      })
+      return ctx.prisma.user.update({ where: { id: userId }, data: { role } })
+    }),
+  changePlan: protectedProcedure
+    .input(
+      z.object({
+        role: z.enum(['PRO', 'PRO_PLUS', 'USER']),
+        userId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { supabase, isAdmin = false, user } = ctx
+      const { id } = user!
+      const { role, userId } = input
+
+      // TODO: add stripe logic here
+
+      await supabase?.auth.admin.updateUserById(userId, {
+        app_metadata: { role },
+      })
+      return ctx.prisma.user.update({ where: { id: userId }, data: { role } })
+    }),
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
     const id = input
     if (id === ctx.user?.id) {

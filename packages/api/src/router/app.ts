@@ -5,9 +5,15 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 const appFilterInput = z
   .object({
     search: z.string().optional(),
+    limit: z.number().min(1).max(100).default(50),
+    cursor: z.number().default(0),
     category: z.string().optional(),
     isFavorited: z.boolean().optional(),
     showHidden: z.boolean().optional(),
+    platform: z.enum(['WINDOWS', 'LINUX', 'STEAMOS', 'MAC', 'WEB']).optional(),
+    notPlatform: z
+      .enum(['WINDOWS', 'LINUX', 'STEAMOS', 'MAC', 'WEB'])
+      .optional(),
     sort: z
       .string()
       .includes('desc')
@@ -86,34 +92,73 @@ const appInput = {
 }
 
 export const appRouter = createTRPCRouter({
-  all: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
-    const { showHidden = false, isFavorited, userId } = input
+  all: publicProcedure.input(appFilterInput).query(async ({ ctx, input }) => {
+    const {
+      showHidden = false,
+      isFavorited,
+      userId,
+      platform,
+      notPlatform,
+      limit = 50,
+      cursor,
+    } = input
     // TODO: get only apps that don't have userId and userId that matches current user
     // TODO: filter list based on categories\
     const where = {
       name: { search: input.search },
       category: input.category,
       ownerId: input.ownerId,
-      userActions: {},
+      // userActions: {},
+      NOT: notPlatform
+        ? {
+            platform: notPlatform,
+          }
+        : undefined,
+      platform: platform,
     }
-    if (userId) {
-      where.userActions = {
-        some: {
-          userId,
-        },
-        none: {
-          favoritedAt: isFavorited ? { not: null } : null,
-          hideAt: showHidden ? { not: null } : null,
-        },
-      }
-    }
-    return ctx.prisma.app.findMany({
+    // if (userId) {
+    //   where.userActions = {
+    //     some: {
+    //       userId,
+    //     },
+    //     none: {
+    //       favoritedAt: isFavorited ? { not: null } : null,
+    //       hideAt: showHidden ? { not: null } : null,
+    //     },
+    //   }
+    // }
+    const count = await ctx.prisma.app.count({ where })
+    const list = await ctx.prisma.app.findMany({
+      take: (limit || 50) + 1,
+      skip: cursor,
       where,
-      // @ts-expect-error
-      orderBy: { createdAt: input.sort },
+      // cursor: typeof cursor === 'number' ? { id: cursor } : undefined,
+      orderBy: {
+        name: input.sort as any,
+      },
+      include: {
+        versions: true,
+        userActions: {
+          where: {
+            userId,
+          },
+        },
+      },
     })
+
+    let nextCursor: number | undefined = undefined
+    if (list.length > limit) {
+      nextCursor = list.length + 1
+    }
+
+    return {
+      list,
+      nextCursor,
+      limit,
+      count,
+    }
   }),
-  apps: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
+  apps: publicProcedure.input(appFilterInput).query(async ({ ctx, input }) => {
     const userId = ctx.user?.id
     const {
       showHidden = false,
@@ -122,6 +167,8 @@ export const appRouter = createTRPCRouter({
       search,
       category,
       ownerId,
+      limit = 50,
+      cursor,
     } = input
 
     const where = {
@@ -147,7 +194,9 @@ export const appRouter = createTRPCRouter({
     //   }
     // }
 
-    return ctx.prisma.app.findMany({
+    const apps = await ctx.prisma.app.findMany({
+      take: (limit || 50) + 1,
+      // cursor: typeof cursor === 'number' ? { id: cursor } : undefined,
       where: {
         NOT: {
           platform: 'STEAMOS',
@@ -168,6 +217,10 @@ export const appRouter = createTRPCRouter({
         },
       },
     })
+
+    let nextCursor: typeof cursor | undefined = undefined
+
+    return apps
   }),
   steamos: publicProcedure.input(appFilterInput).query(({ ctx, input }) => {
     // TODO: get only apps that don't have userId and userId that matches current user
@@ -368,6 +421,9 @@ export const appRouter = createTRPCRouter({
     .input(z.object({ ownerId: z.string(), id: z.string() }))
     .mutation(({ ctx, input }) => {
       const { ownerId, id } = input
+      const userId = ctx.user?.id
+      if (ownerId !== userId || ctx.user?.user_metadata?.role !== 'ADMIN')
+        return
       // console.log(Object.keys(ctx))
       // TODO: only allow delete if user is admin
       // TODO: only allow apps to delete if they are the owner

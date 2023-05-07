@@ -1,12 +1,21 @@
 {
   "name": "@revealed/ui",
   "version": "0.1.0",
-  "main": "./src/index.tsx",
-  "types": "./src/index.tsx",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
-    "lint": "eslint \"**/*.ts*\""
+    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
+    "@revealed/tsconfig": "workspace:*",
     "@revealed/tailwind-config": "*",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.2",
@@ -56,5 +65,8 @@
     "tailwindcss": "^3.3.0",
     "use-debounce": "^8.0.4",
     "dayjs": "^1.11.7"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

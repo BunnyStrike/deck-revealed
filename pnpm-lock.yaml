@@ -776,6 +776,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(postcss@8.4.22)
 
+  packages/config/tsconfig: {}
+
   packages/db:
     dependencies:
       '@prisma/client':
@@ -888,6 +890,9 @@ importers:
       '@revealed/tailwind-config':
         specifier: '*'
         version: link:../config/tailwind
+      '@revealed/tsconfig':
+        specifier: workspace:*
+        version: link:../config/tsconfig
       '@tailwindcss/aspect-ratio':
         specifier: ^0.4.2
         version: 0.4.2(tailwindcss@3.3.1)

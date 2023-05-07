@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { Switch } from '@headlessui/react'
 
-import FormToggle from '@revealed/ui/src/forms/FormToggle'
-import { classNames } from '@revealed/ui/src/utils'
+import { FormToggle } from '@revealed/ui'
 
 import { api } from '../../utils/api'
 

@@ -83,6 +83,8 @@ model UserAppPlatform {
     runningAt  DateTime?
     updatingAt DateTime?
     addedToSteamAt DateTime?
+    // stripeCustomerId String?   @unique
+    // stripeSubId      String?
     // currentVersion     AppVersion    @relation(fields: [currentVersionId], references: [], onDelete: Cascade)
     // currentVersionId String?
     updatedAt DateTime @updatedAt

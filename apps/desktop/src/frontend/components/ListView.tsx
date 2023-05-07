@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react'
 import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 
-import { PillTabs } from '@revealed/ui'
+// import { PillTabs } from '@revealed/ui'
 
 import { listFilterAtom, modalsAtom } from '../states'
 import { type AppListOutput, type GameListOutput } from '../utils/api'

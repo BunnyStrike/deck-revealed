@@ -28,7 +28,7 @@ type DesktopRouterOutput = inferRouterOutputs<DesktopRouter>
 
 export type AppListInput = RouterInput['app']['all']
 export type AppUpsertInput = RouterInput['app']['upsert']
-export type AppListOutput = RouterOutput['app']['apps']
+export type AppListOutput = RouterOutput['app']['all']['list']
 
 export type GameListInput = RouterInput['game']['all']
 export type GameListOutput = RouterOutput['game']['all']
@@ -37,7 +37,7 @@ export type SteamGameListOutput =
   DesktopRouterOutput['desktop']['games']['steam']
 
 export type BootVideoInput = RouterInput['bootVideo']['all']
-export type BootVideoOutput = RouterOutput['bootVideo']['all']
+export type BootVideoOutput = RouterOutput['bootVideo']['all']['list']
 
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

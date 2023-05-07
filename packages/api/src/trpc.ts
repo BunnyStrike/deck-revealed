@@ -31,6 +31,8 @@ import { prisma } from '@revealed/db'
  */
 type CreateContextOptions = {
   user: User | null
+  isAdmin: boolean
+  role: 'ADMIN' | 'PRO' | 'PRO_PLUS' | 'EDITOR' | 'USER' | 'ANON'
   supabase: SupabaseClient | null
 }
 
@@ -47,6 +49,8 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     user: opts.user,
     supabase: opts.supabase,
+    isAdmin: opts.isAdmin,
+    role: opts.role,
     prisma,
   }
 }
@@ -79,9 +83,13 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
   // Get the session from the server using the unstable_getServerSession wrapper function
   const { data } = await supabaseClient.auth.getUser()
+  const role = data?.user?.app_metadata?.role ?? 'ANON'
+  const isAdmin = role === 'ADMIN'
 
   return createInnerTRPCContext({
     user: data.user,
+    isAdmin,
+    role,
     supabase: supabaseClient,
   })
 }
@@ -137,10 +145,7 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
-    ctx: {
-      // infers the `session` as non-nullable
-      user: ctx.user,
-    },
+    ctx,
   })
 })
 

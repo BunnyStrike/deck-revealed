@@ -2,11 +2,13 @@ import { z } from 'zod'
 
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
-const appInput = z
+const bootVideoInput = z
   .object({
     search: z.string().optional(),
     category: z.string().optional(),
     isFavorited: z.boolean().optional(),
+    limit: z.number().min(1).max(100).default(50),
+    cursor: z.number().default(0),
     sort: z
       .string()
       .includes('desc')
@@ -17,14 +19,33 @@ const appInput = z
   .default({ search: undefined, sort: 'desc' })
 
 export const bootVideoRouter = createTRPCRouter({
-  all: publicProcedure.input(appInput).query(({ ctx, input }) => {
-    const { search } = input
-    return ctx.prisma.bootVideo.findMany({
-      where: {
-        name: search ? { search } : undefined,
-      },
+  all: publicProcedure.input(bootVideoInput).query(async ({ ctx, input }) => {
+    const { search, limit = 50, cursor } = input
+
+    const where = {
+      name: search ? { search } : undefined,
+    }
+
+    const count = await ctx.prisma.bootVideo.count({ where })
+
+    const list = await ctx.prisma.bootVideo.findMany({
+      take: (limit || 50) + 1,
+      skip: cursor,
+      where,
       orderBy: { name: 'desc' },
     })
+
+    let nextCursor: number | undefined = undefined
+    if (list.length > limit) {
+      nextCursor = list.length + 1
+    }
+
+    return {
+      list,
+      nextCursor,
+      limit,
+      count,
+    }
   }),
   byId: publicProcedure
     .input(z.object({ id: z.string() }))

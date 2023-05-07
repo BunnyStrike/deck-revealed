@@ -14,16 +14,13 @@ export const AppsScreen = () => {
   const { user } = useUser()
   const [listFilter, setListFilter] = useAtom(listFilterAtom)
   const debouncedFilter = useDebounce(listFilter.name, 500)
-  const {
-    data = [],
-    error,
-    isLoading,
-  } = api.app.apps.useQuery(
+  const { data, error, isLoading } = api.app.all.useQuery(
     {
       search: debouncedFilter ? `${debouncedFilter}*` : undefined,
       category: listFilter.category === 'All' ? undefined : listFilter.category,
       sort: listFilter.sort,
       userId: user?.id,
+      notPlatform: 'STEAMOS',
     },
     {
       refetchOnWindowFocus: false,
@@ -31,14 +28,16 @@ export const AppsScreen = () => {
     }
   )
 
+  console.log(data)
+
   useEffect(() => {
     setListFilter((prev) => ({
       ...prev,
-      listCounter: data.length ?? 0,
+      listCounter: data?.list.length ?? 0,
       title: 'Apps',
       add: 'app',
     }))
-  }, [data.length, setListFilter])
+  }, [data?.list.length, setListFilter])
 
   if (error)
     return (
@@ -50,7 +49,11 @@ export const AppsScreen = () => {
 
   return (
     <Container>
-      <RevealedListView title='Home' list={data} isLoading={isLoading} />
+      <RevealedListView
+        title='Home'
+        list={data?.list ?? []}
+        isLoading={isLoading}
+      />
     </Container>
   )
 }

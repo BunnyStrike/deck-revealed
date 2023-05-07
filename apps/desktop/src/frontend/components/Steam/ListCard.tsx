@@ -12,7 +12,7 @@ import {
 } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
-import { FavoriteButton } from '@revealed/ui'
+// import { FavoriteButton } from '@revealed/ui'
 
 import {
   api,

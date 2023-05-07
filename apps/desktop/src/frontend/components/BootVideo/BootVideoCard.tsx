@@ -37,7 +37,7 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
   ) => {
     e.stopPropagation()
     if (user?.id) {
-      mutate({ id })
+      // mutate({ id })
     }
     item.url = getMediaUrl(url, 'bootVideos')
     installBootVideo({ bootVideo: item })
@@ -49,7 +49,7 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
   ) => {
     e.stopPropagation()
     if (user?.id) {
-      mutate({ id })
+      // mutate({ id })
     }
     item.url = getMediaUrl(url, 'bootVideos')
     installBootVideo({ bootVideo: item })
@@ -58,7 +58,7 @@ export const BootVideoCard = ({ item }: BootVideoCardProps) => {
 
   const handleDetailClick = () => {
     if (user?.id) {
-      mutate({ id })
+      // mutate({ id })
     }
     item.url = getMediaUrl(url, 'bootVideos')
     installBootVideo({ bootVideo: item })

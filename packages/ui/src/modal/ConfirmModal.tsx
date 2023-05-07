@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react'
+import * as React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
 export function ConfirmModal() {

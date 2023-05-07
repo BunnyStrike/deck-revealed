@@ -10,7 +10,7 @@ interface FormTogggleProps {
   setEnabled: (enabled: boolean) => void
 }
 
-export default function FormToggle({
+export function FormToggle({
   title,
   description,
   enabled = false,
@@ -51,3 +51,5 @@ export default function FormToggle({
     </Switch.Group>
   )
 }
+
+export default FormToggle
