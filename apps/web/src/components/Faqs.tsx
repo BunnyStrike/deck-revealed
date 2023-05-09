@@ -5,53 +5,26 @@ import { Container } from '~/components/Container'
 const faqs = [
   [
     {
-      question: 'How do I know the tips are good?',
-      answer:
-        'Our whole business depends on our tips being good, so it’s in our best interest that they are. The results of our customers speak for themselves, just trust us.',
+      question: 'How do I install the app?',
+      answer: `Download the app's installer (DeckRevealed.desktop) to your desktop and double-click the desktop installer, and it will start the process, which will take about 30 seconds to finish. If it were successful, the app would auto-launch.`,
     },
+
     {
-      question: 'Isn’t this insider trading?',
+      question: 'How do I enable paid account support?',
       answer:
-        'Yes exactly. But at scale! Historically you could only make insider trades with knowledge from your direct network. Pocket brings you insider trading tips from people you don’t even know.',
-    },
-    {
-      question: 'But isn’t insider trading illegal?',
-      answer:
-        'Here’s the thing: you’re the one doing the insider trading, not us. We’re just giving you the tips and some tools to make trades. We’re not doing anything wrong here.',
+        'Create your Deck Revealed app account with the same email you chose to signup for one of our supported memberships. Linking an additional email will be kept in the near future.',
     },
   ],
   [
     {
-      question: 'Do the people giving you tips realize what they are doing?',
-      answer:
-        'Again I would argue this isn’t really our responsibility. People make their own choices. If they don’t research the consequences that’s on them, not on us.',
-    },
-    {
-      question: 'Where is Pocket based?',
-      answer:
-        'Let’s just say it’s not somewhere where the SEC is going to find us.',
-    },
-    {
-      question: 'Is there any age limit to trading on Pocket?',
-      answer:
-        'For our free plan, the age limit is based on the minimum age to trade in your country of residence. Our VIP plan uses advanced transaction anonymization though, so you can use that plan even if you’re 9 years old. Or a dog.',
+      question: `Why can't I login to the Deck Revealed app?`,
+      answer: `You could either already have an account or need to create a new account. If you have an account already, and it won't let you reset the password or login, then you will need to email us at support@deckrevealed.com to remove the account so you can create a new one. If you created an account on Patreon or deckrevealed.com, we do not automatically create an account for you, and you will have to create an account by signing up with, preferably, the email you used on the other service. We plan to improve this process in the future.`,
     },
   ],
   [
     {
-      question: 'How did you get this on the App Store?',
-      answer:
-        'Honestly we were surprised too, but eventually we found out that the app reviewer found the app so compelling they approved it just so they could use it themselves.',
-    },
-    {
-      question: 'How do I explain the money I withdraw from Pocket to the IRS?',
-      answer:
-        'This feels like one-hundred percent a you problem. Pocket is not responsible in any way for your tax returns.',
-    },
-    {
-      question: 'How do I become an insider?',
-      answer:
-        'Contact us with some details about your industry and the type of access you have to apply for an insider account. Once approved, we’ll send you a guide on collecting insider information without being detected at work.',
+      question: 'Is Deck Revealed open-source?',
+      answer: `The app is not open-source at this time. We do plan on making it, or most of it, open-source in the future. `,
     },
   ],
 ]

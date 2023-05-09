@@ -3,9 +3,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { AuthPortal } from '@revealed/ui'
-
-import { Container } from '../components'
+import { AuthPortal, Container } from '../components'
 import { api } from '../utils/api'
 import { supabaseClient } from '../utils/database'
 

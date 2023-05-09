@@ -1,40 +1,41 @@
 import { useId } from 'react'
+import Image from 'next/image'
 
 import { Container } from '~/components/Container'
 
 const features = [
   {
-    name: 'Invest any amount',
+    name: 'App Manager',
     description:
       'Whether it’s $1 or $1,000,000, we can put your money to work for you.',
     icon: DeviceArrowIcon,
   },
   {
-    name: 'Build a balanced portfolio',
+    name: 'Retro Games',
     description:
       'Invest in different industries to find the most opportunities to win huge.',
     icon: DeviceCardsIcon,
   },
   {
-    name: 'Trade in real-time',
+    name: 'Mods',
     description:
       'Get insider tips on big stock moves and act on them within seconds.',
     icon: DeviceClockIcon,
   },
   {
-    name: 'Profit from your network',
+    name: 'Game Profiles',
     description:
       'Invite new insiders to get tips faster and beat even other Pocket users.',
     icon: DeviceListIcon,
   },
   {
-    name: 'Encrypted and anonymized',
+    name: 'Device Profiles',
     description:
       'Cutting-edge security technology that even the NSA doesn’t know about keeps you hidden.',
     icon: DeviceLockIcon,
   },
   {
-    name: 'Portfolio tracking',
+    name: 'Stores',
     description:
       'Watch your investments grow exponentially, leaving other investors in the dust.',
     icon: DeviceChartIcon,
@@ -189,18 +190,24 @@ function DeviceChartIcon(props: any) {
 export function SecondaryFeatures() {
   return (
     <section
-      id='secondary-features'
+      id='features'
       aria-label='Features for building a portfolio'
       className='py-20 sm:py-32'
     >
       <Container>
         <div className='mx-auto max-w-2xl sm:text-center'>
+          <Image
+            src='/images/steam-deck-revealed.png'
+            width='800'
+            height='450'
+            alt='Steam Deck Revealed Image'
+          />
           <h2 className='text-3xl font-medium tracking-tight text-gray-900'>
-            Now is the time to build your portfolio.
+            Steam Deck Features
           </h2>
           <p className='mt-2 text-lg text-gray-600'>
-            With typical market returns, you have to start young to secure your
-            future. With Pocket, it’s never too late to build your nest egg.
+            We will support additional devices in the near future, but the Steam
+            Deck will have a place in our heart with plenty of support.
           </p>
         </div>
         <ul

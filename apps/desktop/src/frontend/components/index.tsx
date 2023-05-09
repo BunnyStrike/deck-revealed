@@ -10,5 +10,6 @@ export * from './Forms'
 export * from './Banners'
 export * from './Container'
 export * from './Settings'
+export * from './auth'
 
 export { RevealedVersion }

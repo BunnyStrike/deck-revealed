@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
 export function ComingSoonHero() {
@@ -69,19 +70,23 @@ export function ComingSoonHero() {
             </a>
           </div>
           <h1 className='mt-10 text-4xl font-bold tracking-tight text-white sm:text-6xl'>
-            Upgrade your Steam Deck Experience
+            Take Control Of Your Gaming Experience.
           </h1>
           <p className='mt-6 text-lg leading-8 text-gray-300'>
-            The all-in-one tool for your Steam Deck. Enjoy your favorite apps,
-            manage your games, launch Game Mode. Sign up to be notified soon.
+            The all-in-one tool for your Steam Deck, PC, ROG Ally, and more.
+            Enjoy and manage your favorite apps, games, mods, retros, and more.
+            Sign up to start the journey.
           </p>
           <div className='mt-10 flex items-center gap-x-6'>
-            <a href='/register' className='btn-primary btn'>
+            <Link href='/register' className='btn-primary btn-lg btn'>
               Sign Up
-            </a>
-            {/* <a href='#' className='text-sm font-semibold leading-6 text-white'>
+            </Link>
+            <a
+              href='#features'
+              className='text-sm font-semibold leading-6 text-white'
+            >
               Learn more <span aria-hidden='true'>→</span>
-            </a> */}
+            </a>
           </div>
         </div>
         <div className='mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32'>

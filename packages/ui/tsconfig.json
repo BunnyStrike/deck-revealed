@@ -3,6 +3,6 @@
     "lib": ["dom", "ES2015"]
   },
   "extends": "@revealed/tsconfig/react-library.json",
-  "include": ["."],
+  "include": [".", "../../apps/web/src/components/auth"],
   "exclude": ["dist", "build", "node_modules"]
 }

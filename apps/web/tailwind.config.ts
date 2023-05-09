@@ -70,7 +70,7 @@ export default {
     },
   },
   daisyui: {
-    themese: [
+    themes: [
       {
         revealed: {
           ...require('daisyui/src/colors/themes')['[data-theme=dark]'],

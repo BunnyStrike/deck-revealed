@@ -11,58 +11,58 @@ const plans = [
     name: 'Free',
     featured: false,
     price: { Monthly: '$0', Annually: '$0' },
-    description:
-      'You’re new to investing but want to do it right. Get started for free.',
+    description: 'Get started for free.',
     button: {
       label: 'Get started for free',
       href: '/register',
     },
     features: [
-      'Commission-free trading',
-      'Multi-layered encryption',
-      'One tip every day',
-      'Invest up to $1,500 each month',
+      'Access to apps',
+      'Download and install',
+      'Favorites',
+      'Ad-Supported',
     ],
     logomarkClassName: 'fill-gray-300',
   },
   {
     name: 'Pro',
     featured: false,
-    price: { Monthly: '$7', Annually: '$7' },
-    description:
-      'You’ve been investing for a while. Invest more and grow your wealth faster.',
+    price: { Monthly: '$6', Annually: '$7' },
+    description: 'Unlock more features',
     button: {
       label: 'Subscribe',
       href: '/register',
     },
     features: [
-      'Commission-free trading',
-      'Multi-layered encryption',
-      'One tip every hour',
-      'Invest up to $15,000 each month',
-      'Basic transaction anonymization',
+      'Add Custom Apps, mods, etc.',
+      'Add custom art',
+      'Minor Syncing via steam, etc.',
+      'Themes',
+      'Launcher Support',
+      'Ability to remove ads',
+      'Limited-Support',
+      // 'Easy Modding',
     ],
     logomarkClassName: 'fill-gray-500',
   },
   {
     name: 'Pro Plus',
     featured: true,
-    price: { Monthly: '$9', Annually: '$99' },
-    description:
-      'You’ve got a huge amount of assets but it’s not enough. To the moon.',
+    price: { Monthly: '$9 Monthly', Annually: '$99' },
+    description: 'Unlock everything',
     button: {
       label: 'Subscribe',
       href: '/register',
     },
     features: [
-      'Commission-free trading',
-      'Multi-layered encryption',
-      'Real-time tip notifications',
-      'No investment limits',
-      'Advanced transaction anonymization',
-      'Automated tax-loss harvesting',
+      'Everything in Pro',
+      'Full Syncing saves, games, mods, creds',
+      'Feature Previews',
+      'VIP Voting',
+      'Full-Support',
+      'Faster Downloads',
     ],
-    logomarkClassName: 'fill-cyan-500',
+    logomarkClassName: 'fill-primary',
   },
 ]
 
@@ -215,15 +215,15 @@ export function Pricing() {
             id='pricing-title'
             className='text-3xl font-medium tracking-tight text-gray-900'
           >
-            Flat pricing, no management fees.
+            Start Free. Upgrade Anytime.
           </h2>
           <p className='mt-2 text-lg text-gray-600'>
-            Whether you’re one person trying to get ahead or a big firm trying
-            to take over the world, we’ve got a plan for you.
+            You will find joy at any level, but the Pro Plus options give you
+            everything.
           </p>
         </div>
 
-        <div className='mt-8 flex justify-center'>
+        {/* <div className='mt-8 flex justify-center'>
           <div className='relative'>
             <RadioGroup
               value={activePeriod}
@@ -267,7 +267,7 @@ export function Pricing() {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3'>
           {plans.map((plan) => (

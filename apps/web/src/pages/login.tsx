@@ -4,12 +4,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
-import { AuthPortal } from '@revealed/ui'
-
 // import { supabaseClient } from '~/utils/database'
 import { AuthLayout } from '~/components/AuthLayout'
 import { Button } from '~/components/Button'
 import { TextField } from '~/components/Fields'
+import { AuthPortal } from '~/components/auth'
 
 export function MarketingLoginPage() {
   const user = useUser()

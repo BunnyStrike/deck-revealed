@@ -29,14 +29,14 @@ const Home: NextPage = () => {
       <main>
         <ComingSoonHero />
         {/* <Hero /> */}
-        {/* <PrimaryFeatures />
+        {/* <PrimaryFeatures /> */}
         <SecondaryFeatures />
         <CallToAction />
-        <Reviews />
+        {/* <Reviews /> */}
         <Pricing />
-        <Faqs /> */}
+        <Faqs />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   )
 }

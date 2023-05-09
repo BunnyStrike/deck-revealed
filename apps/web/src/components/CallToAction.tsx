@@ -14,16 +14,27 @@ export function CallToAction() {
       <Container className='relative'>
         <div className='mx-auto max-w-md sm:text-center'>
           <h2 className='text-3xl font-medium tracking-tight text-white sm:text-4xl'>
-            Get your first tips today
+            Check it out for free
           </h2>
           <p className='mt-4 text-lg text-gray-300'>
-            It takes 30 seconds to sign up. Download the app and create an
-            account today and we’ll send you a tip guaranteed to double your
-            first investment.
+            It only takes 30 seconds to download the app, sign up, and start
+            upgrading your deck.
           </p>
-          <div className='mt-8 flex justify-center'>
-            <AppStoreLink color='white' />
+          <div className='mb-4 mt-8 flex justify-center'>
+            <a
+              href='https://www.deckrevealed.com/content/files/2023/02/DeckRevealed-1.desktop'
+              target='_blank'
+              className='btn-primary btn'
+            >
+              Download Steam Deck Version
+            </a>
+
+            {/* <AppStoreLink color='white' /> */}
           </div>
+          <i>
+            Don't forget to copy the installer to your Desktop, or it won't
+            work.
+          </i>
         </div>
       </Container>
     </section>
