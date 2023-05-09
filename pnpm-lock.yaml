@@ -676,6 +676,9 @@ importers:
       '@trpc/server':
         specifier: ^10.20.0
         version: 10.20.0
+      howlongtobeat:
+        specifier: ^1.7.0
+        version: 1.7.0
       superjson:
         specifier: 1.9.1
         version: 1.9.1
@@ -783,6 +786,9 @@ importers:
       '@prisma/client':
         specifier: ^4.12.0
         version: 4.12.0(prisma@4.12.0)
+      axios:
+        specifier: ^1.3.5
+        version: 1.3.5
     devDependencies:
       dotenv-cli:
         specifier: ^7.2.1

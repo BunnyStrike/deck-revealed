@@ -21,7 +21,8 @@
     "with-staging-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {
-    "@prisma/client": "^4.12.0"
+    "@prisma/client": "^4.12.0",
+    "axios": "^1.3.5"
   },
   "devDependencies": {
     "dotenv-cli": "^7.2.1",

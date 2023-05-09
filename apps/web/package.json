@@ -42,7 +42,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@revealed/eslint-config": "^0.1.0",
+    "@revealed/eslint-config": "*",
+    "@revealed/tsconfig": "workspace:*",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
