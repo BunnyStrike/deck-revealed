@@ -47,8 +47,8 @@ export function RevealedSignupScreen() {
             className='h-11'
             width={44}
             height={44}
-            src='/icon.png'
-            alt='Your Company'
+            src='icon.png'
+            alt='Revealed'
           />
         </Link>
         <div className='relative mt-12 sm:mt-16'>
