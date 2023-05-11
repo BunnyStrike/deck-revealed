@@ -32,8 +32,8 @@ export function CallToAction() {
             {/* <AppStoreLink color='white' /> */}
           </div>
           <i>
-            Don't forget to copy the installer to your Desktop, or it won't
-            work.
+            Don&apos;t forget to copy the installer to your Desktop, or it
+            won&apos;t work.
           </i>
         </div>
       </Container>
