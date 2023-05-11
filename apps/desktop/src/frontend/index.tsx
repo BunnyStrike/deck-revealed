@@ -7,7 +7,7 @@ import AppMain from './App'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={'/'}>
       <div data-theme='revealed' className='relative h-screen w-full '>
         <AppMain />
       </div>
