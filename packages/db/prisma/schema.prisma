@@ -313,6 +313,7 @@ model App {
     userActions   UserActionApp[]
     versions AppVersion[]
     userPlatforms   UserAppPlatform[]
+    feedback Feedback[]
 
     // @@fulltext([name])
 
@@ -524,6 +525,13 @@ model Feedback {
     type FeedbackType @default(OTHER)
     user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String
+
+    app   App?   @relation(fields: [appId], references: [id], onDelete: Cascade)
+    appId  String?
+    
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+
 }
 
 
