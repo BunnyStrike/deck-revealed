@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment[en_US]=
+Comment=
+Exec=sh -c 'curl -L https://raw.githubusercontent.com/BunnyStrike/revealed/install.sh | bash'
+GenericName[en_US]=
+GenericName=
+MimeType=
+Name[en_US]=Install Revealed
+Name=Install Revealed
+Name[es]=Instalar Revealed
+Path=
+StartupNotify=false
+Terminal=true
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
