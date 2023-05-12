@@ -34,7 +34,7 @@ jobs:
     #   image: bilelmoussaoui/flatpak-github-actions:freedesktop-22.08
     #   options: --privileged
     steps:
-      - run: sudo apt-get install --no-install-recommends -y libarchive-tools libopenjp2-tools rpm snapcraft  make gcc g++ libx11-dev libxkbfile-dev fakeroot rpm flatpak
+      - run: sudo apt-get install --no-install-recommends -y libarchive-tools libopenjp2-tools rpm snapcraft  make gcc g++ libx11-dev libxkbfile-dev fakeroot rpm flatpak flatpak-builder
       - run: sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Checkout Repo
