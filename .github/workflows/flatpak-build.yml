@@ -9,6 +9,8 @@ on:
         description: 'Build Flatpak Files'
         required: false
 
+permissions: write-all
+
 name: Flatpak-CI
 
 env:
