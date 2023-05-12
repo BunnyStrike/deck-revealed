@@ -69,6 +69,7 @@ model User {
     launcherCredentials UserLauncherCredential[]
     appPlatforms   UserAppPlatform[]
     modOwner   GameMod[]
+    feedback  Feedback[]
     
 }
 
@@ -509,6 +510,20 @@ model Ad {
 
     sponsor Sponsor? @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
     sponsorId String?
+}
+
+enum FeedbackType {
+    BUG
+    FEATURE
+    OTHER
+}
+
+model Feedback {
+    id      String @id @default(cuid())
+    content    String
+    type FeedbackType @default(OTHER)
+    user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId  String
 }
 
 
