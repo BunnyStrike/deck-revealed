@@ -7,6 +7,7 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
+import { type NextApiRequest, type NextApiResponse } from 'next'
 import * as clerk from '@clerk/clerk-sdk-node'
 import {
   createClient,
@@ -19,6 +20,8 @@ import superjson from 'superjson'
 import { ZodError } from 'zod'
 
 import { prisma } from '@revealed/db'
+
+import { stripe } from './stripe/client'
 
 /**
  * 1. CONTEXT
@@ -34,6 +37,8 @@ type CreateContextOptions = {
   isAdmin: boolean
   role: 'ADMIN' | 'PRO' | 'PRO_PLUS' | 'EDITOR' | 'USER' | 'ANON'
   supabase: SupabaseClient | null
+  req: NextApiRequest
+  res: NextApiResponse
 }
 
 /**
@@ -46,12 +51,16 @@ type CreateContextOptions = {
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  const { req, res } = opts
   return {
     user: opts.user,
     supabase: opts.supabase,
     isAdmin: opts.isAdmin,
     role: opts.role,
+    stripe,
     prisma,
+    req,
+    res,
   }
 }
 
@@ -91,6 +100,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
     isAdmin,
     role,
     supabase: supabaseClient,
+    req,
+    res,
   })
 }
 

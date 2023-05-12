@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
+import { api } from '~/utils/api'
 // import { supabaseClient } from '~/utils/database'
 import { AuthLayout } from '~/components/AuthLayout'
 import { Button } from '~/components/Button'
@@ -14,6 +15,26 @@ export function MarketingRegisterPage() {
   const user = useUser()
   const router = useRouter()
   const supabaseClient = useSupabaseClient()
+  const { mutateAsync: createCheckoutSession } =
+    api.stripe.createCheckoutSession.useMutation()
+
+  const { mutateAsync: createBillingPortalSession } =
+    api.stripe.createBillingPortalSession.useMutation()
+  const { push } = useRouter()
+
+  const createCheckout = async () => {
+    const { checkoutUrl } = await createCheckoutSession()
+    if (checkoutUrl) {
+      void push(checkoutUrl)
+    }
+  }
+
+  const createBillingPortal = async () => {
+    const { billingPortalUrl } = await createBillingPortalSession()
+    if (billingPortalUrl) {
+      void push(billingPortalUrl)
+    }
+  }
 
   // useEffect(() => {
   //   if (user?.id) {

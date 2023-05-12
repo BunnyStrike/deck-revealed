@@ -74,20 +74,16 @@ const activityItems = [
   // More items...
 ]
 
-export function AdminScreen() {
+interface AdminScreenProps {
+  className?: string
+}
+
+export function AdminScreen({ className }: AdminScreenProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-900">
-        <body class="h-full">
-        ```
-      */}
-      <div>
+      <div className={className}>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as='div'
@@ -336,7 +332,7 @@ export function AdminScreen() {
             </div>
           </div>
 
-          <main>
+          <main className=''>
             <header>
               {/* Secondary navigation */}
               <nav className='flex overflow-x-auto border-b border-white/10 py-4'>

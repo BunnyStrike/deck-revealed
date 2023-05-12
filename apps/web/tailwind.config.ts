@@ -6,7 +6,7 @@ import baseConfig from '@revealed/tailwind-config'
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.tsx'],
+  // content: ['./src/**/*.tsx'],
   presets: [baseConfig],
   theme: {
     fontSize: {
@@ -38,8 +38,8 @@ export default {
         '4xl': '2rem',
         '5xl': '2.5rem',
       },
-      colors: ({ colors }) => ({
-        gray: colors.neutral,
+      colors: ({ colors }: any) => ({
+        gray: colors?.neutral,
       }),
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
@@ -106,4 +106,5 @@ export default {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
   ],
-} satisfies Config
+} as any
+// satisfies Config

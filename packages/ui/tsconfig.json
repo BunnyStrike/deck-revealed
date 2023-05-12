@@ -1,8 +1,5 @@
 {
-  "compilerOptions": {
-    "lib": ["dom", "ES2015"]
-  },
   "extends": "@revealed/tsconfig/react-library.json",
-  "include": [".", "../../apps/web/src/components/auth"],
+  "include": ["."],
   "exclude": ["dist", "build", "node_modules"]
 }

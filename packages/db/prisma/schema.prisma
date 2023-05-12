@@ -36,6 +36,17 @@ enum Role {
   ADMIN
 }
 
+enum StripeSubscriptionStatus {
+    incomplete
+    incomplete_expired
+    trialing
+    active
+    past_due
+    canceled
+    unpaid
+    paused
+}
+
 model User {
     id            String    @id @default(cuid())
     name          String?
@@ -44,6 +55,9 @@ model User {
     username      String?
     image         String?
     bio           String?
+    stripeCustomerId         String?
+    stripeSubscriptionId     String?
+    stripeSubscriptionStatus StripeSubscriptionStatus?
     role          Role @default(USER)
     
     supporter Supporter?
@@ -56,6 +70,19 @@ model User {
     appPlatforms   UserAppPlatform[]
     modOwner   GameMod[]
     
+}
+
+model StripeEvent {
+    id               String   @id @unique
+    api_version      String?
+    data             Json
+    request          Json?
+    type             String
+    object           String
+    account          String?
+    created          DateTime
+    livemode         Boolean
+    pending_webhooks Int
 }
 
 model UserActionApp {

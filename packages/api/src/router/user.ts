@@ -84,6 +84,28 @@ export const userRouter = createTRPCRouter({
       })
       return ctx.prisma.user.update({ where: { id: userId }, data: { role } })
     }),
+  subscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
+    const { user, prisma } = ctx
+
+    if (!user?.id) {
+      throw new Error('Not authenticated')
+    }
+
+    const data = await prisma.user.findUnique({
+      where: {
+        id: user?.id,
+      },
+      select: {
+        stripeSubscriptionStatus: true,
+      },
+    })
+
+    if (!data) {
+      throw new Error('Could not find user')
+    }
+
+    return data.stripeSubscriptionStatus
+  }),
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
     const id = input
     if (id === ctx.user?.id) {
