@@ -16,7 +16,7 @@ export const feedbackRouter = createTRPCRouter({
 
     return ctx.prisma.feedback.upsert({
       where: { id },
-      create: { id, content, type, appId, userId },
+      create: { content, type, appId, userId } as any,
       update: { content, type },
     })
   }),
