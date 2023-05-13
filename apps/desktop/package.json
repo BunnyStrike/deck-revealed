@@ -16,6 +16,7 @@
   "main": "build/electron/main.js",
   "build": {
     "appId": "com.bunnystrike.revealed",
+    "copyright": "Copyright (c) 2023 BunnyStrike",
     "productName": "Revealed",
     "files": [
       "build/**/*",
@@ -89,10 +90,10 @@
     "linux": {
       "category": "Game",
       "icon": "build/icon.icns",
-      "description": "An Open Source Launcher for GOG and Epic Games",
+      "description": "An Open Source Launcher for Apps & Games",
       "desktop": {
-        "Name": "Revealed Games Launcher",
-        "Comment[de]": "Ein Open Source Spielelauncher for GOG und Epic Games"
+        "Name": "Revealed Launcher",
+        "Comment[de]": "Ein Open Source Spielelauncher"
       },
       "asarUnpack": [
         "build/bin/linux/legendary",
