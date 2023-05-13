@@ -134,7 +134,7 @@
     "typecheck:main": "tsc --noEmit -p layers/main/tsconfig.json",
     "typecheck:preload": "tsc --noEmit -p layers/preload/tsconfig.json",
     "typecheck": "pnpm typecheck:main && pnpm typecheck:preload",
-    "release:linux": "pnpm build && electron-builder -p always --linux deb AppImage rpm pacman tar.xz",
+    "release:linux": "vite build && electron-builder -p always --linux deb AppImage rpm pacman tar.xz",
     "release:mac": "pnpm build && electron-builder -p always --mac --x64 --arm64",
     "release:win": "pnpm build && electron-builder -p always --win portable --x64 --arm64",
     "sign:win": "pnpm build && electron-builder -p never --win nsis --x64 --arm64",
