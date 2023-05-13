@@ -268,31 +268,39 @@ async function addNonSteamApp(appInfo: AppDoc): Promise<boolean> {
 
     newEntry.appid = generateShortcutId(newEntry.Exe, newEntry.AppName)
 
-    if (appName === 'Revealed') {
-      newEntry.art_cover = join(appImagesFolder, 'steam-banner.jpg')
-      newEntry.art_square = join(appImagesFolder, 'steam-pill.jpg')
-      newEntry.art_logo = join(appImagesFolder, 'logo.jpg')
-      newEntry.icon = join(appImagesFolder, 'logo.jpg')
-    } else {
-      await getIcon(appName, appInfo)
-        .then((path) => (newEntry.icon = path))
-        .catch((error) =>
-          logWarning(
-            [`Couldn't find a icon for ${appName} with:`, error],
-            LogPrefix.Shortcuts
-          )
+    // if (appName === 'Revealed') {
+    //   newEntry.art_cover =
+    //     'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/steam-banner.jpg?raw=true'
+    //   newEntry.art_square =
+    //     'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/steam-pill.jpg?raw=true'
+    //   newEntry.art_logo =
+    //     'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/logo.jpg?raw=true'
+    //   newEntry.icon =
+    //     'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/logo.jpg?raw=true'
+    //   // newEntry.art_cover = join(appImagesFolder, 'steam-banner.jpg')
+    //   // newEntry.art_square = join(appImagesFolder, 'steam-pill.jpg')
+    //   // newEntry.art_logo = join(appImagesFolder, 'logo.jpg')
+    //   // newEntry.icon = join(appImagesFolder, 'logo.jpg')
+    // } else {
+    await getIcon(appName, appInfo)
+      .then((path) => (newEntry.icon = path))
+      .catch((error) =>
+        logWarning(
+          [`Couldn't find a icon for ${appName} with:`, error],
+          LogPrefix.Shortcuts
         )
+      )
 
-      await prepareImagesForSteam({
-        steamUserConfigDir: configDir,
-        appID: {
-          bigPictureAppID: generateAppId(newEntry.Exe, newEntry.AppName),
-          otherGridAppID: generateShortAppId(newEntry.Exe, newEntry.AppName),
-        },
-        gameInfo: appInfo,
-        steamID: steamID,
-      })
-    }
+    await prepareImagesForSteam({
+      steamUserConfigDir: configDir,
+      appID: {
+        bigPictureAppID: generateAppId(newEntry.Exe, newEntry.AppName),
+        otherGridAppID: generateShortAppId(newEntry.Exe, newEntry.AppName),
+      },
+      gameInfo: appInfo,
+      steamID: steamID,
+    })
+    // }
 
     const args = []
     args.push('--no-gui')

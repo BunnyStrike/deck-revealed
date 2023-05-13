@@ -12,22 +12,20 @@ export const addRevealedToSteam = async (): Promise<boolean> => {
     art_cover: '',
     art_square: '',
     art_logo: '',
+    icon: '',
   }
-  // if (isWindows) {
-  //   newEntry.exe = app.getPath('exe') // join(revealedInstallPath, Platform.executable);
-  //   newEntry.startDir = app.getAppPath() // Directory.current.path;
-  // } else {
-  //   newEntry.startDir = '/home/deck/Applications/'
-  //   newEntry.exe = join('/home/deck/Applications/', 'DeckRevealed.AppImage')
-  //   //newEntry.exe = join(Directory.current.path, 'deck_revealed_app');
-  // }
 
   newEntry.exe = app.getPath('exe')
   newEntry.startDir = app.getAppPath()
 
-  newEntry.art_cover = join(appImagesFolder, 'steam-banner.jpg')
-  newEntry.art_square = join(appImagesFolder, 'steam-pill.jpg')
-  newEntry.art_logo = join(appImagesFolder, 'logo.jpg')
+  newEntry.art_cover =
+    'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/steam-banner.jpg?raw=true'
+  newEntry.art_square =
+    'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/steam-pill.jpg?raw=true'
+  newEntry.art_logo =
+    'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/logo.jpg?raw=true'
+  newEntry.icon =
+    'https://github.com/BunnyStrike/revealed/blob/v2.0.0-alpha.5/apps/desktop/public/img/logo.jpg?raw=true'
 
   return addNonSteamApp(newEntry as any)
 }
