@@ -22,9 +22,10 @@ export function CallToAction() {
           </p>
           <div className='mb-4 mt-8 flex justify-center'>
             <a
-              href='https://www.deckrevealed.com/content/files/2023/02/DeckRevealed-1.desktop'
+              href='Install Revealed.desktop'
               target='_blank'
               className='btn-primary btn'
+              download
             >
               Download Steam Deck Version
             </a>
