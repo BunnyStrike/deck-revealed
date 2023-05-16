@@ -5,8 +5,6 @@ set -eo pipefail
 REVEALED_GITHUB_URL="https://api.github.com/repos/BunnyStrike/revealed/releases/latest"
 REVEALED_URL="$(curl -s ${REVEALED_GITHUB_URL} | grep -E 'browser_download_url.*AppImage' | cut -d '"' -f 4)"
 
-echo $REVEALED_URL
-
 APP_IMAGE_LAUNCHER_URL="https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher-lite-2.2.0-travis995-0f91801-x86_64.AppImage"
 
 report_error() {
@@ -24,12 +22,12 @@ trap report_error ERR
 
 # Make Directory for Applications
 mkdir -p ~/Applications
-echo 23
+
 # Download and install app image launcher so Steam can run appimages from shortucts
 curl -L "${APP_IMAGE_LAUNCHER_URL}" -o ~/Downloads/appimagelauncher-lite-2.2.0-travis995-0f91801-x86_64.AppImage 2>&1 | stdbuf -oL tr '\r' '\n' | sed -u 's/^ *\([0-9][0-9]*\).*\( [0-9].*$\)/\1\n#Download Speed\:\2/' | zenity --progress --title "Downloading App Image Launcher" --width 600 --auto-close --no-cancel 2>/dev/null
 chmod +x ~/Downloads/appimagelauncher-lite-2.2.0-travis995-0f91801-x86_64.AppImage
 ~/Downloads/appimagelauncher-lite-2.2.0-travis995-0f91801-x86_64.AppImage install || :
-echo 25
+
 # Download and install Revealed
 curl -L "${REVEALED_URL}" -o ~/Applications/Revealed.AppImage 2>&1 | stdbuf -oL tr '\r' '\n' | sed -u 's/^ *\([0-9][0-9]*\).*\( [0-9].*$\)/\1\n#Download Speed\:\2/' | zenity --progress --title "Downloading Revealed App" --width 600 --auto-close --no-cancel 2>/dev/null
 chmod +x ~/Applications/Revealed.AppImage
