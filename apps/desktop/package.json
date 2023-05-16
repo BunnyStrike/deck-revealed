@@ -90,6 +90,7 @@
     "linux": {
       "category": "Game",
       "icon": "build/icon.icns",
+      "artifactName": "${productName}.${ext}",
       "description": "An Open Source Launcher for Apps & Games",
       "desktop": {
         "Name": "Revealed Launcher",

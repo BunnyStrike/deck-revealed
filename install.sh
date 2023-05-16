@@ -32,4 +32,3 @@ chmod +x ~/Downloads/appimagelauncher-lite-2.2.0-travis995-0f91801-x86_64.AppIma
 curl -L "${REVEALED_URL}" -o ~/Applications/Revealed.AppImage 2>&1 | stdbuf -oL tr '\r' '\n' | sed -u 's/^ *\([0-9][0-9]*\).*\( [0-9].*$\)/\1\n#Download Speed\:\2/' | zenity --progress --title "Downloading Revealed App" --width 600 --auto-close --no-cancel 2>/dev/null
 chmod +x ~/Applications/Revealed.AppImage
 ~/Applications/Revealed.AppImage
-echo 26
