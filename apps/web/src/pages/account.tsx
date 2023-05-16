@@ -1,9 +1,12 @@
 import Head from 'next/head'
 
-import { AdminScreen, FormFieldset } from '@revealed/ui'
+import { AdminScreen, Button, FormFieldset } from '@revealed/ui'
 
+import { api } from '~/utils/api'
+import { Container } from '~/components/Container'
 import { Footer } from '~/components/Footer'
 import { Header } from '~/components/Header'
+import { StripePricingTable } from '~/components/StripePricingTable'
 
 const secondaryNavigation = [
   { name: 'Overview', href: '#', current: true },
@@ -14,6 +17,20 @@ const secondaryNavigation = [
 ]
 
 export default function AccountPage() {
+  const { mutateAsync: createCheckoutSession } =
+    api.stripe.createCheckoutSession.useMutation()
+
+  const { data: subscriptionStatus } = api.user.subscriptionStatus.useQuery()
+
+  console.log(subscriptionStatus)
+
+  const is = true
+
+  const handleCheckout = async () => {
+    const res = await createCheckoutSession()
+    console.log(res)
+  }
+
   return (
     <>
       <Head>
@@ -25,13 +42,15 @@ export default function AccountPage() {
       </Head>
       <Header />
       <main className='h-full'>
-        <h1 className='leading-1 p-8 text-lg font-semibold text-gray-400'>
-          Account
-        </h1>
-        <div>
+        <Container>
+          <h1 className='leading-1 text-lg font-semibold text-gray-400'>
+            Account Billing
+          </h1>
+          {/* <div>
           <p>Coming soon</p>
         </div>
-        {/* <FormFieldset
+        <Button onClick={() => createCheckoutSession()}>Checkout</Button> */}
+          {/* <FormFieldset
           title='Account'
           className='p-8'
           list={[
@@ -52,7 +71,7 @@ export default function AccountPage() {
             },
           ]}
         /> */}
-        {/* <header>
+          {/* <header>
           <nav className='flex overflow-x-auto border-b border-t border-white/10 py-4'>
             <ul
               role='list'
@@ -71,7 +90,22 @@ export default function AccountPage() {
             </ul>
           </nav>
         </header> */}
-        {/* <AdminScreen className='h-full bg-black' /> */}
+          {/* <AdminScreen className='h-full bg-black' /> */}
+
+          <p>Upgrade your plan today!</p>
+
+          {!!subscriptionStatus ? (
+            <a
+              href='https://billing.stripe.com/p/login/dR68yGedMc7R6cw8ww'
+              target='_blank'
+              className='btn-primary btn'
+            >
+              Manage Billing
+            </a>
+          ) : (
+            <StripePricingTable />
+          )}
+        </Container>
       </main>
       <Footer />
     </>

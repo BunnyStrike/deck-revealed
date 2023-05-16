@@ -7,8 +7,11 @@ import 'focus-visible'
 import { useState } from 'react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
+export let supabaseClientGlobal: any
+
 const MyApp = ({ Component, pageProps }: any) => {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+  supabaseClientGlobal = supabaseClient
   return (
     <SessionContextProvider
       supabaseClient={supabaseClient}

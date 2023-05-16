@@ -62,7 +62,9 @@ export const handleInvoicePaid = async ({
   const subscription = await stripe.subscriptions.retrieve(
     subscriptionId as string
   )
-  const userId = subscription.metadata.userId
+  const subscriptionObject = event.data.object as any // as Stripe.Subscription
+  const userId =
+    subscriptionObject.client_reference_id ?? subscriptionObject.metadata.userId
 
   // update user with subscription data
   await prisma.user.update({
@@ -83,8 +85,9 @@ export const handleSubscriptionCreatedOrUpdated = async ({
   event: Stripe.Event
   prisma: PrismaClient
 }) => {
-  const subscription = event.data.object as Stripe.Subscription
-  const userId = subscription.metadata.userId
+  const subscriptionObject = event.data.object as any // as Stripe.Subscription
+  const userId =
+    subscriptionObject.client_reference_id ?? subscriptionObject.metadata.userId
 
   // update user with subscription data
   await prisma.user.update({
@@ -92,8 +95,8 @@ export const handleSubscriptionCreatedOrUpdated = async ({
       id: userId,
     },
     data: {
-      stripeSubscriptionId: subscription.id,
-      stripeSubscriptionStatus: subscription.status,
+      stripeSubscriptionId: subscriptionObject.id,
+      stripeSubscriptionStatus: subscriptionObject.status,
     },
   })
 }
@@ -105,8 +108,9 @@ export const handleSubscriptionCanceled = async ({
   event: Stripe.Event
   prisma: PrismaClient
 }) => {
-  const subscription = event.data.object as Stripe.Subscription
-  const userId = subscription.metadata.userId
+  const subscriptionObject = event.data.object as any // as Stripe.Subscription
+  const userId =
+    subscriptionObject.client_reference_id ?? subscriptionObject.metadata.userId
 
   // remove subscription data from user
   await prisma.user.update({

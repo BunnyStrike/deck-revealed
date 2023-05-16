@@ -111,7 +111,7 @@ export function MarketingRegisterPage() {
             Get started today
           </Button>
         </form> */}
-        <AuthPortal supabaseClient={supabaseClient} />
+        <AuthPortal supabaseClient={supabaseClient} redirectTo='/account' />
       </AuthLayout>
     </>
   )
