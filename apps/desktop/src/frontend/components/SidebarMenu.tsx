@@ -16,6 +16,11 @@ interface SidebarMenuItem {
   name: string
   link: string | (() => void)
   showWhenLoggedIn?: boolean
+  isMac?: boolean
+  isWindows?: boolean
+  isLinux?: boolean
+  isSteamos?: boolean
+  isSteamDeckGameMode?: boolean
   children?: SidebarMenuItem[]
   icon?:
     | React.FC<React.SVGProps<SVGSVGElement>>
@@ -32,7 +37,7 @@ export interface SidebarMenuProps {
 }
 
 export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
-  const { mutate } = api.seed.restoreApps.useMutation()
+  const { data: platform } = api.desktop.system.platform.useQuery()
   const { data: isAddedToSteam } = api.desktop.steam.isAddedToSteam.useQuery({
     title: 'Revealed',
   })
@@ -63,6 +68,10 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                     item?.showWhenLoggedIn === undefined ||
                     (item?.showWhenLoggedIn === false && !user) ||
                     (item?.showWhenLoggedIn === true && !!user?.id)
+                )
+                .filter(
+                  (item) =>
+                    !item?.isSteamos || (item?.isSteamos && platform?.isSteamos)
                 )
                 .map((item) => (
                   <li key={item.name}>

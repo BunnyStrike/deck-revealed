@@ -26,6 +26,7 @@ const navigation = [
   {
     name: 'Steam Deck',
     link: '/steam-deck',
+    isSteamos: true,
     icon: IconBrandSteam,
     children: [
       { name: 'Utilities', link: '/steam-deck/apps' },

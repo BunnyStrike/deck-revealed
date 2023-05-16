@@ -1,3 +1,4 @@
+import { platform } from 'os'
 import * as axios from 'axios'
 import { BrowserWindow, app } from 'electron'
 import { z } from 'zod'
@@ -9,6 +10,11 @@ import {
   customThemesWikiLink,
   discordLink,
   epicLoginUrl,
+  isLinux,
+  isMac,
+  isSteamDeckGameMode,
+  isSteamos,
+  isWindows,
   kofiPage,
   patreonPage,
   revealedGithubURL,
@@ -95,6 +101,16 @@ export const system = createTRPCRouter({
         LogPrefix.Backend
       )
       return null
+    }
+  }),
+  platform: publicProcedure.query(() => {
+    return {
+      platform: platform(),
+      isMac,
+      isWindows,
+      isLinux,
+      isSteamos,
+      isSteamDeckGameMode,
     }
   }),
 })
