@@ -148,7 +148,13 @@ export function Header() {
               )}
             </Popover>
             {user ? (
-              <Button>User</Button>
+              <Button
+                href='/account'
+                variant='outline'
+                className='hidden lg:block'
+              >
+                Account
+              </Button>
             ) : (
               <Button
                 href='/login'
