@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
+import { useAtom } from 'jotai'
 
 import type {
   AppSettings,
   GamepadActionStatus,
   ValidGamepadAction,
 } from '~/common/types'
+import { gamepadAtom } from '../states'
 import { api, type GamepadActionInput, type GamepadActionOutput } from './api'
 import {
   checkGameCube,
@@ -440,6 +442,7 @@ export const toggleControllerIsDisabled = (value: boolean | undefined) => {
 }
 
 let inited = false
+declare const window: any
 
 export const GamePadProvider = ({
   children,
@@ -447,11 +450,20 @@ export const GamePadProvider = ({
   children: React.ReactNode
 }) => {
   const { mutate: gamepadAction } = api.desktop.gamepad.action.useMutation()
+  const [gamepad, setGamepad] = useAtom(gamepadAtom)
 
   useEffect(() => {
     if (inited) return
     inited = true
+
     initGamepad(gamepadAction)
+
+    window.addEventListener(
+      'controller-changed',
+      (e: CustomEvent<{ controllerId: string }>) => {
+        setGamepad(e.detail.controllerId)
+      }
+    )
   }, [gamepadAction])
 
   return <>{children}</>

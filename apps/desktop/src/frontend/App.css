@@ -1,0 +1,4 @@
+.App .controller {
+  grid-area: controller;
+  position: relative;
+}

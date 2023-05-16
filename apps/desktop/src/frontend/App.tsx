@@ -15,6 +15,7 @@ import AddAppModal from './components/AddAppModel'
 import AddGameModal from './components/AddGameModel'
 import RevealedApplicationShell from './components/ApplicationShell'
 import ConfirmDialog from './components/ConfirmDialog'
+import ControllerHints from './components/ControllerHints'
 import { LoadingBar } from './components/LoadingBar'
 // import { SupabaseProvider } from '@revealed/ui'
 import { SupabaseProvider } from './components/SupabaseProvider'
@@ -34,6 +35,7 @@ import { ApiProvider, api } from './utils/api'
 import { supabaseClient } from './utils/database'
 import { getEnvVar } from './utils/envVar'
 import { GamePadProvider } from './utils/gamepad'
+import './App.css'
 
 function AppMain() {
   // const { isSettingsModalOpen } = useContext(ContextProvider)
@@ -134,7 +136,7 @@ function AppMain() {
                 </Routes>
               </RevealedApplicationShell>
               <div className='controller'>
-                {/* <ControllerHints /> */}
+                <ControllerHints />
                 <AddAppModal />
                 <AddGameModal />
                 <ConfirmDialog />

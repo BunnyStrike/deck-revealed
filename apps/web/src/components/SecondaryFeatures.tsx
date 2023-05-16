@@ -6,38 +6,33 @@ import { Container } from '~/components/Container'
 const features = [
   {
     name: 'App Manager',
-    description:
-      'Whether it’s $1 or $1,000,000, we can put your money to work for you.',
+    description: `Manage your apps and games with ease. You can even add non-Steam games to your library.`,
     icon: DeviceArrowIcon,
   },
   {
-    name: 'Retro Games',
-    description:
-      'Invest in different industries to find the most opportunities to win huge.',
+    name: 'Retro Games (Coming Soon)',
+    description: `Play your favorite retro games with emulators. Backup your save files and restore them later.`,
     icon: DeviceCardsIcon,
   },
   {
-    name: 'Mods',
+    name: 'Mods (Coming Soon)',
     description:
       'Get insider tips on big stock moves and act on them within seconds.',
     icon: DeviceClockIcon,
   },
   {
-    name: 'Game Profiles',
-    description:
-      'Invite new insiders to get tips faster and beat even other Pocket users.',
+    name: 'Game Launchers (Coming Soon)',
+    description: `Launch your games from any launcher, including Steam, Epic Games, and more. You can even add non-Steam games to Steam.`,
     icon: DeviceListIcon,
   },
   {
-    name: 'Device Profiles',
-    description:
-      'Cutting-edge security technology that even the NSA doesn’t know about keeps you hidden.',
+    name: 'Steam Deck Utils (Coming Soon)',
+    description: `Get the most out of your Steam Deck with a list of popular utilities.`,
     icon: DeviceLockIcon,
   },
   {
-    name: 'Stores',
-    description:
-      'Watch your investments grow exponentially, leaving other investors in the dust.',
+    name: 'Game Mode (Coming Soon)',
+    description: `Improve your Games' performance with our built-in optimizers.`,
     icon: DeviceChartIcon,
   },
 ]
@@ -207,7 +202,7 @@ export function SecondaryFeatures() {
           </h2>
           <p className='mt-2 text-lg text-gray-200'>
             We will support additional devices in the near future, but the Steam
-            Deck will have a place in our heart with plenty of support.
+            Deck will have a place in our hearts with plenty of support.
           </p>
         </div>
         <ul

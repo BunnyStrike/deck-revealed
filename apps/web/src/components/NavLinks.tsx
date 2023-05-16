@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 
-export function NavLinks() {
+export function NavLinks({ footer = false }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   const links = [
@@ -10,6 +10,7 @@ export function NavLinks() {
     // ['Reviews', '#reviews'],
     ['Pricing', '#pricing'],
     ['FAQs', '#faqs'],
+    footer ? ['Privacy Policy', '#privacy-policy'] : [],
   ].map(([label, href], index) => (
     <Link
       key={label}
