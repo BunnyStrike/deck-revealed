@@ -25,7 +25,7 @@ const Home: NextPage = () => {
           content='The all-in-one tool for your Steam Deck. Enjoy your favorite apps, manage your games, launch Game Mode. Sign up to be notified soon.'
         />
       </Head>
-      {/* <Header /> */}
+      <Header />
       <main>
         <ComingSoonHero />
         {/* <Hero /> */}

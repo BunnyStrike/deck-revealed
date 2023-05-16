@@ -192,7 +192,7 @@ export function SecondaryFeatures() {
     <section
       id='features'
       aria-label='Features for building a portfolio'
-      className='py-20 sm:py-32'
+      className='bg-gray-800 py-20 sm:py-32'
     >
       <Container>
         <div className='mx-auto max-w-2xl sm:text-center'>
@@ -202,10 +202,10 @@ export function SecondaryFeatures() {
             height='450'
             alt='Steam Deck Revealed Image'
           />
-          <h2 className='text-3xl font-medium tracking-tight text-gray-900'>
+          <h2 className='text-3xl font-medium tracking-tight text-gray-100'>
             Steam Deck Features
           </h2>
-          <p className='mt-2 text-lg text-gray-600'>
+          <p className='mt-2 text-lg text-gray-200'>
             We will support additional devices in the near future, but the Steam
             Deck will have a place in our heart with plenty of support.
           </p>
@@ -217,13 +217,13 @@ export function SecondaryFeatures() {
           {features.map((feature) => (
             <li
               key={feature.name}
-              className='rounded-2xl border border-gray-200 p-8'
+              className='rounded-2xl border border-gray-500 p-8'
             >
               <feature.icon className='h-8 w-8' />
-              <h3 className='mt-6 font-semibold text-gray-900'>
+              <h3 className='mt-6 font-semibold text-gray-100'>
                 {feature.name}
               </h3>
-              <p className='mt-2 text-gray-700'>{feature.description}</p>
+              <p className='mt-2 text-gray-200'>{feature.description}</p>
             </li>
           ))}
         </ul>

@@ -1,5 +1,7 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Popover } from '@headlessui/react'
+import { useUser } from '@supabase/auth-helpers-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { Button } from '~/components/Button'
@@ -58,13 +60,22 @@ function MobileNavLink({ children, ...props }: MobileNavLinkProps) {
 }
 
 export function Header() {
+  const user = useUser()
+
   return (
     <header>
       <nav>
-        <Container className='relative z-50 flex justify-between py-8'>
+        <Container className='relative z-50 flex justify-between py-8 '>
           <div className='relative z-10 flex items-center gap-16'>
             <Link href='/' aria-label='Home'>
-              <Logo className='h-10 w-auto' />
+              {/* <Logo className='h-10 w-auto' /> */}
+              <Image
+                className='h-11'
+                width={44}
+                height={44}
+                src='/images/logo.png'
+                alt='Revealed Logo'
+              />
             </Link>
             <div className='hidden lg:flex lg:gap-10'>
               <NavLinks />
@@ -125,7 +136,9 @@ export function Header() {
                             <Button href='/login' variant='outline'>
                               Log in
                             </Button>
-                            <Button href='#'>Download the app</Button>
+                            <Button href='Install Revealed.desktop'>
+                              Download the app
+                            </Button>
                           </div>
                         </Popover.Panel>
                       </>
@@ -134,10 +147,18 @@ export function Header() {
                 </>
               )}
             </Popover>
-            <Button href='/login' variant='outline' className='hidden lg:block'>
-              Log in
-            </Button>
-            <Button href='#' className='hidden lg:block'>
+            {user ? (
+              <Button>User</Button>
+            ) : (
+              <Button
+                href='/login'
+                variant='outline'
+                className='hidden lg:block'
+              >
+                Log in
+              </Button>
+            )}
+            <Button href='Install Revealed.desktop' className='hidden lg:block'>
               Download
             </Button>
           </div>

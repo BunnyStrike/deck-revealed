@@ -27,19 +27,19 @@ const plans = [
   {
     name: 'Pro',
     featured: false,
-    price: { Monthly: '$6', Annually: '$7' },
+    price: { Monthly: '$6 Once', Annually: '$7' },
     description: 'Unlock more features',
     button: {
-      label: 'Subscribe',
+      label: 'Unlock',
       href: '/register',
     },
     features: [
-      'Add Custom Apps, mods, etc.',
-      'Add custom art',
-      'Minor Syncing via steam, etc.',
+      'Add Custom Apps, Games, etc.',
+      'Add Custom Art (coming)',
+      'Minor Syncing via Steam, etc. (coming)',
       'Themes',
       'Launcher Support',
-      'Ability to remove ads',
+      'Ability to Remove Ads',
       'Limited-Support',
       // 'Easy Modding',
     ],
@@ -49,14 +49,14 @@ const plans = [
     name: 'Pro Plus',
     featured: true,
     price: { Monthly: '$9 Monthly', Annually: '$99' },
-    description: 'Unlock everything',
+    description: 'Subscribe to everything',
     button: {
       label: 'Subscribe',
       href: '/register',
     },
     features: [
       'Everything in Pro',
-      'Full Syncing saves, games, mods, creds',
+      'Full Syncing Saves, Games, Mods, More (coming)',
       'Feature Previews',
       'VIP Voting',
       'Full-Support',
@@ -207,7 +207,7 @@ export function Pricing() {
     <section
       id='pricing'
       aria-labelledby='pricing-title'
-      className='border-t border-gray-200 bg-gray-100 py-20 sm:py-32'
+      className='border-t border-gray-200 bg-gray-300 py-20 sm:py-32'
     >
       <Container>
         <div className='mx-auto max-w-2xl text-center'>

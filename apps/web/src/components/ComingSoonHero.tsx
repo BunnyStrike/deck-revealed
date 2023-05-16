@@ -48,13 +48,13 @@ export function ComingSoonHero() {
       </div>
       <div className='mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40'>
         <div className='mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8'>
-          <Image
+          {/* <Image
             className='h-11'
             width={44}
             height={44}
             src='/images/logo.png'
             alt='Your Company'
-          />
+          /> */}
           <div className='mt-24 sm:mt-32 lg:mt-16'>
             <a href='#' className='inline-flex space-x-6'>
               <span className='rounded-full bg-indigo-500/10 px-3 py-1 text-sm font-semibold leading-6 text-indigo-400 ring-1 ring-inset ring-indigo-500/20'>
