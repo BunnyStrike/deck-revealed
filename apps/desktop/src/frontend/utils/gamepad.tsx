@@ -1,8 +1,11 @@
+import React, { useEffect } from 'react'
+
 import type {
   AppSettings,
   GamepadActionStatus,
   ValidGamepadAction,
 } from '~/common/types'
+import { api, type GamepadActionInput, type GamepadActionOutput } from './api'
 import {
   checkGameCube,
   checkGenius1,
@@ -23,10 +26,12 @@ const SCROLL_REPEAT_DELAY = 50
 let controllerIsDisabled = false
 let currentController = -1
 
-export const initGamepad = () => {
-  window.api.requestAppSettings().then(({ disableController }: AppSettings) => {
-    controllerIsDisabled = disableController || false
-  })
+export const initGamepad = (
+  gamepadAction: (opt: GamepadActionInput) => GamepadActionOutput
+) => {
+  // requestAppSettings().then(({ disableController }: AppSettings) => {
+  //   controllerIsDisabled = disableController || false
+  // })
 
   // store the current controllers
   let controllers: number[] = []
@@ -62,7 +67,7 @@ export const initGamepad = () => {
 
   // check if an action should be triggered
   function checkAction(
-    action: ValidGamepadAction,
+    action: GamepadActionInput['action'],
     pressed: boolean,
     controllerIndex: number
   ) {
@@ -167,11 +172,12 @@ export const initGamepad = () => {
         // we have to tell Electron to simulate key presses
         // so the spatial navigation works
         if (action !== 'leftClick' && action !== 'rightClick') {
-          window.api.gamepadAction({ action })
+          gamepadAction({ action })
+          // api.desktop.gamepad.action
         } else {
           const data = metadata()
           if (data) {
-            window.api.gamepadAction({ action, metadata: data })
+            gamepadAction({ action, metadata: data })
           } else {
             console.error(
               'Got controller action that requires metadata, but we have no metadata'
@@ -208,7 +214,7 @@ export const initGamepad = () => {
     const parent = el.parentElement
     if (!parent) return false
 
-    return parent.classList.contains('gameCard')
+    return parent.classList.contains('card')
   }
 
   function isContextMenu() {
@@ -229,8 +235,7 @@ export const initGamepad = () => {
     if (!parent) return false
 
     const classes = parent.classList
-    const isGameCard =
-      classes.contains('gameCard') || classes.contains('gameListItem')
+    const isGameCard = classes.contains('card') || classes.contains('listItem')
     const isInstalled = classes.contains('installed')
     return isGameCard && isInstalled
   }
@@ -242,7 +247,7 @@ export const initGamepad = () => {
     const parent = el.parentElement
     if (!parent) return false
 
-    const playButton = parent.querySelector<HTMLButtonElement>('.playIcon')
+    const playButton = parent.querySelector<HTMLButtonElement>('.play-button')
     if (playButton) playButton.click()
 
     return true
@@ -432,4 +437,22 @@ export const toggleControllerIsDisabled = (value: boolean | undefined) => {
   } else {
     controllerIsDisabled = !controllerIsDisabled
   }
+}
+
+let inited = false
+
+export const GamePadProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
+  const { mutate: gamepadAction } = api.desktop.gamepad.action.useMutation()
+
+  useEffect(() => {
+    if (inited) return
+    inited = true
+    initGamepad(gamepadAction)
+  }, [gamepadAction])
+
+  return <>{children}</>
 }

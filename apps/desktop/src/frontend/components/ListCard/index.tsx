@@ -103,7 +103,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
             ) : (
               <button
                 onClick={(e) => handleLaunchClick(e)}
-                className='btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+                className='play-button btn-primary btn-sm btn outline-white hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
               >
                 <PlayIcon />
               </button>

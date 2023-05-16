@@ -36,6 +36,12 @@ export type GameListOutput = RouterOutput['game']['all']
 export type SteamGameListOutput =
   DesktopRouterOutput['desktop']['games']['steam']
 
+export type GamepadActionInput =
+  DesktopRouterInput['desktop']['gamepad']['action']
+
+export type GamepadActionOutput =
+  DesktopRouterOutput['desktop']['gamepad']['action']
+
 export type BootVideoInput = RouterInput['bootVideo']['all']
 export type BootVideoOutput = RouterOutput['bootVideo']['all']['list']
 

@@ -33,6 +33,7 @@ import WebView from './screens/WebView'
 import { ApiProvider, api } from './utils/api'
 import { supabaseClient } from './utils/database'
 import { getEnvVar } from './utils/envVar'
+import { GamePadProvider } from './utils/gamepad'
 
 function AppMain() {
   // const { isSettingsModalOpen } = useContext(ContextProvider)
@@ -41,63 +42,67 @@ function AppMain() {
     <SessionContextProvider supabaseClient={supabaseClient}>
       <Provider>
         <ApiProvider>
-          <div id='app' className='h-full  w-full bg-neutral'>
-            <RevealedApplicationShell>
-              <RevealedOfflineMessage />
-              <AddRevealedToSteamBanner />
-              {/* <DialogHandler /> */}
-              {/* {isSettingsModalOpen.gameInfo && (
+          <GamePadProvider>
+            <div id='app' className='h-full  w-full bg-neutral'>
+              <RevealedApplicationShell>
+                <RevealedOfflineMessage />
+                <AddRevealedToSteamBanner />
+                {/* <DialogHandler /> */}
+                {/* {isSettingsModalOpen.gameInfo && (
             <SettingsModal
               gameInfo={isSettingsModalOpen.gameInfo}
               type={isSettingsModalOpen.type}
             />
           )} */}
-              {/* <ExternalLinkDialog /> */}
-              <Routes>
-                {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
-                <Route path='/' element={<HomeScreen />} />
-                <Route path='/apps' element={<AppsScreen />} />
-                <Route path='/app'>
-                  <Route path=':id'>
+                {/* <ExternalLinkDialog /> */}
+                <Routes>
+                  {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
+                  <Route path='/' element={<HomeScreen />} />
+                  <Route path='/apps' element={<AppsScreen />} />
+                  <Route path='/app'>
+                    <Route path=':id'>
+                      <Route
+                        path='edit'
+                        element={<AppManageScreen mode='Edit' />}
+                      />
+                      <Route path='webview' element={<WebAppScreen />} />
+                      <Route path='' element={<AppDetailsScreen />} />
+                    </Route>
+
                     <Route
-                      path='edit'
-                      element={<AppManageScreen mode='Edit' />}
+                      path='add'
+                      element={<AppManageScreen mode='Add' />}
                     />
-                    <Route path='webview' element={<WebAppScreen />} />
-                    <Route path='' element={<AppDetailsScreen />} />
+                  </Route>
+                  <Route path='/games' element={<GamesScreen />} />
+
+                  <Route path='/steam-deck'>
+                    <Route path='apps' element={<SteamDeckScreen />} />
+                    <Route path='boot-videos' element={<BootVideosScreen />} />
                   </Route>
 
-                  <Route path='add' element={<AppManageScreen mode='Add' />} />
-                </Route>
-                <Route path='/games' element={<GamesScreen />} />
+                  <Route path='/stores' element={<StoresScreen />} />
+                  <Route path='/settings' element={<SettingsScreen />} />
 
-                <Route path='/steam-deck'>
-                  <Route path='apps' element={<SteamDeckScreen />} />
-                  <Route path='boot-videos' element={<BootVideosScreen />} />
-                </Route>
+                  <Route path='login'>
+                    <Route path='revealed' element={<RevealedSignupScreen />} />
+                  </Route>
 
-                <Route path='/stores' element={<StoresScreen />} />
-                <Route path='/settings' element={<SettingsScreen />} />
+                  <Route path='loginweb'>
+                    <Route path=':runner' element={<WebView />} />
+                  </Route>
 
-                <Route path='login'>
-                  <Route path='revealed' element={<RevealedSignupScreen />} />
-                </Route>
+                  <Route path='/stores'>
+                    <Route path='epicStore' element={<WebView />} />
+                    <Route path='gogStore' element={<WebView />} />
+                    <Route path='steamStore' element={<WebView />} />
+                    <Route path='fanaticalStore' element={<WebView />} />
+                  </Route>
 
-                <Route path='loginweb'>
-                  <Route path=':runner' element={<WebView />} />
-                </Route>
-
-                <Route path='/stores'>
-                  <Route path='epicStore' element={<WebView />} />
-                  <Route path='gogStore' element={<WebView />} />
-                  <Route path='steamStore' element={<WebView />} />
-                  <Route path='fanaticalStore' element={<WebView />} />
-                </Route>
-
-                {/* <Route path="/" element={<Navigate replace to="/apps" />} />
+                  {/* <Route path="/" element={<Navigate replace to="/apps" />} />
             <Route path="/library" element={<Library />} />
             {/* <Route path="/home" element={<Apps />} /> */}
-                {/* <Route path="/apps" element={<Apps />} />
+                  {/* <Route path="/apps" element={<Apps />} />
             <Route path="steam-deck/utilities" element={<Apps filterBy="Utilities" />} />
             <Route path="steam-deck/boot-videos" element={<BootVideos />} />
             <Route path="login" element={<Login />} />
@@ -126,17 +131,18 @@ function AppMain() {
             <Route path="/wine-manager" element={<WineManager />} />
             <Route path="/download-manager" element={<DownloadManager />} />
             <Route path="/accessibility" element={<Accessibility />} /> */}
-              </Routes>
-            </RevealedApplicationShell>
-            <div className='controller'>
-              {/* <ControllerHints /> */}
-              <AddAppModal />
-              <AddGameModal />
-              <ConfirmDialog />
+                </Routes>
+              </RevealedApplicationShell>
+              <div className='controller'>
+                {/* <ControllerHints /> */}
+                <AddAppModal />
+                <AddGameModal />
+                <ConfirmDialog />
 
-              <div className='simple-keyboard'></div>
+                <div className='simple-keyboard'></div>
+              </div>
             </div>
-          </div>
+          </GamePadProvider>
         </ApiProvider>
       </Provider>
     </SessionContextProvider>

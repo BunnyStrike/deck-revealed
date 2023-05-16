@@ -1,9 +1,10 @@
 import './styles/globals.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 
 import AppMain from './App'
+import { initGamepad } from './utils/gamepad'
 
 function App() {
   return (
