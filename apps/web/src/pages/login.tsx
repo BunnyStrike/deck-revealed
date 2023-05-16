@@ -61,7 +61,11 @@ export function MarketingLoginPage() {
             Sign in to account
           </Button>
         </form> */}
-        <AuthPortal supabaseClient={supabaseClient} />
+        <AuthPortal
+          supabaseClient={supabaseClient}
+          view='sign_in'
+          redirectTo='/account'
+        />
       </AuthLayout>
     </>
   )

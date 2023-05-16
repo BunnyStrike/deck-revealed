@@ -180,7 +180,7 @@ function Plan({
               <CheckIcon
                 className={clsx(
                   'h-6 w-6 flex-none',
-                  featured ? 'text-white' : 'text-cyan-500'
+                  featured ? 'text-white' : 'text-primary'
                 )}
               />
               <span className='ml-4'>{feature}</span>
@@ -190,7 +190,7 @@ function Plan({
       </div>
       <Button
         href={button.href}
-        color={featured ? 'cyan' : 'gray'}
+        color={featured ? 'primary' : 'gray'}
         className='mt-6'
         aria-label={`Get started with the ${name} plan for ${price}`}
       >

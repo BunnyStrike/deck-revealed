@@ -214,7 +214,7 @@ export function SecondaryFeatures() {
               key={feature.name}
               className='rounded-2xl border border-gray-500 p-8'
             >
-              <feature.icon className='h-8 w-8' />
+              {/* <feature.icon className='h-8 w-8' /> */}
               <h3 className='mt-6 font-semibold text-gray-100'>
                 {feature.name}
               </h3>

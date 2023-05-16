@@ -43,9 +43,11 @@ export const AuthPortal = ({
       }}
       providers={[]}
     />
-    <div className='p-2'>
-      <i>By Signing Up you agree that you are 13 years or older</i>
-    </div>
+    {view === 'sign_up' && (
+      <div className='p-2'>
+        <i>By Signing Up you agree that you are 13 years or older</i>
+      </div>
+    )}
     <hr />
     <div className='p-2 text-center'>
       <a href='https://www.appsrevealed.com/privacy-policy' target='_blank'>

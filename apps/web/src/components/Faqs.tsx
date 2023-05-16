@@ -6,7 +6,7 @@ const faqs = [
   [
     {
       question: 'How do I install the app?',
-      answer: `Download the app's installer (DeckRevealed.desktop) to your desktop and double-click the desktop installer, and it will start the process, which will take about 30 seconds to finish. If it were successful, the app would auto-launch.`,
+      answer: `Download the app's installer (DeckRevealed.desktop) to your desktop and double-click the desktop installer, and it will start the process, which will take about 30 seconds to finish. If it is successful, the app will auto-launch.`,
     },
 
     {

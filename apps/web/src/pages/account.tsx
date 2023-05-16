@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 
 import { AdminScreen, Button, FormFieldset } from '@revealed/ui'
 
@@ -7,6 +8,7 @@ import { Container } from '~/components/Container'
 import { Footer } from '~/components/Footer'
 import { Header } from '~/components/Header'
 import { StripePricingTable } from '~/components/StripePricingTable'
+import { supabaseClientGlobal } from './_app'
 
 const secondaryNavigation = [
   { name: 'Overview', href: '#', current: true },
@@ -105,6 +107,16 @@ export default function AccountPage() {
           ) : (
             <StripePricingTable />
           )}
+          <div className='mt-4'></div>
+          <Link href='/change-password' className='btn-secondary btn'>
+            Change Password
+          </Link>
+          <Button
+            onClick={() => supabaseClientGlobal.auth.signOut()}
+            className='btn-ghost btn'
+          >
+            Sign Out
+          </Button>
         </Container>
       </main>
       <Footer />
