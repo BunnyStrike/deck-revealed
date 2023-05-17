@@ -129,7 +129,7 @@ export const AppContextMenu = ({
         >
           {!!app?.id && (isOwner || isAdmin) && (
             <ContextMenu.Item
-              onClick={() => handleEdit()}
+              onSelect={() => handleEdit()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
             >
               Edit
@@ -139,14 +139,14 @@ export const AppContextMenu = ({
             <>
               {isFavorited ? (
                 <ContextMenu.Item
-                  onClick={() => handleFavorite()}
+                  onSelect={() => handleFavorite()}
                   className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
                 >
                   Unfavorite
                 </ContextMenu.Item>
               ) : (
                 <ContextMenu.Item
-                  onClick={() => handleFavorite()}
+                  onSelect={() => handleFavorite()}
                   className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
                 >
                   Favorite
@@ -156,14 +156,14 @@ export const AppContextMenu = ({
           )}
           {isAddedToSteam ? (
             <ContextMenu.Item
-              onClick={() => handleRemoveToSteam()}
+              onSelect={() => handleRemoveToSteam()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
             >
               Remove From Steam
             </ContextMenu.Item>
           ) : (
             <ContextMenu.Item
-              onClick={() => handleAddToSteam()}
+              onSelect={() => handleAddToSteam()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
             >
               Add To Steam
@@ -180,7 +180,7 @@ export const AppContextMenu = ({
             //   Install
             // </ContextMenu.Item>
             <ContextMenu.Item
-              onClick={() => handleLaunchInBrowser()}
+              onSelect={() => handleLaunchInBrowser()}
               className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
             >
               Launch In Browser
@@ -192,7 +192,7 @@ export const AppContextMenu = ({
               <ContextMenu.Separator className='bg-violet6 m-[5px] h-[1px]' />
 
               <ContextMenu.Item
-                onClick={() => handleDelete()}
+                onSelect={() => handleDelete()}
                 className='text-violet11 data-[disabled]:text-mauve8 data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1 group relative flex h-[25px] select-none items-center rounded-[3px] px-[5px] pl-[25px] text-[13px] leading-none outline-none data-[disabled]:pointer-events-none'
               >
                 Delete

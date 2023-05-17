@@ -15,29 +15,32 @@ type Props = {
   dimissVersionCheck?: boolean
   children?: React.ReactNode
   isOpen?: boolean
+  currentChangelog?: any
 }
 
 const storage = window.localStorage
-const lastChangelog = storage.getItem('last_changelog')?.replaceAll('"', '')
 
 export function VersionChangelogModel({
   onClose,
   dimissVersionCheck,
   version,
+  currentChangelog,
   isOpen = false,
 }: Props) {
-  const { data: currentChangelog } =
-    api.desktop.system.getCurrentChangelog.useQuery(undefined, {
-      staleTime: 1000,
-    })
+  const { mutate: openExternalUrl } =
+    api.desktop.system.openExternalUrl.useMutation()
 
   const handleClose = () => {
+    storage.setItem(
+      'ignore_version',
+      JSON.stringify(currentChangelog?.name ?? version)
+    )
     onClose()
   }
 
-  if (!currentChangelog) {
-    return <></>
-  }
+  // if (!currentChangelog) {
+  //   return <></>
+  // }
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -65,11 +68,11 @@ export function VersionChangelogModel({
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
+              <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-gray-900 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
                 <div className='absolute right-0 top-0 hidden pr-4 pt-4 sm:block'>
                   <button
                     type='button'
-                    className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                    className='rounded-md bg-black text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
                     onClick={() => handleClose()}
                   >
                     <span className='sr-only'>Close</span>
@@ -86,18 +89,24 @@ export function VersionChangelogModel({
                   <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
                     <Dialog.Title
                       as='h3'
-                      className='text-base font-semibold leading-6 text-gray-900'
+                      className='text-base font-semibold leading-6 text-gray-100'
                     >
-                      {currentChangelog?.name}
+                      {currentChangelog?.name ?? version}
                     </Dialog.Title>
                     <div className='mt-2'>
-                      <p className='text-sm text-gray-500'>
-                        A new update is available. Please update to the latest
-                        for all the new features and bug fixes.
-                      </p>
-                      {currentChangelog?.body && (
-                        <p className=' mt-2 text-sm text-gray-600'>
+                      {currentChangelog?.updateAvailable && (
+                        <p className='text-sm text-gray-300'>
+                          A new update is available. Please update to the latest
+                          for all the new features and bug fixes.
+                        </p>
+                      )}
+                      {currentChangelog?.body ? (
+                        <p className=' mt-2 text-sm text-gray-400'>
                           {currentChangelog?.body}
+                        </p>
+                      ) : (
+                        <p className=' mt-2 text-sm text-gray-400'>
+                          Up to date!
                         </p>
                       )}
                     </div>
@@ -105,19 +114,32 @@ export function VersionChangelogModel({
                 </div>
                 <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse '>
                   <button
-                    type='button'
                     className='btn-primary btn-md btn'
-                    onClick={() => handleClose()}
+                    onClick={() =>
+                      openExternalUrl({ url: currentChangelog?.html_url })
+                    }
                   >
-                    Update
+                    View Release
                   </button>
-                  <button
-                    type='button'
-                    className='btn-ghost btn-md btn'
-                    onClick={() => handleClose()}
-                  >
-                    Ignore
-                  </button>
+
+                  {currentChangelog?.updateAvailable && (
+                    <>
+                      {/* <button
+                        type='button'
+                        className='btn-primary btn-md btn'
+                        onClick={() => handleClose()}
+                      >
+                        Update
+                      </button> */}
+                      <button
+                        type='button'
+                        className='btn-ghost btn-md btn'
+                        onClick={() => handleClose()}
+                      >
+                        Ignore
+                      </button>
+                    </>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

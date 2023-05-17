@@ -56,6 +56,7 @@ export type Release = {
   prerelease: boolean
   id: number
   body?: string
+  updateAvailable?: boolean
 }
 
 export interface AppSettings extends GameSettings {

@@ -90,11 +90,19 @@ export const system = createTRPCRouter({
     try {
       const current = app.getVersion()
 
-      const { data: release } = await axios.default.get(
-        `${GITHUB_API}/tags/v${current}`
+      const { data: releases } = await axios.default.get(
+        `${GITHUB_API}`
+        // `${GITHUB_API}/tags/v${current}`
       )
 
-      return release as Release
+      console.log(releases)
+
+      const release = releases[0]
+
+      return {
+        ...release,
+        updateAvailable: !release?.tag_name?.includes(current),
+      } as Release
     } catch (error) {
       logError(
         ['Error when checking for current Revealed changelog'],
