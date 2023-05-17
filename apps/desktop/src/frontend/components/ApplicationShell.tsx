@@ -11,6 +11,7 @@ import {
   IconApps,
   IconBrandSteam,
   IconDeviceGamepad2,
+  IconDoorExit,
   IconLogin,
   IconVideo,
 } from '@tabler/icons-react'
@@ -57,6 +58,10 @@ const navigation = [
     link: () => supabaseClient.auth.signOut(),
     icon: IconLogin,
     showWhenLoggedIn: true,
+  },
+  {
+    name: 'Quit',
+    icon: IconDoorExit,
   },
 ]
 interface RevealedApplicationShellPros {

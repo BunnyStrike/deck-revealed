@@ -14,7 +14,7 @@ import RevealedVersion from './Version'
 
 interface SidebarMenuItem {
   name: string
-  link: string | (() => void)
+  link?: string | (() => void)
   showWhenLoggedIn?: boolean
   isMac?: boolean
   isWindows?: boolean
@@ -41,6 +41,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
   const { data: isAddedToSteam } = api.desktop.steam.isAddedToSteam.useQuery({
     title: 'Revealed',
   })
+  const { mutate: quitApp } = api.desktop.system.quitApp.useMutation()
   const location = useLocation()
   const { user } = useUser()
 
@@ -79,7 +80,11 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                       <Link
                         to={typeof item.link === 'string' ? item.link : ''}
                         onClick={
-                          typeof item.link === 'string' ? undefined : item.link
+                          item.name === 'Quit'
+                            ? () => quitApp()
+                            : typeof item.link === 'string'
+                            ? undefined
+                            : item.link
                         }
                         className={classNames(
                           item.link === location.pathname
@@ -163,7 +168,6 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                 ))}
             </ul>
           </li>
-
           {/* <li className=' hidden items-center justify-center sm:flex'>
             <UserButton showName appearance={{ baseTheme: dark }} />
           </li>

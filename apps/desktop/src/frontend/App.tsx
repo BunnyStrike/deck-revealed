@@ -59,7 +59,8 @@ function AppMain() {
                 {/* <ExternalLinkDialog /> */}
                 <Routes>
                   {/* <Route path='/' element={<Navigate replace to='/' />} /> */}
-                  <Route path='/' element={<HomeScreen />} />
+                  <Route path='/' element={<Navigate replace to='/home' />} />
+                  <Route path='/home' element={<HomeScreen />} />
                   <Route path='/apps' element={<AppsScreen />} />
                   <Route path='/app'>
                     <Route path=':id'>

@@ -29,7 +29,7 @@ export function VersionChangelogModel({
 }: Props) {
   const { mutate: openExternalUrl } =
     api.desktop.system.openExternalUrl.useMutation()
-  const { mutate: updateApp } = api.desktop.system.updateApp.useMutation()
+  // const { mutate: updateApp } = api.desktop.system.updateApp.useMutation()
   const { data: platform } = api.desktop.system.platform.useQuery()
 
   const handleClose = () => {
@@ -93,7 +93,7 @@ export function VersionChangelogModel({
                       as='h3'
                       className='text-base font-semibold leading-6 text-gray-100'
                     >
-                      {currentChangelog?.name ?? version}
+                      {currentChangelog?.name || version}
                     </Dialog.Title>
                     <div className='mt-2'>
                       {currentChangelog?.updateAvailable && (
@@ -115,18 +115,20 @@ export function VersionChangelogModel({
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse '>
-                  {currentChangelog?.html_url && <button
-                    className='btn-primary btn-md btn'
-                    onClick={() =>
-                      openExternalUrl({ url: currentChangelog?.html_url })
-                    }
-                  >
-                    View Release
-                  </button>}
+                  {currentChangelog?.html_url && (
+                    <button
+                      className='btn-primary btn-md btn'
+                      onClick={() =>
+                        openExternalUrl({ url: currentChangelog?.html_url })
+                      }
+                    >
+                      View Release
+                    </button>
+                  )}
 
                   {currentChangelog?.updateAvailable && (
                     <>
-                      {platform?.isLinux && (
+                      {/* {platform?.isLinux && (
                         <button
                           type='button'
                           className='btn-primary btn-md btn'
@@ -134,7 +136,7 @@ export function VersionChangelogModel({
                         >
                           Update
                         </button>
-                      )}
+                      )} */}
                       <button
                         type='button'
                         className='btn-ghost btn-md btn'
