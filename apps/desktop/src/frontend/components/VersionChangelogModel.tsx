@@ -29,6 +29,8 @@ export function VersionChangelogModel({
 }: Props) {
   const { mutate: openExternalUrl } =
     api.desktop.system.openExternalUrl.useMutation()
+  const { mutate: updateApp } = api.desktop.system.updateApp.useMutation()
+  const { data: platform } = api.desktop.system.platform.useQuery()
 
   const handleClose = () => {
     storage.setItem(
@@ -113,24 +115,26 @@ export function VersionChangelogModel({
                   </div>
                 </div>
                 <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse '>
-                  <button
+                  {currentChangelog?.html_url && <button
                     className='btn-primary btn-md btn'
                     onClick={() =>
                       openExternalUrl({ url: currentChangelog?.html_url })
                     }
                   >
                     View Release
-                  </button>
+                  </button>}
 
                   {currentChangelog?.updateAvailable && (
                     <>
-                      {/* <button
-                        type='button'
-                        className='btn-primary btn-md btn'
-                        onClick={() => handleClose()}
-                      >
-                        Update
-                      </button> */}
+                      {platform?.isLinux && (
+                        <button
+                          type='button'
+                          className='btn-primary btn-md btn'
+                          onClick={() => updateApp()}
+                        >
+                          Update
+                        </button>
+                      )}
                       <button
                         type='button'
                         className='btn-ghost btn-md btn'
