@@ -37,13 +37,13 @@ export default function ControllerHints() {
     if (card || list) {
       // focusing a card/list item or an icon inside a card/list item
       alt = t('controller.hints.options', 'Options')
-      if (classes.contains('updateIcon')) {
+      if (classes.contains('update-button')) {
         main = t('controller.hints.update', 'Update')
       } else if (classes.contains('settingsIcon')) {
         main = t('controller.hints.settings', 'settings')
-      } else if (classes.contains('playIcon')) {
+      } else if (classes.contains('play-button')) {
         main = t('controller.hints.play', 'Play')
-      } else if (classes.contains('downIcon')) {
+      } else if (classes.contains('download-button')) {
         main = t('controller.hints.install', 'Install')
       } else if (
         card?.classList.contains('installed') ||

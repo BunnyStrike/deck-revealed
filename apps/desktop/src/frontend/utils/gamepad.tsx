@@ -237,9 +237,10 @@ export const initGamepad = (
     if (!parent) return false
 
     const classes = parent.classList
-    const isGameCard = classes.contains('card') || classes.contains('listItem')
+    const isCard = classes.contains('card') || classes.contains('listItem')
     const isInstalled = classes.contains('installed')
-    return isGameCard && isInstalled
+    const isPlayable = classes.contains('playable')
+    return isCard && (isInstalled || isPlayable)
   }
 
   function playGame() {
@@ -262,7 +263,8 @@ export const initGamepad = (
     const parent = el.parentElement
     if (!parent) return false
 
-    const installButton = parent.querySelector<HTMLButtonElement>('.downIcon')
+    const installButton =
+      parent.querySelector<HTMLButtonElement>('.download-button')
     if (installButton) installButton.click()
 
     return true

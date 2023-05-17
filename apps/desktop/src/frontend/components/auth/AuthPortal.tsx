@@ -24,19 +24,21 @@ export const AuthPortal = ({
   redirectTo = '/',
   view = 'sign_up',
 }: AuthPortalProps) => (
-  <div>
+  <div className='bg-gray-900'>
     <Auth
       supabaseClient={supabaseClient}
       // theme='dark'
       redirectTo={redirectTo}
       view={view}
       appearance={{
+        className: { container: 'bg-gray-900' },
         theme: ThemeSupa,
         variables: {
           default: {
             colors: {
               brand: '#BA40D5',
               brandAccent: '#663DBC',
+              inputText: '#ffffff',
             },
           },
         },

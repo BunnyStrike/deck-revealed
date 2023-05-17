@@ -12,6 +12,8 @@ import {
 import { useUser } from 'frontend/hooks'
 import { useNavigate } from 'react-router-dom'
 
+import { classNames } from '@revealed/ui'
+
 // import { FavoriteButton } from '@revealed/ui'
 
 import { api, type AppListOutput, type GameListOutput } from '../../utils/api'
@@ -31,6 +33,8 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
   const { mutate: runApp } = api.desktop.apps.runApp.useMutation()
   const { data: isAddedToSteam = false } =
     api.desktop.steam.isAddedToSteam.useQuery({ title: name })
+  const { data: isInstalled = false } =
+    api.desktop.apps.isAppInstalled.useQuery({ app: item })
 
   const userActions = item.userActions[0]
 
@@ -68,7 +72,10 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
     >
       <div
         onClick={(e) => handleLaunchClick(e)}
-        className='image-full-color active:outline-offset-3 group card hover-bordered cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+        className={classNames(
+          isInstalled ? 'playable' : '',
+          'image-full-color active:outline-offset-3 group card hover-bordered cursor-pointer pb-0 outline-primary hover:outline hover:outline-2 hover:outline-offset-2 active:outline active:outline-2'
+        )}
       >
         <figure>
           <img
@@ -99,7 +106,7 @@ export const RevealedListCard = ({ item }: RevealedListCardProps) => {
               </button>
             )}
             {installable ? (
-              <InstallButton app={item} />
+              <InstallButton app={item} isInstalled={isInstalled} />
             ) : (
               <button
                 onClick={(e) => handleLaunchClick(e)}
