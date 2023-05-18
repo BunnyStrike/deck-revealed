@@ -32,17 +32,43 @@ export const userRouter = createTRPCRouter({
   upsert: publicProcedure
     .input(
       z.object({
-        id: z.string().min(1),
+        id: z.string().optional(),
+        name: z.string().optional(),
         email: z.string().optional(),
+        role: z
+          .enum(['ADMIN', 'PRO', 'PRO_PLUS', 'EDITOR', 'USER'])
+          .default('USER'),
       })
     )
-    .mutation(({ ctx, input }) => {
-      const { id, email } = input
-      return ctx.prisma.user.upsert({
+    .mutation(async ({ ctx, input }) => {
+      const { supabase, isAdmin } = ctx
+      const { id, name, email, role } = input
+      console.log(isAdmin)
+      // if (!isAdmin) {
+      //   throw new Error('Unauthorized')
+      // }
+
+      await ctx.prisma.user.upsert({
         where: { id },
-        create: { id, email },
-        update: { email },
+        create: { id, name, email, role },
+        update: { name, email, role },
       })
+
+      if (id) {
+        try {
+          await supabase?.auth.admin.updateUserById(id, {
+            app_metadata: { role },
+          })
+        } catch (error) {
+          throw new Error("Couldn't update user")
+        }
+      }
+      //  else {
+      //   await supabase?.auth.admin.createUser({
+      //     email,
+      //     app_metadata: { role },
+      //   })
+      // }
     }),
   changeRole: protectedProcedure
     .input(
@@ -105,6 +131,21 @@ export const userRouter = createTRPCRouter({
     }
 
     return data.stripeSubscriptionStatus
+  }),
+  all: protectedProcedure.query(async ({ ctx }) => {
+    const { user, prisma } = ctx
+
+    if (!user?.id) {
+      throw new Error('Not authenticated')
+    }
+
+    const data = await prisma.user.findMany()
+
+    if (!data) {
+      throw new Error('Could not find user')
+    }
+
+    return data
   }),
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
     const id = input

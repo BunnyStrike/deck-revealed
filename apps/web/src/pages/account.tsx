@@ -2,28 +2,36 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useUser } from '@supabase/auth-helpers-react'
 
-import { AdminScreen, Button, FormFieldset } from '@revealed/ui'
+import { Button, FormFieldset } from '@revealed/ui'
 
 import { api } from '~/utils/api'
 import { Container } from '~/components/Container'
 import { Footer } from '~/components/Footer'
 import { Header } from '~/components/Header'
 import { StripePricingTable } from '~/components/StripePricingTable'
+import AdminScreen from '~/components/admin/AdminScreen'
 import { supabaseClientGlobal } from './_app'
-
-const secondaryNavigation = [
-  { name: 'Overview', href: '#', current: true },
-  { name: 'Billing', href: '#', current: false },
-]
 
 export default function AccountPage() {
   const [currentTab, setCurrentTab] = useState(0)
   const router = useRouter()
+  const user = useUser()
   const { mutateAsync: createCheckoutSession } =
     api.stripe.createCheckoutSession.useMutation()
 
   const { data: subscriptionStatus } = api.user.subscriptionStatus.useQuery()
+
+  const secondaryNavigation = [{ name: 'Overview' }, { name: 'Billing' }]
+
+  console.log(user?.app_metadata)
+
+  if (user?.app_metadata?.role === 'ADMIN') {
+    secondaryNavigation.push({
+      name: 'Admin',
+    })
+  }
 
   useEffect(() => {
     router.query.tab === 'billing' && setCurrentTab(1)
@@ -60,7 +68,7 @@ export default function AccountPage() {
                   <li key={item.name}>
                     <button
                       onClick={() => setCurrentTab(index)}
-                      className={currentTab === index ? 'text-indigo-400' : ''}
+                      className={currentTab === index ? 'text-primary' : ''}
                     >
                       {item.name}
                     </button>
@@ -100,6 +108,12 @@ export default function AccountPage() {
               ) : (
                 <StripePricingTable />
               )}
+            </div>
+          )}
+
+          {currentTab === 2 && (
+            <div className='mt-4'>
+              <AdminScreen className='h-full bg-black' />
             </div>
           )}
         </Container>
