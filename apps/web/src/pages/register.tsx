@@ -114,7 +114,7 @@ export function MarketingRegisterPage() {
         <AuthPortal
           supabaseClient={supabaseClient}
           view='sign_up'
-          redirectTo='/account'
+          redirectTo='/account?tab=billing'
         />
       </AuthLayout>
     </>

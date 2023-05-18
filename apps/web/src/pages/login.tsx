@@ -24,7 +24,7 @@ export function MarketingLoginPage() {
   return (
     <>
       <Head>
-        <title>Sign In - Pocket</title>
+        <title>Sign In - Revealed</title>
       </Head>
       <AuthLayout
         title='Sign in to account'

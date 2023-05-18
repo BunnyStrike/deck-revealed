@@ -74,7 +74,7 @@ export const ConfirmDialog = ({
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
+              <Dialog.Panel className='relative transform overflow-hidden rounded-lg bg-gray-900 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
                 <div className='sm:flex sm:items-start'>
                   <div
                     className={classNames(
@@ -90,22 +90,24 @@ export const ConfirmDialog = ({
                   <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
                     <Dialog.Title
                       as='h3'
-                      className='text-base font-semibold leading-6 text-gray-900'
+                      className='text-base font-semibold leading-6 text-gray-100'
                     >
                       {confirm?.title ?? title}
                     </Dialog.Title>
                     <div className='mt-2'>
-                      <p className='text-sm text-gray-500'>
+                      <p className='text-sm text-gray-200'>
                         {confirm?.message ?? message}
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
+                <div className='mt-5 gap-2 sm:mt-4 sm:flex sm:flex-row-reverse'>
                   <button
                     type='button'
                     className={classNames(
-                      `btn-md btn btn-${confirm?.type || 'primary'}`,
+                      `back-button btn-md btn btn-${
+                        confirm?.type || 'primary'
+                      }`,
                       confirm.isLoading ? 'loading' : ''
                     )}
                     onClick={() => handleConfirm()}

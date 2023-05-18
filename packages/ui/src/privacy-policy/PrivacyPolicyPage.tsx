@@ -63,8 +63,8 @@ export const PrivacyPolicyPage = (
 ) => {
   return (
     <>
-      <div className="relative overflow-hidden bg-white py-16">
-        <div className="relative px-4 sm:px-6 lg:px-8">
+      <div className='relative overflow-hidden py-16'>
+        <div className='relative px-4 sm:px-6 lg:px-8'>
           <PrivacyPolicy
             googleAnalytics={true}
             googleAdSense={true}

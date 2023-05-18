@@ -48,7 +48,7 @@ const plans = [
   {
     name: 'Pro Plus',
     featured: true,
-    price: { Monthly: '$9 Monthly', Annually: '$99' },
+    price: { Monthly: '$10 Monthly', Annually: '$100' },
     description: 'Subscribe to everything',
     button: {
       label: 'Subscribe',

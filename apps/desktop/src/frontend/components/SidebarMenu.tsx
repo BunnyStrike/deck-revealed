@@ -4,9 +4,11 @@ import { dark } from '@clerk/themes'
 import { Disclosure } from '@headlessui/react'
 import { ChevronRightIcon } from '@radix-ui/react-icons'
 import { IconSteam } from '@tabler/icons-react'
+import { useAtom } from 'jotai'
 import { Link, useLocation } from 'react-router-dom'
 
 import { useUser } from '../hooks'
+import { confirmModalAtom } from '../states'
 import { classNames } from '../utils'
 import { api } from '../utils/api'
 import { supabaseClient } from '../utils/database'
@@ -42,8 +44,21 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
     title: 'Revealed',
   })
   const { mutate: quitApp } = api.desktop.system.quitApp.useMutation()
+  const [confirm, setConfirm] = useAtom(confirmModalAtom)
   const location = useLocation()
   const { user } = useUser()
+
+  const handleCloseApp = () => {
+    setConfirm((prev) => ({
+      ...prev,
+      show: true,
+      title: 'Quit App',
+      message: 'Are you sure you want to quit Revealed?',
+      onConfirm: async () => {
+        quitApp()
+      },
+    }))
+  }
 
   return (
     <div className='flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-800 bg-neutral px-6'>
@@ -81,7 +96,7 @@ export const SidebarMenu = ({ navigation }: SidebarMenuProps) => {
                         to={typeof item.link === 'string' ? item.link : ''}
                         onClick={
                           item.name === 'Quit'
-                            ? () => quitApp()
+                            ? () => handleCloseApp()
                             : typeof item.link === 'string'
                             ? undefined
                             : item.link

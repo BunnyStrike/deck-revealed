@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { AdminScreen, Button, FormFieldset } from '@revealed/ui'
 
@@ -12,21 +14,20 @@ import { supabaseClientGlobal } from './_app'
 
 const secondaryNavigation = [
   { name: 'Overview', href: '#', current: true },
-  { name: 'Activity', href: '#', current: false },
-  { name: 'Settings', href: '#', current: false },
-  { name: 'Collaborators', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
+  { name: 'Billing', href: '#', current: false },
 ]
 
 export default function AccountPage() {
+  const [currentTab, setCurrentTab] = useState(0)
+  const router = useRouter()
   const { mutateAsync: createCheckoutSession } =
     api.stripe.createCheckoutSession.useMutation()
 
   const { data: subscriptionStatus } = api.user.subscriptionStatus.useQuery()
 
-  console.log(subscriptionStatus)
-
-  const is = true
+  useEffect(() => {
+    router.query.tab === 'billing' && setCurrentTab(1)
+  }, [router.query])
 
   const handleCheckout = async () => {
     const res = await createCheckoutSession()
@@ -45,78 +46,62 @@ export default function AccountPage() {
       <Header />
       <main className='h-full'>
         <Container>
-          <h1 className='leading-1 text-lg font-semibold text-gray-400'>
-            Account Billing
+          <h1 className='leading-1 p-2 text-lg font-semibold text-gray-400'>
+            Account
           </h1>
-          {/* <div>
-          <p>Coming soon</p>
-        </div>
-        <Button onClick={() => createCheckoutSession()}>Checkout</Button> */}
-          {/* <FormFieldset
-          title='Account'
-          className='p-8'
-          list={[
-            {
-              name: 'Free',
-              value: '',
-              details: 'Your email address is used to log in to your account.',
-            },
-            {
-              name: 'Pro',
-              value: '',
-              details: 'Your password must be at least 8 characters long.',
-            },
-            {
-              name: 'Pro Plus',
-              value: '',
-              details: 'Your password must be at least 8 characters long.',
-            },
-          ]}
-        /> */}
-          {/* <header>
-          <nav className='flex overflow-x-auto border-b border-t border-white/10 py-4'>
-            <ul
-              role='list'
-              className='flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8'
-            >
-              {secondaryNavigation.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={item.current ? 'text-indigo-400' : ''}
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </header> */}
+
+          <header>
+            <nav className='flex overflow-x-auto border-b border-t border-white/10 py-4'>
+              <ul
+                role='list'
+                className='flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8'
+              >
+                {secondaryNavigation.map((item, index) => (
+                  <li key={item.name}>
+                    <button
+                      onClick={() => setCurrentTab(index)}
+                      className={currentTab === index ? 'text-indigo-400' : ''}
+                    >
+                      {item.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </header>
           {/* <AdminScreen className='h-full bg-black' /> */}
 
-          <p>Upgrade your plan today!</p>
-
-          {!!subscriptionStatus ? (
-            <a
-              href='https://billing.stripe.com/p/login/dR68yGedMc7R6cw8ww'
-              target='_blank'
-              className='btn-primary btn'
-            >
-              Manage Billing
-            </a>
-          ) : (
-            <StripePricingTable />
+          {currentTab === 0 && (
+            <div className='mt-4'>
+              <Link href='/change-password' className='btn-secondary btn'>
+                Change Password
+              </Link>
+              <Button
+                onClick={() => supabaseClientGlobal.auth.signOut()}
+                className='btn-ghost btn'
+              >
+                Sign Out
+              </Button>
+            </div>
           )}
-          <div className='mt-4'></div>
-          <Link href='/change-password' className='btn-secondary btn'>
-            Change Password
-          </Link>
-          <Button
-            onClick={() => supabaseClientGlobal.auth.signOut()}
-            className='btn-ghost btn'
-          >
-            Sign Out
-          </Button>
+
+          {currentTab === 1 && (
+            <div className='mt-4'>
+              <p>Upgrade your plan today!</p>
+
+              {!!subscriptionStatus ? (
+                <a
+                  href='https://billing.stripe.com/p/login/dR68yGedMc7R6cw8ww'
+                  target='_blank'
+                  className='btn-primary btn'
+                >
+                  Manage Billing
+                </a>
+              ) : (
+                <StripePricingTable />
+              )}
+            </div>
+          )}
         </Container>
       </main>
       <Footer />

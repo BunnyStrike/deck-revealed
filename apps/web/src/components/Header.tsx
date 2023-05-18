@@ -77,12 +77,12 @@ export function Header() {
                 alt='Revealed Logo'
               />
             </Link>
-            <div className='hidden lg:flex lg:gap-10'>
+            <div className='hidden sm:flex sm:gap-10'>
               <NavLinks />
             </div>
           </div>
           <div className='flex items-center gap-6'>
-            <Popover className='lg:hidden'>
+            <Popover className='sm:hidden'>
               {({ open }) => (
                 <>
                   <Popover.Button
@@ -151,7 +151,7 @@ export function Header() {
               <Button
                 href='/account'
                 variant='outline'
-                className='hidden lg:block'
+                className='hidden sm:block'
               >
                 Account
               </Button>
@@ -159,12 +159,12 @@ export function Header() {
               <Button
                 href='/login'
                 variant='outline'
-                className='hidden lg:block'
+                className='hidden sm:block'
               >
                 Log in
               </Button>
             )}
-            <Button href='Install Revealed.desktop' className='hidden lg:block'>
+            <Button href='Install Revealed.desktop' className='hidden sm:block'>
               Download
             </Button>
           </div>
