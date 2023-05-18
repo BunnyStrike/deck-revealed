@@ -6,10 +6,10 @@ export function NavLinks({ footer = false }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   const links = [
-    ['Features', '#features'],
+    ['Features', '/#features'],
     // ['Reviews', '#reviews'],
-    ['Pricing', '#pricing'],
-    ['FAQs', '#faqs'],
+    ['Pricing', '/#pricing'],
+    ['FAQs', '/#faqs'],
     footer ? ['Privacy Policy', '/privacy-policy'] : [],
   ].map(([label, href], index) => (
     <Link
