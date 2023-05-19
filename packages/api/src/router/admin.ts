@@ -16,7 +16,11 @@ export const adminRouter = createTRPCRouter({
     }
   }),
   syncAuth: protectedProcedure.mutation(async ({ ctx }) => {
-    const { prisma } = ctx
+    const { prisma, isAdmin } = ctx
+
+    if (!isAdmin) {
+      throw new Error('Unauthorized')
+    }
 
     const { data, error } = await createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',

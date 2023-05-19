@@ -29,7 +29,6 @@ export const api = createTRPCNext<AppRouter>({
           async headers() {
             const session = await supabaseClientGlobal.auth.getSession()
             const token = session.data.session?.access_token
-            console.log(token)
             if (!token) return {}
             return {
               Authorization: `Bearer ${token}`,
