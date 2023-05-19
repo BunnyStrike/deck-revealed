@@ -21,26 +21,17 @@ export function MarketingRegisterPage() {
   const { mutateAsync: createBillingPortalSession } =
     api.stripe.createBillingPortalSession.useMutation()
   const { push } = useRouter()
+  const { mutate: userUpsert } = api.user.upsert.useMutation()
 
-  const createCheckout = async () => {
-    const { checkoutUrl } = await createCheckoutSession()
-    if (checkoutUrl) {
-      void push(checkoutUrl)
+  useEffect(() => {
+    if (user?.id) {
+      userUpsert({
+        id: user.id,
+        email: user.email,
+      })
+      void router.push('/account?tab=billing')
     }
-  }
-
-  const createBillingPortal = async () => {
-    const { billingPortalUrl } = await createBillingPortalSession()
-    if (billingPortalUrl) {
-      void push(billingPortalUrl)
-    }
-  }
-
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     router.push('/')
-  //   }
-  // }, [user])
+  }, [user])
 
   return (
     <>

@@ -45,7 +45,10 @@ export const userRouter = createTRPCRouter({
       const { supabase, isAdmin, user } = ctx
       const { id, name, email, role } = input
 
-      if ((user?.id !== id && role !== 'ADMIN') || !isAdmin) {
+      if (
+        (user?.id !== id && role !== 'ADMIN') ||
+        (user?.id !== id && !isAdmin)
+      ) {
         throw new Error('Unauthorized')
       }
 

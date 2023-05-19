@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 
+import { api } from '~/utils/api'
 // import { supabaseClient } from '~/utils/database'
 import { AuthLayout } from '~/components/AuthLayout'
 import { Button } from '~/components/Button'
@@ -15,9 +16,15 @@ export function MarketingLoginPage() {
   const router = useRouter()
   const supabaseClient = useSupabaseClient()
 
+  const { mutate: userUpsert } = api.user.upsert.useMutation()
+
   useEffect(() => {
     if (user?.id) {
-      void router.push('/')
+      userUpsert({
+        id: user.id,
+        email: user.email,
+      })
+      void router.push('/account')
     }
   }, [user])
 
