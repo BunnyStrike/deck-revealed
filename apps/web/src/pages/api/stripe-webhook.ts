@@ -21,6 +21,8 @@ export const config = {
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET
 
+console.log('webhookSecret', webhookSecret)
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
