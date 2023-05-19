@@ -77,7 +77,9 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
     // Supabase API URL - env var exported by default.
     process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
     // Supabase API ANON KEY - env var exported by default.
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
+    process.env.SUPABASE_SERVICE_ROLE_KEY ??
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+      '',
     // Create client with Auth context of the user that called the function.
     // This way your row-level-security (RLS) policies are applied.
     {

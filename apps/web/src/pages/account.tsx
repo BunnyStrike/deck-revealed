@@ -25,8 +25,6 @@ export default function AccountPage() {
 
   const secondaryNavigation = [{ name: 'Overview' }, { name: 'Billing' }]
 
-  console.log(user?.app_metadata)
-
   if (user?.app_metadata?.role === 'ADMIN') {
     secondaryNavigation.push({
       name: 'Admin',

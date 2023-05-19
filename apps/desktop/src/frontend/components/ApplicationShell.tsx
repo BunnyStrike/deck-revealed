@@ -21,7 +21,7 @@ import { supabaseClient } from '../utils/database'
 import { SidebarMenu } from './SidebarMenu'
 
 const navigation = [
-  { name: 'Home', link: '/', icon: HomeIcon },
+  { name: 'Home', link: '/home', icon: HomeIcon },
   { name: 'Apps', link: '/apps', icon: IconApps },
   { name: 'Games', link: '/games', icon: IconDeviceGamepad2 },
   {

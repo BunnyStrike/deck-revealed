@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
@@ -41,12 +42,12 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { supabase, isAdmin } = ctx
+      const { supabase, isAdmin, user } = ctx
       const { id, name, email, role } = input
-      console.log(isAdmin)
-      // if (!isAdmin) {
-      //   throw new Error('Unauthorized')
-      // }
+
+      if ((user?.id !== id && role !== 'ADMIN') || !isAdmin) {
+        throw new Error('Unauthorized')
+      }
 
       await ctx.prisma.user.upsert({
         where: { id },
@@ -56,9 +57,17 @@ export const userRouter = createTRPCRouter({
 
       if (id) {
         try {
-          await supabase?.auth.admin.updateUserById(id, {
+          const { error } = await createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+            process.env.SUPABASE_SERVICE_ROLE_KEY ??
+              process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+              ''
+          ).auth.admin.updateUserById(id, {
             app_metadata: { role },
           })
+          if (error) {
+            throw new Error("Couldn't update user")
+          }
         } catch (error) {
           throw new Error("Couldn't update user")
         }
@@ -86,7 +95,12 @@ export const userRouter = createTRPCRouter({
         throw new Error('Unauthorized')
       }
 
-      await supabase?.auth.admin.updateUserById(userId, {
+      await createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+        process.env.SUPABASE_SERVICE_ROLE_KEY ??
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+          ''
+      )?.auth.admin.updateUserById(userId, {
         app_metadata: { role },
       })
       return ctx.prisma.user.update({ where: { id: userId }, data: { role } })
@@ -105,7 +119,12 @@ export const userRouter = createTRPCRouter({
 
       // TODO: add stripe logic here
 
-      await supabase?.auth.admin.updateUserById(userId, {
+      await createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+        process.env.SUPABASE_SERVICE_ROLE_KEY ??
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+          ''
+      )?.auth.admin.updateUserById(userId, {
         app_metadata: { role },
       })
       return ctx.prisma.user.update({ where: { id: userId }, data: { role } })
@@ -148,10 +167,13 @@ export const userRouter = createTRPCRouter({
     return data
   }),
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    const { isAdmin = false, user } = ctx
     const id = input
-    if (id === ctx.user?.id) {
+
+    if (user?.id !== id || !isAdmin) {
       throw new Error('Unauthorized')
     }
+
     return ctx.prisma.user.delete({ where: { id } })
   }),
 })
