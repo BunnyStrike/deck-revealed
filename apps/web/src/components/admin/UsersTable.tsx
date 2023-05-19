@@ -20,30 +20,35 @@ function classNames(...classes: string[]) {
 }
 
 export function UsersTable() {
-  const { data: users = [], error, isLoading } = api.user.all.useQuery()
+  const { data: users = [], error, isLoading, refetch } = api.user.all.useQuery()
+  const { mutateAsync: syncAuth } = api.admin.syncAuth.useMutation()
   const checkbox = useRef<any>()
   const [checked, setChecked] = useState(false)
   const [indeterminate, setIndeterminate] = useState(false)
-  const [selectedPeople, setSelectedPeople] = useState<any>([])
+  const [selectedUsers, setSelectedUsers] = useState<any>([])
   const [editUser, setEditUser] = useState<User | undefined>(undefined)
 
   useLayoutEffect(() => {
     const isIndeterminate =
-      selectedPeople.length > 0 && selectedPeople.length < users.length
-    setChecked(selectedPeople.length === users.length)
+      selectedUsers.length > 0 && selectedUsers.length < users.length
+    setChecked(selectedUsers.length === users.length)
     setIndeterminate(isIndeterminate)
     checkbox.current.indeterminate = isIndeterminate
-  }, [selectedPeople])
+  }, [selectedUsers, users.length])
 
   function toggleAll() {
-    setSelectedPeople(checked || indeterminate ? [] : users)
+    setSelectedUsers(checked || indeterminate ? [] : users)
     setChecked(!checked && !indeterminate)
     setIndeterminate(false)
   }
 
   const handleEdit = (user: any) => {
-    console.log('Edit', user)
     setEditUser(user)
+  }
+
+  const handleSync = async () => {
+    await syncAuth()
+    await refetch()
   }
 
   return (
@@ -58,17 +63,20 @@ export function UsersTable() {
             email and role.
           </p>
         </div>
-        <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
-          <button type='button' className='btn-primary btn'>
-            Add user
+        <div className='mt-4 flex items-center justify-center gap-1 sm:ml-16 sm:mt-0'>
+          <button type='button' className='btn-secondary btn-md btn' onClick={handleSync}>
+            Sync users
           </button>
+          {/* <button type='button' className='btn-primary btn-md btn'>
+            Add user
+          </button> */}
         </div>
       </div>
       <div className='mt-8 flow-root'>
         <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
             <div className='relative'>
-              {selectedPeople.length > 0 && (
+              {selectedUsers.length > 0 && (
                 <div className='absolute left-14 top-0 flex h-12 items-center space-x-3  sm:left-12'>
                   <button type='button' className='btn-info btn-sm btn'>
                     Bulk edit
@@ -122,25 +130,23 @@ export function UsersTable() {
                     <tr
                       key={user.id}
                       className={
-                        selectedPeople.includes(user)
-                          ? 'bg-gray-300'
-                          : undefined
+                        selectedUsers.includes(user) ? 'bg-gray-300' : undefined
                       }
                     >
                       <td className='relative px-7 sm:w-12 sm:px-6'>
-                        {selectedPeople.includes(user) && (
+                        {selectedUsers.includes(user) && (
                           <div className='absolute inset-y-0 left-0 w-0.5 bg-indigo-600' />
                         )}
                         <input
                           type='checkbox'
                           className='absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600'
                           value={user.id}
-                          checked={selectedPeople.includes(user)}
+                          checked={selectedUsers.includes(user)}
                           onChange={(e) =>
-                            setSelectedPeople(
+                            setSelectedUsers(
                               e.target.checked
-                                ? [...selectedPeople, user]
-                                : selectedPeople.filter((p: any) => p !== user)
+                                ? [...selectedUsers, user]
+                                : selectedUsers.filter((p: any) => p !== user)
                             )
                           }
                         />
@@ -148,7 +154,7 @@ export function UsersTable() {
                       <td
                         className={classNames(
                           'whitespace-nowrap py-4 pr-3 text-sm font-medium',
-                          selectedPeople.includes(user)
+                          selectedUsers.includes(user)
                             ? 'text-indigo-600'
                             : 'text-gray-900'
                         )}
