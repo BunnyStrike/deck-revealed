@@ -228,6 +228,7 @@ const execOptions = {
 }
 
 const defaultFolders = [
+  revealedFolder,
   revealedGamesConfigPath,
   revealedIconFolder,
   imagesCachePath,
