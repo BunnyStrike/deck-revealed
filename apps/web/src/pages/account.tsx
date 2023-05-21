@@ -35,10 +35,10 @@ export default function AccountPage() {
     router.query.tab === 'billing' && setCurrentTab(1)
   }, [router.query])
 
-  const handleCheckout = async () => {
-    const res = await createCheckoutSession()
-    console.log(res)
-  }
+  // const handleCheckout = async () => {
+  //   const res = await createCheckoutSession()
+  //   console.log(res)
+  // }
 
   return (
     <>

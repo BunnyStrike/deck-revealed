@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import clsx from 'clsx'
 
+import { api } from '~/utils/api'
 import { Button } from '~/components/Button'
 import { Container } from '~/components/Container'
 import { Logomark } from '~/components/Logo'
@@ -202,6 +203,21 @@ function Plan({
 
 export function Pricing() {
   const [activePeriod, setActivePeriod] = useState('Monthly')
+  const { mutateAsync: createCheckoutSession } =
+    api.stripe.createCheckoutSession.useMutation()
+
+  const redirectToCustomerPortal = async () => {
+    const { checkoutUrl } = await createCheckoutSession({
+      priceId: 'price_1NAIj4E527sTmukyftzTAs3E',
+      mode: 'payment',
+    })
+    // 10/m - price_1NAIjbE527sTmukyO0NLM0Ab
+    // 100/y - price_1NAIjbE527sTmukyAXlVvbZm
+
+    if (checkoutUrl) {
+      window.location.assign(checkoutUrl)
+    }
+  }
 
   return (
     <section
@@ -268,6 +284,8 @@ export function Pricing() {
             </div>
           </div>
         </div> */}
+
+        <button onClick={() => void redirectToCustomerPortal()}>Test Sub</button>
 
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3'>
           {plans.map((plan) => (
