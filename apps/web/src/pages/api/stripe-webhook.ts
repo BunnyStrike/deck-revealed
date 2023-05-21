@@ -33,7 +33,7 @@ export default async function handler(
     const signature = req.headers['stripe-signature']
 
     let event: Stripe.Event
-    stripe.webhooks.
+
     try {
       event = stripe.webhooks.constructEvent(
         buf.toString(),
