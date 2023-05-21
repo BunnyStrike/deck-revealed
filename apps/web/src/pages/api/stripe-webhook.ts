@@ -1,14 +1,14 @@
 import { type Readable } from 'node:stream'
 import type { NextApiRequest, NextApiResponse } from 'next'
 // import { buffer } from 'micro'
-// import getRawBody from 'raw-body'
-import Stripe from 'stripe'
+import getRawBody from 'raw-body'
+import type Stripe from 'stripe'
 
 import {
   handleInvoicePaid,
   handleSubscriptionCanceled,
   handleSubscriptionCreatedOrUpdated,
-  // stripe,
+  stripe,
 } from '@revealed/api'
 import { prisma } from '@revealed/db'
 
@@ -34,16 +34,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    const buf = await buffer(req)
+    // const buf = await buffer(req)
+    const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
     const webhookSecret =
       process.env.STRIPE_WEBHOOK_SECRET ??
       process.env.STRIPE_WEBHOOK_SECRET_LIVE
-
-    const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SK ?? '', {
-      // @ts-ignore
-      apiVersion: null,
-    }) as any
 
     let event: Stripe.Event
 
@@ -51,7 +47,9 @@ export default async function handler(
       if (!signature || !webhookSecret) return
       event = stripe.webhooks.constructEvent(buf, signature, webhookSecret)
     } catch (err: any) {
-      console.log(`❌ Error message: ${err.message}`)
+      console.log(
+        `❌ Error message: ${webhookSecret} ${signature} ${err.message}`
+      )
       return res.status(400).send(`Webhook Error: ${err.message}`)
     }
 
