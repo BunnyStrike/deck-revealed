@@ -40,7 +40,7 @@ export default async function handler(
         webhookSecret
       )
 
-      console.log('event', event)
+      console.info('event', event)
 
       // Handle the event
       switch (event.type) {
