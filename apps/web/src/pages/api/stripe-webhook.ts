@@ -14,11 +14,11 @@ import { prisma } from '@revealed/db'
 import { env } from '~/env.mjs'
 
 // Stripe requires the raw body to construct the event.
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// }
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET
 
@@ -39,8 +39,6 @@ export default async function handler(
         signature?.toString() ?? '',
         webhookSecret
       )
-
-      res.status(400).send(event)
 
       // Handle the event
       switch (event.type) {
