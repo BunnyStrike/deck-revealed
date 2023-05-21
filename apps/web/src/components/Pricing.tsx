@@ -209,7 +209,7 @@ export function Pricing() {
   const redirectToCustomerPortal = async () => {
     const { checkoutUrl } = await createCheckoutSession({
       priceId: 'price_1NAIj4E527sTmukyftzTAs3E',
-      mode: 'payment',
+      // mode: 'payment',
     })
     // 10/m - price_1NAIjbE527sTmukyO0NLM0Ab
     // 100/y - price_1NAIjbE527sTmukyAXlVvbZm
@@ -285,7 +285,9 @@ export function Pricing() {
           </div>
         </div> */}
 
-        <button onClick={() => void redirectToCustomerPortal()}>Test Sub</button>
+        <button onClick={() => void redirectToCustomerPortal()}>
+          Test Sub
+        </button>
 
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3'>
           {plans.map((plan) => (
