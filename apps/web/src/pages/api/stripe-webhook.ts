@@ -1,5 +1,6 @@
+import { type Readable } from 'node:stream'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { buffer } from 'micro'
+// import { buffer } from 'micro'
 // import getRawBody from 'raw-body'
 import type Stripe from 'stripe'
 
@@ -14,13 +15,19 @@ import { prisma } from '@revealed/db'
 import { env } from '~/env.mjs'
 
 // Stripe requires the raw body to construct the event.
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// }
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
-const webhookSecret = env.STRIPE_WEBHOOK_SECRET
+async function buffer(readable: Readable) {
+  const chunks = []
+  for await (const chunk of readable) {
+    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
+  }
+  return Buffer.concat(chunks)
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,10 +35,20 @@ export default async function handler(
 ) {
   if (req.method === 'POST') {
     const buf = await buffer(req)
-    // const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
+    const webhookSecret =
+      process.env.STRIPE_WEBHOOK_SECRET ??
+      process.env.STRIPE_WEBHOOK_SECRET_LIVE
 
     let event: Stripe.Event
+
+    try {
+      if (!signature || !webhookSecret) return
+      event = stripe.webhooks.constructEvent(buf, signature, webhookSecret)
+    } catch (err: any) {
+      console.log(`❌ Error message: ${err.message}`)
+      return res.status(400).send(`Webhook Error: ${err.message}`)
+    }
 
     try {
       // event = stripe.webhooks.constructEvent(
@@ -106,7 +123,7 @@ export default async function handler(
       //     },
       //   })
 
-      res.json({ received: true, event })
+      res.json({ received: true })
     } catch (err) {
       res.status(400).send(err)
       return
