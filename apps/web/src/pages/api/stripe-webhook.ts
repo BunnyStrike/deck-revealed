@@ -27,8 +27,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    console.log(req)
-    const buf = await buffer(req.body)
+    const buf = await buffer(req)
     // const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
 
@@ -37,7 +36,7 @@ export default async function handler(
     try {
       event = stripe.webhooks.constructEvent(
         buf.toString(),
-        signature as string,
+        signature?.toString() ?? '',
         webhookSecret
       )
 
