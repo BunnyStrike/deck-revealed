@@ -3,6 +3,17 @@ import { z } from 'zod'
 import { getOrCreateStripeCustomerIdForUser } from '../stripe/stripe-webhook-handlers'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
+/* 
+  Stripe Test Cards
+
+  https://stripe.com/docs/testing#cards
+
+  4242 4242 4242 4242	Visa	Any 3 digits	Any future date
+  4000 0025 0000 3155	Visa (debit)	Any 3 digits	Any future date
+  5555 5555 5555 4444	Mastercard	Any 3 digits	Any future date
+
+*/
+
 export const stripeRouter = createTRPCRouter({
   createCheckoutSession: protectedProcedure
     .input(
@@ -56,13 +67,25 @@ export const stripeRouter = createTRPCRouter({
         ],
         success_url: `${baseUrl}/account?checkoutSuccess=true`,
         cancel_url: `${baseUrl}/account?checkoutCanceled=true`,
-        subscription_data: {
-          trial_from_plan: isTrial,
-          metadata: {
-            userId: user?.id,
-            ...metadata,
-          },
-        },
+        payment_intent_data:
+          mode === 'payment'
+            ? {
+                metadata: {
+                  userId: user?.id,
+                  ...metadata,
+                },
+              }
+            : undefined,
+        subscription_data:
+          mode === 'subscription'
+            ? {
+                trial_from_plan: isTrial,
+                metadata: {
+                  userId: user?.id,
+                  ...metadata,
+                },
+              }
+            : undefined,
       })
 
       if (!checkoutSession) {
