@@ -38,18 +38,7 @@ export function MarketingRegisterPage() {
       <Head>
         <title>Revealed</title>
       </Head>
-      <AuthLayout
-        title='Sign up for an account'
-        // subtitle={
-        //   <>
-        //     Already registered?{' '}
-        //     <Link href='/login' className='text-cyan-600'>
-        //       Sign in
-        //     </Link>{' '}
-        //     to your account.
-        //   </>
-        // }
-      >
+      <AuthLayout title='Sign up for an account'>
         {/* <form>
           <div className='grid grid-cols-2 gap-6'>
             <TextField
