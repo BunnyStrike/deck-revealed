@@ -34,11 +34,11 @@ export default async function handler(
     let event: Stripe.Event
 
     try {
-      event = stripe.webhooks.constructEvent(
-        buf,
-        signature as string,
-        webhookSecret
-      )
+      // event = stripe.webhooks.constructEvent(
+      //   buf,
+      //   signature as string,
+      //   webhookSecret
+      // )
 
       //   // Handle the event
       //   switch (event.type) {
