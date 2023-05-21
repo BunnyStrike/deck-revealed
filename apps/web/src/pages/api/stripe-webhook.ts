@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { buffer } from 'micro'
+// import { buffer } from 'micro'
+import getRawBody from 'raw-body'
 import type Stripe from 'stripe'
 
 import {
@@ -21,21 +22,23 @@ export const config = {
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET
 
-console.log('webhookSecret', webhookSecret)
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    const buf = await buffer(req)
-    const sig = req.headers['stripe-signature']
+    // const buf = await buffer(req)
+    const buf = await getRawBody(req)
+    const signature = req.headers['stripe-signature']
 
     let event: Stripe.Event
 
     try {
-      console.log(buf, sig as string, webhookSecret)
-      event = stripe.webhooks.constructEvent(buf, sig as string, webhookSecret)
+      event = stripe.webhooks.constructEvent(
+        buf,
+        signature as string,
+        webhookSecret
+      )
 
       // Handle the event
       switch (event.type) {
