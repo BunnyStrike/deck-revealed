@@ -14,11 +14,11 @@ import { prisma } from '@revealed/db'
 import { env } from '~/env.mjs'
 
 // Stripe requires the raw body to construct the event.
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// export const config = {
+//   api: {
+//     bodyParser: false,
+//   },
+// }
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET
 
@@ -27,6 +27,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
+    console.log('req', req)
     const buf = await buffer(req)
     // const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
