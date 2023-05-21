@@ -85,20 +85,19 @@ export const handleSubscriptionCreatedOrUpdated = async ({
   event: Stripe.Event
   prisma: PrismaClient
 }) => {
-  const subscriptionObject = event.data.object as any // as Stripe.Subscription
-  const userId =
-    subscriptionObject.client_reference_id ?? subscriptionObject.metadata.userId
-
-  // update user with subscription data
-  await prisma.user.update({
-    where: {
-      id: userId,
-    },
-    data: {
-      stripeSubscriptionId: subscriptionObject.id,
-      stripeSubscriptionStatus: subscriptionObject.status,
-    },
-  })
+  // const subscriptionObject = event.data.object as any // as Stripe.Subscription
+  // const userId =
+  //   subscriptionObject.client_reference_id ?? subscriptionObject.metadata.userId
+  // // update user with subscription data
+  // await prisma.user.update({
+  //   where: {
+  //     id: userId,
+  //   },
+  //   data: {
+  //     stripeSubscriptionId: subscriptionObject.id,
+  //     stripeSubscriptionStatus: subscriptionObject.status,
+  //   },
+  // })
 }
 
 export const handleSubscriptionCanceled = async ({
