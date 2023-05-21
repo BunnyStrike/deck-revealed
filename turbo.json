@@ -10,11 +10,15 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
-    "db:stage:generate": {
+    "db:dev:generate": {
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },
-    "db:stage:push": {
+    "db:dev:push": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:deploy": {
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     },

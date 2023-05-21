@@ -21,13 +21,13 @@ const seedApps = async () => {
   await prisma.app.createMany({ data: apps })
 }
 
-const seedBootVideos = async () => {
-  const bootVideosJson = fs.readFileSync('./bootVideos.json', {
-    encoding: 'utf-8',
-  })
-  const bootVideos = JSON.parse(bootVideosJson)
-  await prisma.bootVideo.createMany({ data: bootVideos })
-}
+// const seedBootVideos = async () => {
+//   const bootVideosJson = fs.readFileSync('./bootVideos.json', {
+//     encoding: 'utf-8',
+//   })
+//   const bootVideos = JSON.parse(bootVideosJson)
+//   await prisma.bootVideo.createMany({ data: bootVideos })
+// }
 
 seedApps()
-seedBootVideos()
+// seedBootVideos()

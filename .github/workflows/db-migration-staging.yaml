@@ -33,10 +33,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Use Node.js 16.x
+      - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
 
       - uses: pnpm/action-setup@v2.2.2
         with:
@@ -59,8 +59,5 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
-      - name: Generate prisma files
-        run: pnpm prisma generate
-
-      - name: Migrate Database
-        run: pnpm prisma migrate deploy
+      - name: Generate prisma files & Migrate Database
+        run: pnpm db:deploy
