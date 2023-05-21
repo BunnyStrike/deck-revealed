@@ -30,6 +30,8 @@ export default async function handler(
     // const buf = await buffer(req)
     const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
+    console.log('signature', signature)
+    console.log('webhookSecret', webhookSecret)
 
     let event: Stripe.Event
 
