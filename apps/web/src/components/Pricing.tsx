@@ -208,8 +208,8 @@ export function Pricing() {
 
   const redirectToCustomerPortal = async () => {
     const { checkoutUrl } = await createCheckoutSession({
-      priceId: 'price_1NAIj4E527sTmukyftzTAs3E',
-      mode: 'payment',
+      priceId: 'price_1NAIjbE527sTmukyO0NLM0Ab',
+      // mode: 'payment',
     })
     // 10/m - price_1NAIjbE527sTmukyO0NLM0Ab
     // 100/y - price_1NAIjbE527sTmukyAXlVvbZm
