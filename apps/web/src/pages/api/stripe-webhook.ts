@@ -42,8 +42,8 @@ export default async function handler(
 
     try {
       if (!signature || !webhookSecret) return
-      const buf = await getRawBody(req)
-      // const buf = await buffer(req)
+      // const buf = await getRawBody(req)
+      const buf = await buffer(req)
 
       event = stripe.webhooks.constructEvent(buf, signature, webhookSecret)
     } catch (err: any) {
