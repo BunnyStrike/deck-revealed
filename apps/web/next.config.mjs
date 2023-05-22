@@ -10,9 +10,6 @@ const config = {
   experimental: {
     scrollRestoration: true,
   },
-  api: {
-    bodyParser: false,
-  },
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     '@revealed/api',

@@ -1,7 +1,6 @@
 import { type Readable } from 'node:stream'
 import type { NextApiRequest, NextApiResponse } from 'next'
-// import { buffer } from 'micro'
-import getRawBody from 'raw-body'
+import { buffer } from 'micro'
 import type Stripe from 'stripe'
 
 import {
@@ -21,19 +20,12 @@ export const config = {
   },
 }
 
-async function buffer(readable: Readable) {
-  const chunks = []
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
-  }
-  return Buffer.concat(chunks)
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
+    const buf = await buffer(req)
     const signature = req.headers['stripe-signature']
     // env.STRIPE_WEBHOOK_SECRET
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
@@ -42,9 +34,6 @@ export default async function handler(
 
     try {
       if (!signature || !webhookSecret) return
-      // const buf = await getRawBody(req)
-      const buf = await buffer(req)
-
       event = stripe.webhooks.constructEvent(buf, signature, webhookSecret)
     } catch (err: any) {
       console.log(
