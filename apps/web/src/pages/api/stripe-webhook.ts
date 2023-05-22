@@ -34,8 +34,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'POST') {
-    // const buf = await buffer(req)
-    const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
     // env.STRIPE_WEBHOOK_SECRET
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
@@ -44,6 +42,9 @@ export default async function handler(
 
     try {
       if (!signature || !webhookSecret) return
+      const buf = await getRawBody(req)
+      // const buf = await buffer(req)
+
       event = stripe.webhooks.constructEvent(buf, signature, webhookSecret)
     } catch (err: any) {
       console.log(
@@ -51,7 +52,7 @@ export default async function handler(
       )
       return res
         .status(400)
-        .send(`Webhook Error: ${Object.keys(req.headers)} ${err.message}`)
+        .send(`Webhook Error: ${req.headers.toString()} ${err.message}`)
     }
 
     try {
