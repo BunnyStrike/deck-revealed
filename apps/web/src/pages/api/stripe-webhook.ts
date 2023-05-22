@@ -51,9 +51,7 @@ export default async function handler(
       )
       return res
         .status(400)
-        .send(
-          `Webhook Error: ${webhookSecret} ${signature} ${req.headers} ${err.message}`
-        )
+        .send(`Webhook Error: ${Object.keys(req.headers)} ${err.message}`)
     }
 
     try {
