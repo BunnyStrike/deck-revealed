@@ -1,6 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { clerkClient, withAuth } from '@clerk/nextjs/dist/api'
-import { getAuth } from '@clerk/nextjs/server'
 import { createNextApiHandler } from '@trpc/server/adapters/next'
 
 import { appRouter, createTRPCContext } from '@revealed/api'

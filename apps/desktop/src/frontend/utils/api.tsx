@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useUser } from '@supabase/auth-helpers-react'
 // import { httpBatchLink, loggerLink } from '@trpc/client'
-// import { useSession } from '@clerk/clerk-react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCReact, httpBatchLink, splitLink } from '@trpc/react-query'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'

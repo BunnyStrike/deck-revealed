@@ -2,8 +2,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 // import type { Database } from '@/lib/database.types'
 import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
-// import { getAuth, withClerkMiddleware } from '@clerk/nextjs/server'
-
 // export default withClerkMiddleware(() => {
 //   return NextResponse.next()
 // })

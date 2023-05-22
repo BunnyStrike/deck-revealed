@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import * as clerk from '@clerk/clerk-react'
 import * as authReact from '@supabase/auth-helpers-react'
 import { type Session } from '@supabase/supabase-js'
 

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-// import { useUser } from '@clerk/clerk-react'
 import { useAtom } from 'jotai'
 
 import { Container } from '../components'

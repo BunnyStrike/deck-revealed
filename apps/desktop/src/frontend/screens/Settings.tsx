@@ -1,5 +1,4 @@
 import { Fragment, useState } from 'react'
-// import { SignedIn, SignedOut, UserProfile } from '@clerk/clerk-react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import {

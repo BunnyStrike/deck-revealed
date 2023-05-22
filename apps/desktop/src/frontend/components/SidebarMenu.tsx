@@ -1,6 +1,4 @@
 import React from 'react'
-// import { UserButton, useUser } from '@clerk/clerk-react'
-import { dark } from '@clerk/themes'
 import { Disclosure } from '@headlessui/react'
 import { ChevronRightIcon } from '@radix-ui/react-icons'
 import { IconSteam } from '@tabler/icons-react'

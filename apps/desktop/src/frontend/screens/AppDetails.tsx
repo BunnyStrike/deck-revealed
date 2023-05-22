@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect } from 'react'
-// import { useUser } from '@clerk/clerk-react'
 import { Tab } from '@headlessui/react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import classNames from 'classnames'

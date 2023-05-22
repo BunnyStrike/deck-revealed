@@ -37,6 +37,7 @@ export default async function handler(
     // const buf = await buffer(req)
     const buf = await getRawBody(req)
     const signature = req.headers['stripe-signature']
+    // env.STRIPE_WEBHOOK_SECRET
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
     let event: Stripe.Event
@@ -52,12 +53,6 @@ export default async function handler(
     }
 
     try {
-      event = stripe.webhooks.constructEvent(
-        buf,
-        signature as string,
-        webhookSecret
-      )
-
       // Handle the event
       switch (event.type) {
         case 'invoice.paid':

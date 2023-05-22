@@ -1,6 +1,5 @@
 import './list-card.css'
 import React from 'react'
-// import { useUser } from '@clerk/clerk-react'
 import { DownloadIcon, PlayIcon } from '@radix-ui/react-icons'
 import { useUser } from '@supabase/auth-helpers-react'
 import {

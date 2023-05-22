@@ -1,5 +1,4 @@
 import { useState } from 'react'
-// import { useUser } from '@clerk/clerk-react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useDebounce, useUser } from 'frontend/hooks'
 import {

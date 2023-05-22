@@ -8,7 +8,6 @@
  */
 
 import { type NextApiRequest, type NextApiResponse } from 'next'
-import * as clerk from '@clerk/clerk-sdk-node'
 import {
   createClient,
   type SupabaseClient,

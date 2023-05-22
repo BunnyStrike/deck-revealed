@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useSession } from '@clerk/nextjs'
 
 import { supabaseClient } from '../utils/database'
 
