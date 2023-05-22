@@ -49,7 +49,11 @@ export default async function handler(
       console.log(
         `❌ Error message: ${webhookSecret} ${signature} ${err.message}`
       )
-      return res.status(400).send(`Webhook Error: ${err.message}`)
+      return res
+        .status(400)
+        .send(
+          `Webhook Error: ${webhookSecret} ${signature} ${req.headers} ${err.message}`
+        )
     }
 
     try {
