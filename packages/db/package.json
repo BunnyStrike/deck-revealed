@@ -17,7 +17,7 @@
     "db:seed": "ts-node prisma/seed.ts",
     "db:deploy": "pnpm prisma generate && pnpm prisma migrate deploy",
     "db:backupToLocal": "ts-node prisma/backup.ts",
-    "dev": "pnpm db:generate && pnpm with-dev-env prisma studio --port 5556",
+    "dev": "pnpm db:dev:generate && pnpm with-dev-env prisma studio --port 5556",
     "with-env": "dotenv -e ../../.env --",
     "with-dev-env": "dotenv -e ../../.env.local --"
   },
