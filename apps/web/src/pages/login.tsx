@@ -26,7 +26,7 @@ export function MarketingLoginPage() {
       })
       void router.push('/account')
     }
-  }, [user])
+  }, [router, user, userUpsert])
 
   return (
     <>

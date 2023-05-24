@@ -31,7 +31,7 @@ export function MarketingRegisterPage() {
       })
       void router.push('/account?tab=billing')
     }
-  }, [user])
+  }, [router, user, userUpsert])
 
   return (
     <>

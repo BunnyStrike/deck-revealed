@@ -20,7 +20,12 @@ function classNames(...classes: string[]) {
 }
 
 export function UsersTable() {
-  const { data: users = [], error, isLoading, refetch } = api.user.all.useQuery()
+  const {
+    data: users = [],
+    error,
+    isLoading,
+    refetch,
+  } = api.user.all.useQuery()
   const { mutateAsync: syncAuth } = api.admin.syncAuth.useMutation()
   const checkbox = useRef<any>()
   const [checked, setChecked] = useState(false)
@@ -64,7 +69,11 @@ export function UsersTable() {
           </p>
         </div>
         <div className='mt-4 flex items-center justify-center gap-1 sm:ml-16 sm:mt-0'>
-          <button type='button' className='btn-secondary btn-md btn' onClick={handleSync}>
+          <button
+            type='button'
+            className='btn-secondary btn-md btn'
+            onClick={() => void handleSync()}
+          >
             Sync users
           </button>
           {/* <button type='button' className='btn-primary btn-md btn'>

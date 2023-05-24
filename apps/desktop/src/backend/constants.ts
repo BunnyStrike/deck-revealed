@@ -284,10 +284,8 @@ export const supportedLanguages = [
 
 export function createNecessaryFolders() {
   necessaryFoldersByPlatform[platform()].forEach((folder: string) => {
-    console.log(`Checking: ${folder}`)
     if (!existsSync(folder)) {
       mkdirSync(folder, { recursive: true })
-      console.log(`Created: ${folder}`)
     }
   })
 }

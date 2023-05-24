@@ -64,7 +64,7 @@ export const processZoomForScreen = (zoomFactor: number) => {
   }
 }
 
-const init = async () => {
+const init = () => {
   createNecessaryFolders()
   configStore.set('userHome', userHome)
   GlobalConfig.get()
@@ -73,7 +73,6 @@ const init = async () => {
 }
 
 export async function initializeWindow(): Promise<BrowserWindow> {
-  await init()
   const mainWindow = createMainWindow()
 
   if ((isSteamDeckGameMode || isCLIFullscreen) && !isCLINoGui) {
@@ -168,6 +167,8 @@ export async function initializeWindow(): Promise<BrowserWindow> {
 }
 
 export const initializeApp = () => {
+  init()
+
   if (!gotTheLock) {
     logInfo('Revealed is already running, quitting this instance')
     app.quit()

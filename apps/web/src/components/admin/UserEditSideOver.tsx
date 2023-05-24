@@ -60,7 +60,7 @@ export function UserEditSideOver({ user, setClose }: SideOverProps) {
                 <Dialog.Panel className='pointer-events-auto w-screen max-w-md'>
                   <form
                     className='flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl'
-                    onSubmit={handleSave}
+                    onSubmit={(e) => void handleSave(e)}
                   >
                     <div className='h-0 flex-1 overflow-y-auto'>
                       <div className='bg-primary px-4 py-6 sm:px-6'>
