@@ -13,17 +13,17 @@
   "dependencies": {
     "@revealed/auth": "^0.1.0",
     "@revealed/db": "^0.1.0",
-    "@trpc/client": "^10.20.0",
-    "@trpc/server": "^10.20.0",
-    "superjson": "1.9.1",
-    "@supabase/supabase-js": "^2.21.0",
+    "@trpc/client": "^10.28.0",
+    "@trpc/server": "^10.28.0",
+    "superjson": "1.12.3",
+    "@supabase/supabase-js": "^2.23.0",
     "howlongtobeat": "^1.7.0",
     "stripe": "^11.13.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@revealed/eslint-config": "^0.1.0",
-    "eslint": "^8.38.0",
+    "eslint": "^8.41.0",
     "typescript": "^5.0.4"
   }
 }
