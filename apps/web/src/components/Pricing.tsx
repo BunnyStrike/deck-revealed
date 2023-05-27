@@ -201,7 +201,11 @@ function Plan({
   )
 }
 
-export function Pricing() {
+export function Pricing({
+  hideMarketing = false,
+}: {
+  hideMarketing?: boolean
+}) {
   const [activePeriod, setActivePeriod] = useState('Monthly')
   const { mutateAsync: createCheckoutSession } =
     api.stripe.createCheckoutSession.useMutation()
@@ -226,18 +230,20 @@ export function Pricing() {
       className='border-t border-gray-200 bg-gray-300 py-20 sm:py-32'
     >
       <Container>
-        <div className='mx-auto max-w-2xl text-center'>
-          <h2
-            id='pricing-title'
-            className='text-3xl font-medium tracking-tight text-gray-900'
-          >
-            Start Free. Upgrade Anytime.
-          </h2>
-          <p className='mt-2 text-lg text-gray-600'>
-            You will find joy at any level, but the Pro Plus options give you
-            everything.
-          </p>
-        </div>
+        {!hideMarketing && (
+          <div className='mx-auto max-w-2xl text-center'>
+            <h2
+              id='pricing-title'
+              className='text-3xl font-medium tracking-tight text-gray-900'
+            >
+              Start Free. Upgrade Anytime.
+            </h2>
+            <p className='mt-2 text-lg text-gray-600'>
+              You will find joy at any level, but the Pro Plus options give you
+              everything.
+            </p>
+          </div>
+        )}
 
         {/* <div className='mt-8 flex justify-center'>
           <div className='relative'>
@@ -284,10 +290,10 @@ export function Pricing() {
             </div>
           </div>
         </div> */}
-
+        {/* 
         <button onClick={() => void redirectToCustomerPortal()}>
           Test Sub
-        </button>
+        </button> */}
 
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3'>
           {plans.map((plan) => (

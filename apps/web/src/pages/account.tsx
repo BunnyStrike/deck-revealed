@@ -10,6 +10,7 @@ import { api } from '~/utils/api'
 import { Container } from '~/components/Container'
 import { Footer } from '~/components/Footer'
 import { Header } from '~/components/Header'
+import { Pricing } from '~/components/Pricing'
 import { StripePricingTable } from '~/components/StripePricingTable'
 import AdminScreen from '~/components/admin/AdminScreen'
 import { supabaseClientGlobal } from './_app'
@@ -20,6 +21,8 @@ export default function AccountPage() {
   const user = useUser()
   const { mutateAsync: createCheckoutSession } =
     api.stripe.createCheckoutSession.useMutation()
+  const { mutateAsync: createBillingPortalSession } =
+    api.stripe.createBillingPortalSession.useMutation()
 
   const { data: subscriptionStatus } = api.user.subscriptionStatus.useQuery()
 
@@ -34,6 +37,14 @@ export default function AccountPage() {
   useEffect(() => {
     router.query.tab === 'billing' && setCurrentTab(1)
   }, [router.query])
+
+  const handleCreateBillingPortalSession = async () => {
+    const { billingPortalUrl } = await createBillingPortalSession()
+
+    if (billingPortalUrl) {
+      window.location.assign(billingPortalUrl)
+    }
+  }
 
   // const handleCheckout = async () => {
   //   const res = await createCheckoutSession()
@@ -96,15 +107,15 @@ export default function AccountPage() {
               <p>Upgrade your plan today!</p>
 
               {!!subscriptionStatus ? (
-                <a
-                  href='https://billing.stripe.com/p/login/dR68yGedMc7R6cw8ww'
-                  target='_blank'
+                <button
+                  onClick={() => void handleCreateBillingPortalSession()}
                   className='btn-primary btn'
                 >
                   Manage Billing
-                </a>
+                </button>
               ) : (
-                <StripePricingTable />
+                // <StripePricingTable />
+                <Pricing hideMarketing />
               )}
             </div>
           )}
