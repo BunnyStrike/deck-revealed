@@ -218,7 +218,7 @@ export const appRouter = createTRPCRouter({
       },
     })
 
-    let nextCursor: typeof cursor | undefined = undefined
+    const nextCursor: typeof cursor | undefined = undefined
 
     return apps
   }),
@@ -277,7 +277,14 @@ export const appRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.app.create({ data: input })
+      if (!ctx.user?.id) {
+        throw new Error('Unauthorized')
+      }
+
+      const { isAdmin = false } = ctx
+      const ownerId = isAdmin ? undefined : ctx.user?.id
+
+      return ctx.prisma.app.create({ data: { ...input, ownerId } })
     }),
   update: publicProcedure
     .input(

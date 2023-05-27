@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { Switch } from '@headlessui/react'
 
-import { FormToggle } from '@revealed/ui'
+import { FormButton, FormToggle } from '@revealed/ui'
 
 import { api } from '../../utils/api'
 
@@ -17,11 +17,12 @@ export function SettingsAppSection() {
 
   return (
     <div className=' w-full p-8'>
-      <FormToggle
+      <FormButton
         title='Add Revealed To Steam'
         description='Makes launching the app easier from Game Mode'
-        enabled={isAddedToSteam}
-        setEnabled={() => setEnabled()}
+        disabled={isAddedToSteam}
+        buttonTitle={isAddedToSteam ? 'Already added' : 'Add'}
+        onClick={() => setEnabled()}
       />
       <Switch.Group as='div' className='mt-6 flex items-center justify-between'>
         <span className='flex flex-grow flex-col'>
