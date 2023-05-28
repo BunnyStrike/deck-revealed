@@ -3,17 +3,22 @@ import Link from 'next/link'
 import { useUser } from '@supabase/auth-helpers-react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-export function NavLinks({ footer = false }) {
+export function NavLinksWithUser({ footer = false }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const user = useUser()
 
   const links = [
-    ['Features', '/#features'],
+    ['Overview', '/account?tab=overview'],
     // ['Reviews', '#reviews'],
-    ['Pricing', '/#pricing'],
-    ['FAQs', '/#faqs'],
-    footer ? ['Privacy Policy', '/privacy-policy'] : [],
-  ].map(([label, href], index) => (
+    ['Billing', '/account?tab=billing'],
+    // ['FAQs', '/#faqs'],
+  ]
+
+  if (user?.app_metadata?.role === 'ADMIN') {
+    links.push(['Admin', '/account?tab=admin'])
+  }
+
+  const linksBuilt = links.map(([label, href], index) => (
     <Link
       key={label}
       href={href ?? ''}
@@ -39,5 +44,5 @@ export function NavLinks({ footer = false }) {
     </Link>
   ))
 
-  return <>{links}</>
+  return <>{linksBuilt}</>
 }

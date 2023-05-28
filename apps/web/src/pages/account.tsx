@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
 
-import { Button, FormFieldset } from '@revealed/ui'
+import { Button, FormButton, FormFieldset } from '@revealed/ui'
 
 import { api } from '~/utils/api'
 import { Container } from '~/components/Container'
@@ -35,8 +35,16 @@ export default function AccountPage() {
   }
 
   useEffect(() => {
+    router.query.tab === 'overview' && setCurrentTab(0)
     router.query.tab === 'billing' && setCurrentTab(1)
+    router.query.tab === 'admin' && setCurrentTab(2)
   }, [router.query])
+
+  useEffect(() => {
+    if (!user?.id) {
+      void router.push('/')
+    }
+  }, [router, user])
 
   const handleCreateBillingPortalSession = async () => {
     const { billingPortalUrl } = await createBillingPortalSession()
@@ -63,42 +71,37 @@ export default function AccountPage() {
       <Header />
       <main className='h-full'>
         <Container>
-          <h1 className='leading-1 p-2 text-lg font-semibold text-gray-400'>
-            Account
-          </h1>
-
-          <header>
-            <nav className='flex overflow-x-auto border-b border-t border-white/10 py-4'>
-              <ul
-                role='list'
-                className='flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8'
-              >
-                {secondaryNavigation.map((item, index) => (
-                  <li key={item.name}>
-                    <button
-                      onClick={() => setCurrentTab(index)}
-                      className={currentTab === index ? 'text-primary' : ''}
-                    >
-                      {item.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </header>
           {/* <AdminScreen className='h-full bg-black' /> */}
 
           {currentTab === 0 && (
             <div className='mt-4'>
-              <Link href='/change-password' className='btn-secondary btn'>
-                Change Password
-              </Link>
-              <Button
-                onClick={() => supabaseClientGlobal.auth.signOut()}
-                className='btn-ghost btn'
-              >
-                Sign Out
-              </Button>
+              <FormButton
+                title='Email'
+                description={`${user?.email}`}
+                button={<></>}
+              />
+              <FormButton
+                title='Password'
+                description='********'
+                button={
+                  <Link href='/change-password' className='btn-secondary btn'>
+                    Change
+                  </Link>
+                }
+              />
+
+              <FormButton
+                title='Account'
+                description={`${user?.user_metadata?.role || 'User'}`}
+                button={
+                  <Button
+                    onClick={() => supabaseClientGlobal.auth.signOut()}
+                    className='btn-warning btn'
+                  >
+                    Sign Out
+                  </Button>
+                }
+              />
             </div>
           )}
 

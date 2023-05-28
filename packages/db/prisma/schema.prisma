@@ -70,6 +70,7 @@ model User {
     appPlatforms   UserAppPlatform[]
     modOwner   GameMod[]
     feedback  Feedback[]
+    purchases Purchase[]
     
 }
 
@@ -84,6 +85,8 @@ model StripeEvent {
     created          DateTime
     livemode         Boolean
     pending_webhooks Int
+    
+    purchases Purchase[]
 }
 
 model UserActionApp {
@@ -532,6 +535,55 @@ model Feedback {
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
 
+}
+
+enum ProductInterval {
+    Yearly
+    Monthly
+    OneTime
+}
+
+model Product {
+    id      String @default(cuid())
+    name    String
+    description String?
+    imageUrl    String?
+    features String[] @default([])
+    price Int @default(0)
+    priceId String
+    currency String @default("USD")
+    isPublic Boolean @default(true)
+    isAvailable Boolean @default(true)
+    isFeatured Boolean @default(false)
+
+    interval ProductInterval @default(OneTime)
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+
+    purchases Purchase[]
+    
+    @@id([id, priceId])
+}
+
+model Purchase {
+    id      String @id @default(cuid())
+    user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId  String
+    product Product   @relation(fields: [productId, priceId], references: [id, priceId], onDelete: Cascade)
+    productId  String
+    priceId  String
+
+    coupon String?
+    price Int @default(0)
+
+    invoiceId String?
+
+    stripeEvent StripeEvent? @relation(fields: [stripeEventId], references: [id])
+    stripeEventId String?
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
 }
 
 

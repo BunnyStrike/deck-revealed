@@ -8,6 +8,7 @@ import { Button } from '~/components/Button'
 import { Container } from '~/components/Container'
 import { Logo } from '~/components/Logo'
 import { NavLinks } from '~/components/NavLinks'
+import { NavLinksWithUser } from './NavLinksWithUser'
 
 interface NavLinkProps {
   href?: string
@@ -78,7 +79,7 @@ export function Header() {
               />
             </Link>
             <div className='hidden sm:flex sm:gap-10'>
-              <NavLinks />
+              {!!user?.id ? <NavLinksWithUser /> : <NavLinks />}
             </div>
           </div>
           <div className='flex items-center gap-6'>

@@ -3,7 +3,8 @@ interface FormButtonProps {
   description?: string
   buttonTitle?: string
   disabled?: boolean
-  onClick: () => void
+  button?: React.ReactNode
+  onClick?: () => void
 }
 
 export function FormButton({
@@ -11,6 +12,7 @@ export function FormButton({
   description,
   disabled = false,
   buttonTitle = 'Click',
+  button,
   onClick,
 }: FormButtonProps) {
   return (
@@ -24,13 +26,17 @@ export function FormButton({
           <span className='text-sm text-gray-300'>{description}</span>
         )}
       </span>
-      <button
-        disabled={disabled}
-        className='btn-secondary btn-sm btn'
-        onClick={() => onClick()}
-      >
-        {buttonTitle}
-      </button>
+      {button ? (
+        button
+      ) : (
+        <button
+          disabled={disabled}
+          className='btn-secondary btn-sm btn'
+          onClick={() => onClick?.()}
+        >
+          {buttonTitle}
+        </button>
+      )}
     </div>
   )
 }
