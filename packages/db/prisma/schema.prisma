@@ -586,6 +586,18 @@ model Purchase {
     createdAt DateTime @default(now())
 }
 
+model Updates {
+    id     String @id @default(cuid())
+    title    String
+    content    String
+    downloadUrl     String?
+    coverUrl    String?
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+
+}
+
 
 // TODO: Finish publisher when apps submition is live
 // model Publisher {
