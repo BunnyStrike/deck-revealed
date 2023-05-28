@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { RadioGroup } from '@headlessui/react'
 import clsx from 'clsx'
 
-import { api } from '~/utils/api'
+import { api, type ProductOutput } from '~/utils/api'
 import { Button } from '~/components/Button'
 import { Container } from '~/components/Container'
 import { Logomark } from '~/components/Logo'
@@ -89,26 +90,71 @@ function CheckIcon(props: any) {
 }
 
 interface PlanProps {
-  name: string
-  price: { Monthly: string; Annually: string }
-  description: string
-  button: { label: string; href: string }
-  features: string[]
-  featured?: boolean
-  activePeriod: string // 'Monthly' | 'Annually'
-  logomarkClassName: string
+  // name: string
+  // price: number
+  // description: string
+  // // button: { label: string; href: string }
+  // features: string[]
+  // featured?: boolean
+  // activePeriod: string // 'Monthly' | 'Annually'
+  // logomarkClassName: string
+  signUpFirst?: boolean
+  plan: ProductOutput
 }
 
 function Plan({
-  name,
-  price,
-  description,
-  button,
-  features,
-  featured = false,
-  activePeriod,
-  logomarkClassName,
+  // name,
+  // price,
+  // description,
+  // // button,
+  // features,
+  // featured = false,
+  // activePeriod,
+  // logomarkClassName,
+  signUpFirst = false,
+  plan,
 }: PlanProps) {
+  const {
+    id,
+    priceId,
+    name,
+    description,
+    price,
+    features,
+    interval,
+    isFeatured: featured,
+  } = plan
+  let buttonLabel = 'Get Started'
+  let logomarkClassName = 'fill-gray-300'
+  const { mutateAsync: createCheckoutSession } =
+    api.stripe.createCheckoutSession.useMutation()
+  const { data: subscriptions = [] } = api.product.subscriptions.useQuery()
+  const router = useRouter()
+
+  const dollarUS = Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  })
+
+  const redirectToCustomerPortal = async () => {
+    if (signUpFirst) return await router.push('/register')
+    const { checkoutUrl } = await createCheckoutSession({
+      priceId,
+      mode: interval === 'OneTime' ? 'payment' : undefined,
+    })
+    if (checkoutUrl) {
+      window.location.assign(checkoutUrl)
+    }
+  }
+
+  if (price > 0 && interval === 'OneTime') {
+    buttonLabel = 'Unlock'
+    logomarkClassName = 'fill-gray-500'
+  } else if (price > 0 && (interval === 'Monthly' || interval === 'Yearly')) {
+    buttonLabel = 'Subscribe'
+    logomarkClassName = 'fill-primary'
+  }
+
   return (
     <section
       className={clsx(
@@ -131,32 +177,7 @@ function Plan({
           featured ? 'text-white' : 'text-gray-900'
         )}
       >
-        {price.Monthly === price.Annually ? (
-          price.Monthly
-        ) : (
-          <>
-            <span
-              aria-hidden={activePeriod === 'Annually'}
-              className={clsx(
-                'transition duration-300',
-                activePeriod === 'Annually' &&
-                  'pointer-events-none translate-x-6 select-none opacity-0'
-              )}
-            >
-              {price.Monthly}
-            </span>
-            <span
-              aria-hidden={activePeriod === 'Monthly'}
-              className={clsx(
-                'absolute left-0 top-0 transition duration-300',
-                activePeriod === 'Monthly' &&
-                  'pointer-events-none -translate-x-6 select-none opacity-0'
-              )}
-            >
-              {price.Annually}
-            </span>
-          </>
-        )}
+        {dollarUS.format(price / 100)}
       </p>
       <p
         className={clsx(
@@ -190,12 +211,12 @@ function Plan({
         </ul>
       </div>
       <Button
-        href={button.href}
+        onClick={() => void redirectToCustomerPortal()}
         color={featured ? 'primary' : 'gray'}
         className='mt-6'
         aria-label={`Get started with the ${name} plan for ${price}`}
       >
-        {button.label}
+        {buttonLabel}
       </Button>
     </section>
   )
@@ -209,6 +230,9 @@ export function Pricing({
   const [activePeriod, setActivePeriod] = useState('Monthly')
   const { mutateAsync: createCheckoutSession } =
     api.stripe.createCheckoutSession.useMutation()
+  const { data: subscriptions = [] } = api.product.subscriptions.useQuery()
+
+  console.log(subscriptions)
 
   const redirectToCustomerPortal = async () => {
     const { checkoutUrl } = await createCheckoutSession({
@@ -245,59 +269,9 @@ export function Pricing({
           </div>
         )}
 
-        {/* <div className='mt-8 flex justify-center'>
-          <div className='relative'>
-            <RadioGroup
-              value={activePeriod}
-              onChange={setActivePeriod}
-              className='grid grid-cols-2'
-            >
-              {['Monthly', 'Annually'].map((period) => (
-                <RadioGroup.Option
-                  key={period}
-                  value={period}
-                  className={clsx(
-                    'cursor-pointer border border-gray-300 px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing.2)-1px)] text-sm text-gray-700 outline-2 outline-offset-2 transition-colors hover:border-gray-400',
-                    period === 'Monthly'
-                      ? 'rounded-l-lg'
-                      : '-ml-px rounded-r-lg'
-                  )}
-                >
-                  {period}
-                </RadioGroup.Option>
-              ))}
-            </RadioGroup>
-            <div
-              aria-hidden='true'
-              className={clsx(
-                'pointer-events-none absolute inset-0 z-10 grid grid-cols-2 overflow-hidden rounded-lg bg-cyan-500 transition-all duration-300',
-                activePeriod === 'Monthly'
-                  ? '[clip-path:inset(0_50%_0_0)]'
-                  : '[clip-path:inset(0_0_0_calc(50%-1px))]'
-              )}
-            >
-              {['Monthly', 'Annually'].map((period) => (
-                <div
-                  key={period}
-                  className={clsx(
-                    'py-2 text-center text-sm font-semibold text-white [&:not(:focus-visible)]:focus:outline-none',
-                    period === 'Annually' && '-ml-px'
-                  )}
-                >
-                  {period}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div> */}
-        {/* 
-        <button onClick={() => void redirectToCustomerPortal()}>
-          Test Sub
-        </button> */}
-
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-10 sm:mt-20 lg:max-w-none lg:grid-cols-3'>
-          {plans.map((plan) => (
-            <Plan key={plan.name} {...plan} activePeriod={activePeriod} />
+          {subscriptions.map((plan) => (
+            <Plan key={plan.name} signUpFirst={!hideMarketing} plan={plan} />
           ))}
         </div>
       </Container>

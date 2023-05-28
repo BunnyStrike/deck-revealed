@@ -28,6 +28,7 @@ interface ButtonProps {
   color?: keyof (typeof variantStyles)['solid']
   className?: string
   href?: string
+  onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
   children?: React.ReactNode
 }
@@ -38,6 +39,7 @@ export const Button = forwardRef(function Button(
     color = 'primary',
     className,
     href,
+    onClick,
     children,
     ...props
   }: ButtonProps,
@@ -50,12 +52,18 @@ export const Button = forwardRef(function Button(
   )
 
   return href ? (
-    <Link ref={ref} href={href} className={className} {...props}>
+    <Link
+      ref={ref}
+      href={href}
+      onClick={onClick}
+      className={className}
+      {...props}
+    >
       {' '}
       {children}{' '}
     </Link>
   ) : (
-    <button ref={ref as any} className={className} {...props}>
+    <button ref={ref as any} onClick={onClick} className={className} {...props}>
       {' '}
       {children}{' '}
     </button>

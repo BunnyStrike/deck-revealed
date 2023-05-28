@@ -1,5 +1,6 @@
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
+import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import superjson from 'superjson'
 
 import type { AppRouter } from '@revealed/api'
@@ -13,6 +14,11 @@ const getBaseUrl = () => {
 
   return `http://localhost:3000` // dev SSR should use localhost
 }
+
+type RouterInput = inferRouterInputs<AppRouter>
+type RouterOutput = inferRouterOutputs<AppRouter>
+
+export type ProductOutput = RouterOutput['product']['subscriptions'][number]
 
 export const api = createTRPCNext<AppRouter>({
   config() {

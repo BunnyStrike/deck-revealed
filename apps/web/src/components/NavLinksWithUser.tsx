@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useUser } from '@supabase/auth-helpers-react'
+import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export function NavLinksWithUser({ footer = false }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const user = useUser()
+  const router = useRouter()
+
+  console.log(router.query)
+  // useEffect(() => {
+  // }, [router.query])
 
   const links = [
     ['Overview', '/account?tab=overview'],
@@ -22,7 +29,10 @@ export function NavLinksWithUser({ footer = false }) {
     <Link
       key={label}
       href={href ?? ''}
-      className='relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-gray-100 transition-colors delay-150 hover:text-gray-900 hover:delay-[0ms]'
+      className={clsx(
+        router.query?.tab === label?.toLowerCase() ? 'bg-primary' : '',
+        `relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-gray-100 transition-colors delay-150 hover:text-gray-900 hover:delay-[0ms]`
+      )}
       onMouseEnter={() => setHoveredIndex(index)}
       onMouseLeave={() => setHoveredIndex(null)}
     >
