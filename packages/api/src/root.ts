@@ -4,6 +4,7 @@ import { appRouter as appR } from './router/app'
 import { bootVideoRouter } from './router/bootVideo'
 import { gameRouter } from './router/game'
 import { homeRouter } from './router/home'
+import { prizeRouter } from './router/prize'
 import { productRouter } from './router/product'
 import { seedRouter } from './router/seed'
 import { stripeRouter } from './router/stripe'
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   stripe: stripeRouter,
   admin: adminRouter,
   product: productRouter,
+  prize: prizeRouter,
   // auth: authRouter,
 })
 

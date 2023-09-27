@@ -606,6 +606,8 @@ model Prize {
     link     String?
     imageUrl    String?
     code    String?
+    claimCode String @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+
 
     updatedAt DateTime? @updatedAt
     createdAt DateTime @default(now())
