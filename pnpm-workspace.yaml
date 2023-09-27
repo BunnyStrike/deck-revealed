@@ -1,6 +1,7 @@
 packages:
   - apps/mobile
   - apps/web
+  - apps/games
   - apps/desktop
   - packages/api
   - packages/auth

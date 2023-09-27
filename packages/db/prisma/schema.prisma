@@ -71,6 +71,7 @@ model User {
     modOwner   GameMod[]
     feedback  Feedback[]
     purchases Purchase[]
+    prizes Prize[]
     
 }
 
@@ -598,6 +599,30 @@ model Updates {
 
 }
 
+model Prize {
+    id     String @id @default(cuid())
+    name    String
+    description    String
+    link     String?
+    imageUrl    String?
+    code    String?
+
+    updatedAt DateTime? @updatedAt
+    createdAt DateTime @default(now())
+    wonAt DateTime?
+    claimedAt DateTime?
+
+    winner    User?   @relation(fields: [winnerId], references: [id], onDelete: Cascade)
+    winnerId  String?
+}
+
+
+// model Profile {
+//     id     String @id
+//     product Product   @relation(fields: [productId, priceId], references: [id, priceId], onDelete: Cascade)
+//     avatarUrl String
+
+// }
 
 // TODO: Finish publisher when apps submition is live
 // model Publisher {
