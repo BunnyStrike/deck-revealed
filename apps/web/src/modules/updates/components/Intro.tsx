@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
 import Link from 'next/link'
-import { useOrganization } from '@clerk/nextjs'
 
 import { IconLink } from './IconLink'
 import { Logo } from './Logo'
@@ -64,11 +63,7 @@ export function Intro({
   github,
   feed,
 }: IntroProps) {
-  const { membership, isLoaded } = useOrganization()
-  const isAdmin = membership?.role === 'admin'
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-
-  console.log(isAdmin)
 
   const showAddModal = () => {
     setIsAddModalOpen(true)
