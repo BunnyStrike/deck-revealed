@@ -8,9 +8,10 @@ import { api, type RouterOutputs } from '~/utils/api'
 
 const ClaimCodeView = ({ claimCode }: any) => {
   const [hasClaimed, setHasClaimed] = useState(false)
-  const { data, isLoading, error } = api.prize.viewPrizeFromClaimCode.useQuery({
-    id: claimCode,
-  })
+  const { data, isLoading, error, refetch } =
+    api.prize.viewPrizeFromClaimCode.useQuery({
+      id: claimCode,
+    })
 
   const {
     mutateAsync: claim,
@@ -31,6 +32,7 @@ const ClaimCodeView = ({ claimCode }: any) => {
       setHasClaimed(true)
     } catch (error) {
       console.log(error)
+      await refetch()
     }
   }
 
