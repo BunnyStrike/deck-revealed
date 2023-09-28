@@ -43,7 +43,10 @@ const ClaimCodeView = ({ claimCode }: any) => {
       {!hasClaimed ? (
         <Button onClick={handleClaimCode}>Claim Game</Button>
       ) : (
-        <div> Congrats! You have now claimed this Steam Key </div>
+        <div>
+          <div>Steam: {data.code}</div>
+          <div>Congrats! You have now claimed this Steam Key </div>
+        </div>
       )}
     </div>
   )
