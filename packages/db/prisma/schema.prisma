@@ -599,6 +599,15 @@ model Update {
 
 }
 
+model SubscribeToNewsletter {
+    id     String @id @default(cuid())
+    email    String @unique
+
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+
+}
+
 model Prize {
     id     String @id @default(cuid())
     name    String

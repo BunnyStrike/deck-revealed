@@ -8,6 +8,8 @@ import { prizeRouter } from './router/prize'
 import { productRouter } from './router/product'
 import { seedRouter } from './router/seed'
 import { stripeRouter } from './router/stripe'
+import { subscribeToNewsletterRouter } from './router/subscribeToNewsletter'
+import { updateRouter } from './router/update'
 import { userRouter } from './router/user'
 import { createTRPCRouter } from './trpc'
 
@@ -22,6 +24,8 @@ export const appRouter = createTRPCRouter({
   admin: adminRouter,
   product: productRouter,
   prize: prizeRouter,
+  update: updateRouter,
+  subscribeToNewsletter: subscribeToNewsletterRouter,
   // auth: authRouter,
 })
 

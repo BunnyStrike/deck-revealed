@@ -10,7 +10,6 @@ export function NavLinksWithUser({ footer = false }) {
   const user = useUser()
   const router = useRouter()
 
-  console.log(router.query)
   // useEffect(() => {
   // }, [router.query])
 
@@ -18,6 +17,8 @@ export function NavLinksWithUser({ footer = false }) {
     ['Overview', '/account?tab=overview'],
     // ['Reviews', '#reviews'],
     ['Billing', '/account?tab=billing'],
+
+    ['Updates', '/updates'],
     // ['FAQs', '/#faqs'],
   ]
 
