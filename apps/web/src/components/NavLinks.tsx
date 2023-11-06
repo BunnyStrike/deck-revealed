@@ -13,7 +13,7 @@ export function NavLinks({ footer = false }) {
     ['Pricing', '/#pricing'],
     ['FAQs', '/#faqs'],
     footer ? ['Privacy Policy', '/privacy-policy'] : [],
-  ].map(([label, href], index) => (
+  ].filter(([label]) => !!label).map(([label, href], index) => (
     <Link
       key={label}
       href={href ?? ''}

@@ -1,144 +1,99 @@
-import React from 'react'
-import Image from 'next/image'
-import dayjs from 'dayjs'
+import { useState } from 'react'
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import { useUser } from '@supabase/auth-helpers-react'
 
-import { api } from '~/utils/api'
-import { Layout } from '~/modules/updates/components/Layout'
-import { Intro, IntroFooter } from '../modules/updates/components/Intro'
+import { Button, FormInputField } from '@revealed/ui'
+
+import { api, type RouterOutputs } from '~/utils/api'
+import { CallToAction } from '~/components/CallToAction'
+import ComingSoonHero from '~/components/ComingSoonHero'
+import { Container } from '~/components/Container'
+import { Faqs } from '~/components/Faqs'
+import { Footer } from '~/components/Footer'
+import { Header } from '~/components/Header'
+import { Hero } from '~/components/Hero'
+import { Navbar } from '~/components/Navbar'
+import { Pricing } from '~/components/Pricing'
+import { PrimaryFeatures } from '~/components/PrimaryFeatures'
+import { Reviews } from '~/components/Reviews'
+import { SecondaryFeatures } from '~/components/SecondaryFeatures'
 
 const updates = [
   {
-    title: 'New Features',
-    content: "We're working on some new features that will be released soon.",
-    createdAt: '2021-08-01T00:00:00.000Z',
-    coverUrl: '/images/screenshot.png',
-    updates: [
-      "We're working on some new features that will be released soon.",
-      'We are working on a new feature that will allow you to create a new account.',
-      'We are working on a new feature that will allow you to create a new account.',
-    ],
+    title: 'Revealed is now in beta!',
+    content: 'We are now accepting beta testers. Sign up to be notified.',
+    date: 'August 1, 2021',
   },
   {
-    title: 'New Features',
-    content: "We're working on some new features that will be released soon.",
-    createdAt: '2021-08-01T00:00:00.000Z',
-    coverUrl: '/images/screenshot.png',
-    updates: [
-      "We're working on some new features that will be released soon.",
-      'We are working on a new feature that will allow you to create a new account.',
-      'We are working on a new feature that will allow you to create a new account.',
-    ],
-  },
-  {
-    title: 'New Features',
-    content: "We're working on some new features that will be released soon.",
-    createdAt: '2021-08-01T00:00:00.000Z',
-    coverUrl: '/images/screenshot.png',
-    updates: [
-      "We're working on some new features that will be released soon.",
-      'We are working on a new feature that will allow you to create a new account.',
-      'We are working on a new feature that will allow you to create a new account.',
-    ],
-  },
-  {
-    title: 'New Features',
-    content: "We're working on some new features that will be released soon.",
-    createdAt: '2021-08-01T00:00:00.000Z',
-    coverUrl: '/images/screenshot.png',
-    updates: [
-      "We're working on some new features that will be released soon.",
-      'We are working on a new feature that will allow you to create a new account.',
-      'We are working on a new feature that will allow you to create a new account.',
-    ],
-  },
-  {
-    title: 'New Features',
-    content: "We're working on some new features that will be released soon.",
-    createdAt: '2021-08-01T00:00:00.000Z',
-    coverUrl: '/images/screenshot.png',
-    updates: [
-      "We're working on some new features that will be released soon.",
-      'We are working on a new feature that will allow you to create a new account.',
-      'We are working on a new feature that will allow you to create a new account.',
-    ],
+    title: 'Revealed is now in beta!',
+    content: 'We are now accepting beta testers. Sign up to be notified.',
+    date: 'August 1, 2021',
   },
 ]
 
-const UpdateItem = ({
-  title,
-  content,
-  coverUrl,
-  updates = [],
-  createdAt,
-}: any) => {
+const Home: NextPage = () => {
+  const user = useUser()
+  const isAdmin = user?.app_metadata?.role === 'ADMIN'
+
   return (
-    <div>
-      <article className='relative mb-12 first-letter:scroll-mt-16'>
-        <header className=' mb-6 mt-10 flex flex-col lg:mb-0'>
-          <div className='pointer-events-none absolute left-[max(-0.5rem,calc(60%-18.625rem))] top-0 z-50 flex h-4 items-center justify-end gap-x-2 lg:-left-0 lg:right-[calc(max(2rem,50%-38rem)+40rem)] lg:min-w-[32rem] xl:h-8'>
-            <div className=' flex flex-row-reverse items-center justify-end gap-2 lg:flex-row'>
-              <time className='text-xs text-gray-500'>
-                {dayjs(createdAt).format('MMM D, YYYY')}
-              </time>
-              <div className='h-[0.0625rem] w-3.5 bg-gray-400 lg:-mr-3.5 xl:mr-0 xl:bg-gray-300'></div>
+    <>
+      <Head>
+        <title>Revealed</title>
+        <meta
+          name='description'
+          content='The all-in-one tool for your Steam Deck. Enjoy your favorite apps, manage your games, launch Game Mode. Sign up to be notified soon.'
+        />
+      </Head>
+      <Header />
+      <main>
+        <Container className='relative my-10'>
+          <h2 className='leading-2 text-center text-4xl text-white'>Updates</h2>
+          <p className='text-center text-xl'>
+            All the lastest Reavealed news, delivered to you
+          </p>
+
+          <div className='w-100 flex flex-col justify-center '>
+            <div className=' flex h-20 w-[300px] items-center justify-center gap-2 self-center'>
+              <FormInputField placeholder='Subscribe via email' />
+              <Button className='btn-sm mt-2'>Subscribe</Button>
             </div>
+
+            {!isAdmin && (
+              <div className=' flex h-40 w-[300px] flex-col items-center justify-center gap-2 self-center '>
+                <textarea />
+
+                <Button className='btn-sm mt-2'>Post</Button>
+              </div>
+            )}
           </div>
-        </header>
-        <div className='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>
-          <div className='sm:pl-[20%] lg:flex lg:w-full lg:justify-end lg:pl-[52%] '>
-            <div className=''>
-              {coverUrl && (
-                <div className='relative mt-8 h-auto w-full overflow-hidden rounded-xl bg-gray-50 dark:bg-gray-900 [&+*]:mt-8'>
-                  <Image
-                    src={coverUrl}
-                    width={800}
-                    height={500}
-                    style={{ objectFit: 'cover' }}
-                    alt={title}
-                  />
+
+          <div className='p-5'>
+            {updates.map((update) => (
+              <div className='mb-3 overflow-hidden bg-gray-200 shadow sm:rounded-lg'>
+                <div className='px-4 py-5 sm:px-6'>
+                  <h3 className='text-lg font-medium leading-6 text-gray-900'>
+                    {update.title}
+                  </h3>
+                  <p className='mt-1 max-w-2xl text-sm text-gray-700'>
+                    {update.content}
+                  </p>
+
+                  <p className='mt-1 max-w-2xl text-sm text-gray-700'>
+                    {update.date}
+                  </p>
+                  {/* <div className='flex justify-end text-gray-700'>
+                    <button>Read More</button>
+                  </div> */}
                 </div>
-              )}
-              <h2 className='text-lg font-semibold text-gray-200'>{title}</h2>
-              <p className='mb-6 mt-3 text-sm text-gray-400'>{content}</p>
-              <h3 className='text-sm font-semibold text-gray-200'>
-                What&apos;s New
-              </h3>
-              <ul className='ml-6 list-disc'>
-                {updates.map((update: any, index: number) => (
-                  <li key={index} className='mt-2 text-sm'>
-                    {update}
-                  </li>
-                ))}
-              </ul>
-            </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </article>
-    </div>
+        </Container>
+      </main>
+      <Footer />
+    </>
   )
 }
 
-export default function UpdatesPage() {
-  // const { data: updates = [] } = api.update.all.useQuery()
-  return (
-    <Layout
-      intro={
-        <Intro
-          title='DevEngage'
-          titleFocus='All The Updates Here'
-          description='Check out what is new here including new templates, courses, and projects. Enter your email address to get notified when we release new updates.'
-        />
-      }
-      introFooter={<IntroFooter />}
-    >
-      <div className='relative flex h-full w-full flex-col items-center justify-center'>
-        {/* <h1 className='absolute left-1/2 text-center text-4xl font-bold text-white'>
-          Coming soon...
-        </h1> */}
-        {updates.map((update, index) => (
-          <UpdateItem key={index} {...update} />
-        ))}
-      </div>
-    </Layout>
-  )
-}
+export default Home
