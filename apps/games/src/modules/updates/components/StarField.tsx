@@ -108,7 +108,9 @@ function Star({ blurId, point: [cx, cy, dim, blur] }: StarProps) {
         cy={cy as number}
         r={1}
         style={{
-          transformOrigin: `${cx as number / 16}rem ${cy  as number / 16}rem`,
+          transformOrigin: `${(cx as number) / 16}rem ${
+            (cy as number) / 16
+          }rem`,
           opacity: dim ? 0.2 : 1,
           transform: `scale(${dim ? 1 : 1.2})`,
         }}
@@ -137,9 +139,9 @@ function Constellation({ points }: ConstellationProps) {
         { strokeDashoffset: 0, visibility: 'visible' },
         { duration: 5, delay: Math.random() * 3 + 2 },
       ],
-      ...(isFilled
+      ...((isFilled
         ? [[ref.current, { fill: 'rgb(255 255 255 / 0.02)' }, { duration: 1 }]]
-        : []),
+        : []) as any),
     ])
 
     return () => {

@@ -42,7 +42,7 @@ export const api = createTRPCNext<AppRouter>({
           },
         }),
       ],
-    }
+    } as any
   },
   ssr: false,
 })

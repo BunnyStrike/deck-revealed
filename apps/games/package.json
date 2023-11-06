@@ -31,6 +31,7 @@
     "@trpc/server": "^10.28.0",
     "cors": "^2.8.5",
     "daisyui": "^2.51.6",
+    "feed": "^4.2.2",
     "focus-visible": "^5.2.0",
     "framer-motion": "^6.5.1",
     "micro": "^10.0.1",

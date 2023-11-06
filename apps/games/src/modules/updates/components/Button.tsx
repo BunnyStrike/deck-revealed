@@ -20,6 +20,7 @@ function ButtonInner({ arrow = false, children }: ButtonInnerProps) {
 interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   arrow?: boolean
   className?: string
+  children?: React.ReactNode
   href?: string
 }
 

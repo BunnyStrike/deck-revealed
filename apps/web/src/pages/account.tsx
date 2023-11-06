@@ -26,8 +26,6 @@ export default function AccountPage() {
 
   const { data: subscriptionStatus } = api.user.subscriptionStatus.useQuery()
 
-  const { data: subscriptionStatus } = api.user.subscriptionStatus.useQuery()
-
   const secondaryNavigation = [{ name: 'Overview' }, { name: 'Billing' }]
 
   if (user?.app_metadata?.role === 'ADMIN') {
