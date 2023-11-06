@@ -2,7 +2,33 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
+import { Button, FormInputField } from '@revealed/ui'
+
+import { api } from '~/utils/api'
+
 export function ComingSoonHero() {
+  const { mutateAsync: subscribeToNewsletter } =
+    api.subscribeToNewsletter.create.useMutation()
+
+  const handleSubscribe = async (event: {
+    currentTarget: HTMLFormElement | undefined
+    preventDefault: () => void
+  }) => {
+    event.preventDefault()
+    const data = Object.fromEntries(new FormData(event.currentTarget))
+
+    if (!data?.email) return alert('Please fill out all fields')
+
+    const subscribeToNewsletterData = {
+      email: data?.email ?? 'Untitled',
+    }
+
+    await subscribeToNewsletter(subscribeToNewsletterData as any)
+
+    event.currentTarget?.reset()
+    alert('Subscribed!')
+  }
+
   return (
     <div className='relative isolate overflow-hidden bg-gray-900'>
       <svg
@@ -77,7 +103,8 @@ export function ComingSoonHero() {
             Enjoy and manage your favorite apps, games, mods, retros, and more.
             Sign up to start the journey.
           </p>
-          <div className='mt-10 flex items-center gap-x-6'>
+
+          {/* <div className='mt-10 flex items-center gap-x-6'>
             <Link href='/register' className='btn-primary btn-lg btn'>
               Sign Up
             </Link>
@@ -87,6 +114,16 @@ export function ComingSoonHero() {
             >
               Learn more <span aria-hidden='true'>→</span>
             </a>
+          </div> */}
+
+          <div className='w-100 mt-8 flex items-center self-center'>
+            <form onSubmit={handleSubscribe} className='flex w-[300px] gap-2'>
+              <FormInputField
+                placeholder='Subscribe for updates'
+                fieldName='email'
+              />
+              <Button className='btn-sm mt-2.5'>Subscribe</Button>
+            </form>
           </div>
         </div>
         <div className='mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32'>
