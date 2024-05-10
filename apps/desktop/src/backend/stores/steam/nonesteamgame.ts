@@ -121,7 +121,7 @@ function checkSteamUserDataDir(steamUserdataDir: string): {
  */
 function readShortcutFile(file: string): Partial<ShortcutObject> {
   const content = readFileSync(file)
-  console.log('content', content)
+  // console.log('content', content)
 
   return parseBuffer(content, {
     autoConvertArrays: true,
