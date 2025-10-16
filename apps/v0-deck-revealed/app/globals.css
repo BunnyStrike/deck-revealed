@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 240 10% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+    --primary: 267 100% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 333 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 5% 90%;
+    --muted-foreground: 240 3% 45%;
+    --accent: 170 100% 45%;
+    --accent-foreground: 240 10% 4%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5% 84%;
+    --input: 240 5% 84%;
+    --ring: 267 100% 61%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 100%;
+    --card: 240 10% 8%;
+    --card-foreground: 0 0% 100%;
+    --popover: 240 10% 8%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 267 100% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 333 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 10% 16%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 170 100% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 10% 14%;
+    --input: 240 10% 14%;
+    --ring: 267 100% 61%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/50 rounded-full transition-colors;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/70;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Carousel animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.carousel-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.carousel-fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+/* Focus styles */
+.focus-ring {
+  @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+/* Game card hover effect */
+.game-card {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.game-card:hover {
+  @apply transform scale-[1.03] shadow-xl shadow-primary/20;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+}
+
+/* Glassmorphism */
+.glass {
+  @apply bg-white/10 backdrop-blur-md border border-white/20;
+}
+
+/* Neon effect */
+.neon-border {
+  @apply relative;
+}
+
+.neon-border::after {
+  content: "";
+  @apply absolute inset-0 rounded-lg;
+  box-shadow: 0 0 15px 2px hsl(var(--primary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.neon-border:hover::after {
+  opacity: 1;
+}
+
+/* Button hover animation */
+.btn-hover-effect {
+  @apply relative overflow-hidden;
+}
+
+.btn-hover-effect::after {
+  content: "";
+  @apply absolute inset-0 bg-white/20 transform scale-x-0 origin-left transition-transform duration-300;
+}
+
+.btn-hover-effect:hover::after {
+  @apply scale-x-100;
+}
